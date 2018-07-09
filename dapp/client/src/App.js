@@ -15,7 +15,7 @@ class App extends Component {
       const web3 = await getWeb3()
 
       // Use web3 to get the user's accounts.
-      const accounts = await getAccounts(web3)
+      const accounts = await web3.eth.getAccounts()
 
       // Get the contract instance by passing in web3 and the contract definition.
       const contract = await getContractInstance(web3, contractDefinition)
