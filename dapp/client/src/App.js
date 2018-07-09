@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import getWeb3 from './utils/getWeb3'
-import getAccounts from './utils/getAccounts'
 import getContractInstance from './utils/getContractInstance'
 import contractDefinition from './contracts/SimpleStorage.json'
 
