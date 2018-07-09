@@ -34,13 +34,13 @@ class App extends Component {
     const { accounts, contract } = this.state
 
     // Stores a given value, 5 by default.
-    await contract.set(5, { from: accounts[0] })
+    await contract.methods.set(5).send({ from: accounts[0] })
     
     // Get the value from the contract to prove it worked.
-    const response = await contract.get.call({ from: accounts[0] })
+    const response = await contract.methods.get().call({ from: accounts[0] })
 
     // Update state with the result.
-    this.setState({ storageValue: response.toNumber() })
+    this.setState({ storageValue: response })
   }
 
   render() {
