@@ -48,5 +48,5 @@ async function setRegistry(contract, registry) {
   const contractSymbol = web3.toAscii(await contract.symbol.call())
   const contractDecimals = await contract.decimals()
 
-  await registry.addToken(contract.address, contractName, contractSymbol, contractDecimals,"")
+  await registry.addToken(contract.address, contractName, contractSymbol, contractDecimals)
 }

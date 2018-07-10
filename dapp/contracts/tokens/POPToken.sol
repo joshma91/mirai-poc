@@ -11,18 +11,15 @@ contract POPToken is ERC721Token {
     registry = TokenRegistry(_registryAddress);
   }
 
-  function _getTokenAddress(string _symbol) private view returns (address _tokenAddr) {
-    _tokenAddr = registry.getTokenAddressBySymbol(_symbol);
-  }
-
   function buyPOP() public {
 
     bool coinTransferSuccessful; 
-    ERC20 coin = ERC20(_getTokenAddress("DAI"));
+    address daiTokenAddr = registry.getTokenAddressBySymbol("DAI");
+    ERC20 daiToken = ERC20(daiTokenAddr);
 
     // price hard-coded at 1 for now
-    coinTransferSuccessful = coin.transferFrom(msg.sender, this, 1);
-    require(coinTransferSuccessful);
+    coinTransferSuccessful = daiToken.transferFrom(msg.sender, this, 1);
+    require(coinTransferSuccessful, "Transfer of coins from ERC20 contract unsuccessful");
 
     uint256 newTokenId = super.totalSupply() + 1;
     super._mint(msg.sender, newTokenId);
