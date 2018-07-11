@@ -4,6 +4,10 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 import "./TokenRegistry.sol";
 
+/**
+ * @title POPToken
+ * @notice POPToken is the entry point for interacting with the Mirai backend
+ **/
 contract POPToken is ERC721Token {
   TokenRegistry registry;
 
