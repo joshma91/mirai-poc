@@ -13,7 +13,9 @@
     "url": "https://github.com/adrianmcli/truffle-react/issues"
   },
   "homepage": "https://github.com/adrianmcli/truffle-react#readme",
-  "dependencies": {},
+  "dependencies": {
+    "openzeppelin-solidity": "1.10.0"
+  },
   "devDependencies": {
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
