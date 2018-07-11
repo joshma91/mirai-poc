@@ -8,6 +8,9 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
  **/
 contract Products is Ownable {
 
+  constructor () public {
+  }
+
   event ProductCreated();
 
  /**
@@ -50,8 +53,8 @@ contract Products is Ownable {
    * @param _owner - the owner of the product
    * @param _available - whether the product should be available for sale (can be changed)
    */
-  function createProduct(_price, _owner, _available) public onlyOwner {
-    uint256 memory _productId = allProductIds.length; 
+  function createProduct(uint256 _price, address _owner, bool _available) public onlyOwner {
+    uint256 _productId = allProductIds.length + 1; 
     Product memory _product = Product({
       id: _productId,
       owner: _owner,
@@ -61,7 +64,7 @@ contract Products is Ownable {
     });
 
     products[_productId] = _product;
-    allProductIs.push(_productId);
+    allProductIds.push(_productId);
     productsByOwner[_owner].push(_product);
     productIdsByOwner[_owner].push(_productId);
 
@@ -72,5 +75,23 @@ contract Products is Ownable {
       _product.available,
       _product.numberSold
     );
+  }
+
+  /**
+   * @notice getProductIdsByOwner returns an array of the product ids owned by an address 
+   * @param _owner - the product owner we're querying for
+   * @return the array of product ids 
+   */
+  function getProductIdsByOwner(address _owner) public view onlyOwner returns (uint256[]) {
+    return productIdsByOwner[_owner];
+  }
+
+  /**
+   * @notice getPrice returns the product struct
+   * @param _id - the product id we're querying for
+   * @return all the attributes of the queried product
+   */
+  function getPriceById(uint256 _id) public view onlyOwner returns (uint256) {
+    return products[_id].price;
   }
 }

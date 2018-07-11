@@ -8,7 +8,7 @@ import "./TokenRegistry.sol";
  * @title POPToken
  * @notice POPToken is the entry point for interacting with the Mirai backend
  **/
-contract POPToken is Inventory, ERC721Token {
+contract POPToken is ERC721Token {
   TokenRegistry registry;
 
   constructor (string _name, string _symbol, address _registryAddress) public ERC721Token(_name, _symbol){
