@@ -87,11 +87,39 @@ contract Products is Ownable {
   }
 
   /**
-   * @notice getPrice returns the product struct
+   * @notice getPriceById returns a product's price
    * @param _id - the product id we're querying for
-   * @return all the attributes of the queried product
+   * @return the price of the queried product
    */
   function getPriceById(uint256 _id) public view onlyOwner returns (uint256) {
     return products[_id].price;
+  }
+
+    /**
+   * @notice getAllProductIds returns all created product ids
+   * @return array of all product ids
+   */
+  function getAllProductIds() public view onlyOwner returns (uint256[]) {
+    return allProductIds;
+  }
+
+  /**
+   * @notice getProductById returns the product struct
+   * @param _id - the product id we're querying for
+   * @return all the attributes of the queried product
+   */
+  function getProductById(uint256 _productId) public view onlyOwner returns (
+    uint256 _id, 
+    address _owner, 
+    uint256 _price, 
+    bool _available, 
+    uint256 _numberSold) {
+
+    Product memory _product = products[_productId];
+    _id = _product.id;
+    _owner = _product.owner;
+    _price = _product.price;
+    _available = _product.available;
+    _numberSold = _product.numberSold;
   }
 }
