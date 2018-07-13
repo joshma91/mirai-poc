@@ -9,6 +9,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 contract Products is Ownable {
 
   constructor () public {
+    productLength = 0;
   }
 
   event ProductCreated();
@@ -47,6 +48,8 @@ contract Products is Ownable {
   // @notice Arrays to store owner addresses
   address[] public ownerList;
 
+  uint256 productLength;
+
  /**
    * @notice createProduct creates a new product 
    * @param _price - the starting price (price can be changed)
@@ -54,7 +57,8 @@ contract Products is Ownable {
    * @param _available - whether the product should be available for sale (can be changed)
    */
   function createProduct(uint256 _price, address _owner, bool _available) public onlyOwner {
-    uint256 _productId = allProductIds.length + 1; 
+    productLength += 1;
+    uint256 _productId = productLength; 
     Product memory _product = Product({
       id: _productId,
       owner: _owner,
@@ -122,4 +126,35 @@ contract Products is Ownable {
     _available = _product.available;
     _numberSold = _product.numberSold;
   }
-}
+
+  /**
+   * @notice getAllProducts returns the product struct for all products
+   * @return all the attributes of all created products
+   */
+  function getAllProducts() public view onlyOwner returns (
+    uint256[] productIds, 
+    address[] owners, 
+    uint256[] prices, 
+    bool[] available, 
+    uint256[] numberSold) {
+
+    productIds = new uint256[](productLength);
+    owners = new address[](productLength);
+    prices = new uint256[](productLength);
+    available = new bool[](productLength);
+    numberSold = new uint256[](productLength);
+
+    for(uint256 i = 0; i < productLength; i++) {
+      // the +1 is necessary because productIds are not 0-indexed 
+      uint256 productId = i + 1;
+
+      Product memory product = products[productId];
+      productIds[i] = product.id;
+      owners[i] = product.owner;
+      prices[i] = product.price;
+      available[i] = product.available;
+      numberSold[i] = product.numberSold;
+    }
+
+  }
+}      
