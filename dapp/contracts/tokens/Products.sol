@@ -127,35 +127,4 @@ contract Products is Ownable {
     available = _product.available;
     numberSold = _product.numberSold;
   }
-
-  /**
-   * @notice getAllProducts returns the product struct for all products
-   * @return all the attributes of all created products
-   */
-  function getAllProducts() public view onlyOwner returns (
-    uint256[] productIds, 
-    address[] owners, 
-    uint256[] prices, 
-    bool[] available, 
-    uint256[] numberSold) {
-
-    productIds = new uint256[](productLength);
-    owners = new address[](productLength);
-    prices = new uint256[](productLength);
-    available = new bool[](productLength);
-    numberSold = new uint256[](productLength);
-
-    for(uint256 i = 0; i < productLength; i++) {
-      // the +1 is necessary because productIds are not 0-indexed 
-      uint256 productId = i + 1;
-
-      Product memory product = products[productId];
-      productIds[i] = product.id;
-      owners[i] = product.owner;
-      prices[i] = product.price;
-      available[i] = product.available;
-      numberSold[i] = product.numberSold;
-    }
-
-  }
 }      
