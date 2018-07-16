@@ -1,52 +1,43 @@
-const POPToken = artifacts.require("POPToken");
-const DSToken = artifacts.require("DSToken");
-const TokenRegistry = artifacts.require("TokenRegistry");
+const { getWeb3, getContractInstance } = require("./helpers");
+const web3 = getWeb3();
+const getInstance = getContractInstance(web3);
+const daiToken = getInstance("DSToken");
+const pop = getInstance("POPToken");
+const registry = getInstance("TokenRegistry");
 
-contract('Testing POPToken contract', function(accounts) {
-  let registry
-  let daiToken 
-  let pop 
-
-  it('should have issued DAI tokens after minting', async () => {
-
-    registry = await TokenRegistry.new()
-    daiToken = await DSToken.new("DAI")
-    await setRegistry(daiToken, registry)
-    pop = await POPToken.new("POPToken", "POP", registry.address)
-    
+contract("Testing POPToken contract", function(accounts) {
+  it("should have issued DAI tokens after minting", async () => {
     // mint new DAI tokens to accounts[0]
-    await daiToken.mint(100000, { from: accounts[0] })
-    const balance = await daiToken.balanceOf.call(accounts[0], { from: accounts[0] })
-    
-    expect(balance.toNumber()).to.equal(100000)
-  })
+    await daiToken.methods.mint(100000).send({ from: accounts[0] });
+    const balance = await daiToken.methods.balanceOf(accounts[0]).call({
+      from: accounts[0]
+    });
+    expect(parseInt(balance)).to.equal(100000);
+  });
 
-  it('should ensure that the token registry has stored the right address', async () => {    
-    const registryAddress = await registry.getTokenAddressBySymbol("DAI")
-    expect(registryAddress).to.equal(daiToken.address)
-  })
-  
-  it('should use approved DAI tokens to purchase a POP', async () => {
-    
+  it("should use approved DAI tokens to purchase a POP", async () => {
     // approval for retrieval of 1 Dai from pop contract
-    daiToken.approve(pop.address, 1, { from: accounts[0] })
-    
-    const before = await pop.balanceOf.call(accounts[0], { from: accounts[0] })
-    await pop.buyPOP({ from: accounts[0] })
-    
-    const after = await pop.balanceOf.call(accounts[0], { from: accounts[0] })
-    const daiBalanceAfter = await daiToken.balanceOf.call(accounts[0], { from: accounts[0] })
+    daiToken.methods
+      .approve(pop._address, 1)
+      .send({ from: accounts[0], gas: 3000000 });
 
-    expect(before.toNumber()).to.equal(0)
-    expect(after.toNumber()).to.equal(1)
-    expect(daiBalanceAfter.toNumber()).to.equal(99999)
-  })
-})
+    const before = await pop.methods
+      .balanceOf(accounts[0])
+      .call({ from: accounts[0] });
 
-async function setRegistry(contract, registry) {
-  const contractName = web3.toAscii(await contract.name())
-  const contractSymbol = web3.toAscii(await contract.symbol.call())
-  const contractDecimals = await contract.decimals()
+    await pop.methods.buyPOP().send({ from: accounts[0], gas: 3000000 });
 
-  await registry.addToken(contract.address, contractName, contractSymbol, contractDecimals)
-}
+    const after = await pop.methods
+      .balanceOf(accounts[0])
+      .call({ from: accounts[0], gas: 3000000 });
+
+    const daiBalanceAfter = await daiToken.methods.balanceOf(accounts[0]).call({
+      from: accounts[0],
+      gas: 3000000
+    });
+
+    expect(parseInt(before)).to.equal(0);
+    expect(parseInt(after)).to.equal(1);
+    expect(parseInt(daiBalanceAfter)).to.equal(99999);
+  });
+});
