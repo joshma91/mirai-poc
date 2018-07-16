@@ -3,7 +3,6 @@ const web3 = getWeb3();
 const getInstance = getContractInstance(web3);
 const daiToken = getInstance("DSToken");
 const pop = getInstance("POPToken");
-const registry = getInstance("TokenRegistry");
 
 contract("Testing POPToken contract", function(accounts) {
   it("should have issued DAI tokens after minting", async () => {
