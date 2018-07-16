@@ -57,7 +57,7 @@ contract Products is Ownable {
    * @param _available - whether the product should be available for sale (can be changed)
    */
   function createProduct(uint256 _price, address _owner, bool _available) public onlyOwner {
-    productLength += 1;
+    
     uint256 _productId = productLength; 
     Product memory _product = Product({
       id: _productId,
@@ -72,6 +72,7 @@ contract Products is Ownable {
     productsByOwner[_owner].push(_product);
     productIdsByOwner[_owner].push(_productId);
 
+    productLength += 1;
     emit ProductCreated(
       _product.id,
       _product.owner, 
@@ -109,22 +110,22 @@ contract Products is Ownable {
 
   /**
    * @notice getProductById returns the product struct
-   * @param _id - the product id we're querying for
+   * @param _productId - the product id we're querying for
    * @return all the attributes of the queried product
    */
   function getProductById(uint256 _productId) public view onlyOwner returns (
-    uint256 _id, 
-    address _owner, 
-    uint256 _price, 
-    bool _available, 
-    uint256 _numberSold) {
+    uint256 id, 
+    address owner, 
+    uint256 price, 
+    bool available, 
+    uint256 numberSold) {
 
     Product memory _product = products[_productId];
-    _id = _product.id;
-    _owner = _product.owner;
-    _price = _product.price;
-    _available = _product.available;
-    _numberSold = _product.numberSold;
+    id = _product.id;
+    owner = _product.owner;
+    price = _product.price;
+    available = _product.available;
+    numberSold = _product.numberSold;
   }
 
   /**
