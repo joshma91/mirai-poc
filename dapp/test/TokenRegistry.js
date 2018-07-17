@@ -1,25 +1,15 @@
-const DSToken = artifacts.require("DSToken");
-const TokenRegistry = artifacts.require("TokenRegistry");
+const { getWeb3, getContractInstance } = require("./helpers");
+const web3 = getWeb3();
+const getInstance = getContractInstance(web3);
+const daiToken = getInstance("DSToken");
+const registry = getInstance("TokenRegistry");
 
-contract('Testing POPToken contract', function(accounts) {
-  let registry
-  let daiToken 
-
-  it('should ensure that the token registry has stored the right address', async () => {    
-    registry = await TokenRegistry.new()
-    daiToken = await DSToken.new("DAI")
-    await setRegistry(daiToken, registry)
-  
+contract("Testing TokenRegistry contract", function(accounts) {
+  it("should ensure that the token registry has stored the right address", async () => {
     // mint new DAI tokens to accounts[0]
-    const registryAddress = await registry.getTokenAddressBySymbol("DAI")
-    expect(registryAddress).to.equal(daiToken.address)
-  })
-})
-
-async function setRegistry(contract, registry) {
-  const contractName = web3.toAscii(await contract.name())
-  const contractSymbol = web3.toAscii(await contract.symbol.call())
-  const contractDecimals = await contract.decimals()
-
-  await registry.addToken(contract.address, contractName, contractSymbol, contractDecimals)
-}
+    const registryAddress = await registry.methods
+      .getTokenAddressBySymbol("DAI")
+      .call({ from: accounts[0] });
+    expect(registryAddress).to.equal(daiToken._address);
+  });
+});
