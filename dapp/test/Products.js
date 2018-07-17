@@ -45,17 +45,17 @@ contract("Testing Products contract", function(accounts) {
       .createProduct(product3.price, product3.owner, product3.available)
       .send({ from: accounts[0], gas: 3000000 });
 
-    const price = await productsContract.methods
+    const product2Price = await productsContract.methods
       .getPriceById(2)
       .call({ from: accounts[0], gas: 3000000 });
 
     const prod1 = await productsContract.methods
       .getProductById(1)
       .call({ from: accounts[0], gas: 3000000 });
-    const prod1Owner = prod1[1];
+    const product1Owner = prod1[1];
 
-    expect(parseInt(price)).to.equal(2);
-    expect(prod1Owner.toUpperCase()).to.equal(
+    expect(parseInt(product2Price)).to.equal(2);
+    expect(product1Owner.toUpperCase()).to.equal(
       accounts[0].toString().toUpperCase()
     );
   });
@@ -74,14 +74,13 @@ contract("Testing Products contract", function(accounts) {
       .getAllProductIds()
       .call({ from: accounts[0] });
 
-    const allProducts = await Promise.all(
-      allProductIds.map(async x => {
-        const response = await productsContract.methods
-          .getProductById(x)
-          .call({ from: accounts[0], gas: 3000000 });
-        return response;
-      })
-    );
+    const allProductsPromise = allProductIds.map(x => {
+      return productsContract.methods
+        .getProductById(x)
+        .call({ from: accounts[0], gas: 3000000 });
+    });
+
+    const allProducts = await Promise.all(allProductsPromise);
 
     const retrievedProduct0 = {
       price: parseInt(allProducts[0].price),
