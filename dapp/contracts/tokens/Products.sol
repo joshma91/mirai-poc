@@ -8,9 +8,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
  **/
 contract Products is Ownable {
 
-  constructor () public {
-    productLength = 0;
-  }
+  uint256 productLength = 0;
 
   event ProductCreated();
 
@@ -48,8 +46,6 @@ contract Products is Ownable {
   // @notice Arrays to store owner addresses
   address[] public ownerList;
 
-  uint256 productLength;
-
  /**
    * @notice createProduct creates a new product 
    * @param _price - the starting price (price can be changed)
@@ -72,7 +68,7 @@ contract Products is Ownable {
     productsByOwner[_owner].push(_product);
     productIdsByOwner[_owner].push(_productId);
 
-    productLength += 1;
+    productLength++;
     emit ProductCreated(
       _product.id,
       _product.owner, 
