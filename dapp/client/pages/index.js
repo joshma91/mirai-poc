@@ -1,13 +1,18 @@
 import Link from 'next/link'
 import { Modal, Header, Button, List, Icon } from 'semantic-ui-react'
 
-export default () => (
-  <div>
+import Layout from '../components/Layout'
 
+export default () => (
+  <Layout>
+    <Header as="h1">Home Page</Header>
+    
     <Link href="/products/sell"><Button>Sell Products</Button></Link>
     <Link href="/products/"><Button>Buy Products</Button></Link>
 
     <hr/>
+
+    <Header as="h2">Example Semantic-UI elements</Header>
 
     <Modal trigger={<Button>Show Modal</Button>}>
       <Modal.Header>Select a Photo</Modal.Header>
@@ -39,5 +44,5 @@ export default () => (
     </List>
 
     Hello <Icon name='world' />
-  </div>
+  </Layout>
 )
