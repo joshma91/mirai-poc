@@ -1,8 +1,14 @@
-import 'semantic-ui-css/semantic.min.css'
+import Link from 'next/link'
 import { Modal, Header, Button, List, Icon } from 'semantic-ui-react'
 
 export default () => (
   <div>
+
+    <Link href="/products/sell"><Button>Sell Products</Button></Link>
+    <Link href="/products/"><Button>Buy Products</Button></Link>
+
+    <hr/>
+
     <Modal trigger={<Button>Show Modal</Button>}>
       <Modal.Header>Select a Photo</Modal.Header>
       <Modal.Content image>
