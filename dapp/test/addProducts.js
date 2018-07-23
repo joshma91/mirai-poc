@@ -1,9 +1,9 @@
 const { getWeb3, getContractInstance } = require("./helpers");
 const web3 = getWeb3();
 const getInstance = getContractInstance(web3);
-const productsContract = getInstance("Products");
+const productsContract = getInstance("MiraiCore");
 
-contract("Testing Products contract", function(accounts) {
+contract("Testing MiraiCore contract", function(accounts) {
   const product0 = {
     price: 1,
     owner: accounts[0],

@@ -3,10 +3,10 @@ pragma solidity ^0.4.24;
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /**
- * @title Products
- * @notice Products controls the products and their inventory
+ * @title MiraiCore
+ * @notice MiraiCore controls the products and their inventory
  **/
-contract Products is Ownable {
+contract MiraiCore is Ownable {
 
   uint256 productLength = 0;
 
