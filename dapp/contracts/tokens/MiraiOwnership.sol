@@ -18,11 +18,11 @@ contract MiraiOwnership is ERC721Token {
   function buyPOP() public {
 
     bool coinTransferSuccessful; 
-    address testTokenAddr = registry.getTokenAddressBySymbol("TST");
-    ERC20 testToken = ERC20(testTokenAddr);
+    address daiTokenAddr = registry.getTokenAddressBySymbol("DAI");
+    ERC20 daiToken = ERC20(daiTokenAddr);
 
     // price hard-coded at 1 for now
-    coinTransferSuccessful = testToken.transferFrom(msg.sender, this, 1);
+    coinTransferSuccessful = daiToken.transferFrom(msg.sender, this, 1);
     require(coinTransferSuccessful, "Transfer of coins from ERC20 contract unsuccessful");
 
     uint256 newTokenId = super.totalSupply() + 1;

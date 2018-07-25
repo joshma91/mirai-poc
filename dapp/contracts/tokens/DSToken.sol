@@ -4,13 +4,13 @@ import "openzeppelin-solidity/contracts/token/ERC20/MintableToken.sol";
 
 
 /**
- * @title TestToken 
+ * @title DSToken 
  * @notice generic ERC20 token implementation for use in tests
  */
 
-contract TestToken is MintableToken {
-  string public symbol = "TST";
-  string public constant name = "TestToken";
+contract DSToken is MintableToken {
+  string public symbol = "DAI";
+  string public constant name = "DSToken";
   uint8 public constant decimals = 18;
 
   constructor() public {
