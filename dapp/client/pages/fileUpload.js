@@ -1,22 +1,15 @@
 import { Form } from "semantic-ui-react";
 
-class ImageUpload extends React.Component {
+class FileUpload extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       file: "",
       imagePreviewUrl: ""
     };
-    this._handleImageChange = this._handleImageChange.bind(this);
-    this._handleSubmit = this._handleSubmit.bind(this);
   }
 
-  _handleSubmit(e) {
-    e.preventDefault();
-    // TODO: do something with -> this.state.file
-  }
-
-  _handleImageChange(e) {
+  handleFileChange = e => {
     e.preventDefault();
 
     let reader = new FileReader();
@@ -27,24 +20,29 @@ class ImageUpload extends React.Component {
         file: file,
         imagePreviewUrl: reader.result
       });
+      this.props.callbackFromParent(file, reader.result);
     };
 
     reader.readAsDataURL(file);
   }
 
   render() {
-    const { imgPlaceholder } = this.props;
+    const { isImage } = this.props;
     let { imagePreviewUrl } = this.state;
-    let $imagePreview = null;
-    if (imgPlaceholder == "true") {
+    let $imagePreview,
+      $imageLabel = null;
+    if (isImage == "true") {
       $imagePreview = (
         <img
           style={{ width: 200, height: 200 }}
           src="https://www.axiapayments.com/wp-content/uploads/2014/09/placeholder-square.jpg"
         />
       );
+      $imageLabel = "Select Image:";
+    } else {
+      $imageLabel = "Select Book PDF:";
     }
-    if (imagePreviewUrl && imgPlaceholder == "true") {
+    if (imagePreviewUrl && isImage == "true") {
       $imagePreview = (
         <img style={{ maxWidth: 200, maxHeight: 200 }} src={imagePreviewUrl} />
       );
@@ -53,9 +51,11 @@ class ImageUpload extends React.Component {
     return (
       <div>
         {$imagePreview}
-        <Form.Input type="file" onChange={this._handleImageChange} />
+        <br />
+        {$imageLabel}
+        <Form.Input type="file" onChange={this.handleFileChange} />
       </div>
     );
   }
 }
-export default ImageUpload;
+export default FileUpload;
