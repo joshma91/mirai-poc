@@ -10,8 +10,6 @@ import {
 } from "semantic-ui-react";
 
 import Layout from "../components/Layout";
-import FileUpload from "../components/fileUpload";
-import ListProducts from "../components/listProducts";
 
 export default () => (
   <Layout>
