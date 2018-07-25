@@ -1,14 +1,14 @@
 const TokenRegistry = artifacts.require("./tokens/TokenRegistry.sol");
-const TestToken = artifacts.require("./tokens/TestToken.sol");
+const DSToken = artifacts.require("./tokens/DSToken.sol");
 const MiraiOwnership = artifacts.require("./tokens/MiraiOwnership.sol");
 const MiraiCore = artifacts.require("./tokens/MiraiCore");
 
 module.exports = function(deployer) {
   deployer.deploy(TokenRegistry).then(async registry => {
-    const testToken = await deployer.deploy(TestToken);
+    const daiToken = await deployer.deploy(DSToken);
     await deployer.deploy(MiraiOwnership, "MiraiOwnership", "POP", registry.address);
     await deployer.deploy(MiraiCore);
-    await setRegistry(testToken, registry);
+    await setRegistry(daiToken, registry);
   });
 };
 
