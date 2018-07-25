@@ -2,12 +2,12 @@ const { getWeb3, getContractInstance } = require("./helpers");
 const web3 = getWeb3();
 const getInstance = getContractInstance(web3);
 const daiToken = getInstance("DSToken");
-const pop = getInstance("POPToken");
+const pop = getInstance("MiraiOwnership");
 
-contract("Testing POPToken contract", function(accounts) {
+contract("Testing MiraiOwnership contract", function(accounts) {
   it("should have issued DAI tokens after minting", async () => {
     // mint new DAI tokens to accounts[0]
-    await daiToken.methods.mint(100000).send({ from: accounts[0] });
+    await daiToken.methods.mint(accounts[0], 100000).send({ from: accounts[0] });
     const balance = await daiToken.methods.balanceOf(accounts[0]).call({
       from: accounts[0]
     });
@@ -15,7 +15,7 @@ contract("Testing POPToken contract", function(accounts) {
   });
 
   it("should use approved DAI tokens to purchase a POP", async () => {
-    // approval for retrieval of 1 Dai from pop contract
+    // approval for retrieval of 1 DAI from pop contract
     daiToken.methods
       .approve(pop._address, 1)
       .send({ from: accounts[0], gas: 3000000 });
