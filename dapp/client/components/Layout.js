@@ -1,19 +1,7 @@
-import {
-  Container,
-  Divider,
-  Dropdown,
-  Grid,
-  Header,
-  Image,
-  List,
-  Menu,
-  Segment,
-} from 'semantic-ui-react'
+import { Container } from "semantic-ui-react";
 
 const FixedMenuLayout = ({ children }) => (
-  <Container style={{ paddingTop: '7em' }}>
-    { children }
-  </Container>
-)
+  <Container style={{ paddingTop: "7em", paddingBottom: "7em" }}>{children}</Container>
+);
 
-export default FixedMenuLayout
+export default FixedMenuLayout;
