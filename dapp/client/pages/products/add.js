@@ -3,6 +3,12 @@ import { Segment, Header, Button, Input, Divider } from "semantic-ui-react";
 
 import Layout from "../../components/Layout";
 
+const reserveSlotStub = () =>
+  new Promise(resolve => setTimeout(() => resolve("MY_BOOK_ID"), 500));
+
+const uploadDataStub = () =>
+  new Promise(resolve => setTimeout(() => resolve({ ok: true }), 500));
+
 export default class AddProduct extends React.Component {
   state = {
     bookId: null,
@@ -18,30 +24,32 @@ export default class AddProduct extends React.Component {
   reserveSlot = async () => {
     console.log("reserveSlot() called");
 
-    this.setState({ reserveSlotLoading: true }, () => {
-      setTimeout(() => {
-        // TODO - make actual call to web3 to pay into contract
-        this.setState({
-          bookId: "MY_BOOK_ID",
-          slotReserved: true,
-          reserveSlotLoading: false
-        });
-      }, 500);
+    this.setState({ reserveSlotLoading: true }, async () => {
+      // TODO - replace with actual call to web3 to pay into contract
+      const bookId = await reserveSlotStub();
+      this.setState({
+        bookId,
+        slotReserved: true,
+        reserveSlotLoading: false
+      });
     });
   };
 
   uploadBookData = async () => {
     const { bookId, bookTitle } = this.state;
-    const bookData = {id: bookId, title: bookTitle}
-    
+    const bookData = { id: bookId, title: bookTitle };
+
     console.log("uploadBookData() called");
     console.log("bookData", bookData);
 
-    this.setState({ dataUploadLoading: true }, () => {
-      setTimeout(() => {
-        // TODO - make actual call to server to upload data
+    this.setState({ dataUploadLoading: true }, async () => {
+      // TODO - make actual call to server to upload data
+      const res = await uploadDataStub(bookData);
+      if (res.ok) {
         this.setState({ dataUploaded: true, dataUploadLoading: false });
-      }, 500);
+      } else {
+        alert("Uh oh, something bad happened.");
+      }
     });
   };
 
