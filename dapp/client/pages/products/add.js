@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Segment, Header, Button, Input, Divider } from "semantic-ui-react";
 
 import Layout from "../../components/Layout";
+import withWeb3 from "../../lib/withWeb3";
+import MiraiCoreJSON from "../../lib/contracts/Products.json";
 
 const reserveSlotStub = () =>
   new Promise(resolve => setTimeout(() => resolve("MY_BOOK_ID"), 500));
@@ -9,7 +11,7 @@ const reserveSlotStub = () =>
 const uploadDataStub = () =>
   new Promise(resolve => setTimeout(() => resolve({ ok: true }), 500));
 
-export default class AddProduct extends React.Component {
+class AddProduct extends React.Component {
   state = {
     bookId: null,
     bookTitle: null,
@@ -25,6 +27,24 @@ export default class AddProduct extends React.Component {
     console.log("reserveSlot() called");
 
     this.setState({ reserveSlotLoading: true }, async () => {
+      const { accounts, contractInstance } = this.props;
+      const product0 = {
+        price: 1,
+        owner: accounts[0],
+        available: true
+      };
+
+      console.log(accounts);
+      const miraiContract = await contractInstance(MiraiCoreJSON);
+      await miraiContract.methods
+        .createProduct(product0.price, product0.owner, product0.available)
+        .send({ from: accounts[0], gas: 3000000 });
+
+      const prod0 = await miraiContract.methods
+        .getProductById(0)
+        .call({ from: accounts[0], gas: 3000000 });
+      console.log(prod0)
+
       // TODO - replace with actual call to web3 to pay into contract
       const bookId = await reserveSlotStub();
       this.setState({
@@ -127,3 +147,5 @@ export default class AddProduct extends React.Component {
     );
   }
 }
+
+export default withWeb3(AddProduct);
