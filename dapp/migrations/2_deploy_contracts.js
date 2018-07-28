@@ -24,3 +24,4 @@ async function setRegistry(contract, registry) {
     contractDecimals
   );
 }
+
