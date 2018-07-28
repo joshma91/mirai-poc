@@ -1,7 +1,16 @@
 import Link from "next/link";
-import { Segment, Header, Button, Input, Divider } from "semantic-ui-react";
+import {
+  Segment,
+  Header,
+  Button,
+  Input,
+  Divider,
+  Form
+} from "semantic-ui-react";
 
 import Layout from "../../components/Layout";
+import Web3Container from "../../lib/Web3Container";
+import MiraiCoreJSON from "../../lib/contracts/Products.json";
 
 const reserveSlotStub = () =>
   new Promise(resolve => setTimeout(() => resolve("MY_BOOK_ID"), 500));
@@ -9,10 +18,12 @@ const reserveSlotStub = () =>
 const uploadDataStub = () =>
   new Promise(resolve => setTimeout(() => resolve({ ok: true }), 500));
 
-export default class AddProduct extends React.Component {
+class AddProduct extends React.Component {
   state = {
     bookId: null,
     bookTitle: null,
+    bookPrice: null,
+    bookAvailable: true,
     slotReserved: false,
     dataUploaded: false,
     reserveSlotLoading: false,
@@ -21,17 +32,33 @@ export default class AddProduct extends React.Component {
 
   setBookTitle = e => this.setState({ bookTitle: e.target.value });
 
+  setBookPrice = e => this.setState({ bookPrice: e.target.value });
+
+  setAvailable = e => this.setState({ bookAvailable: e.target.value });
+
   reserveSlot = async () => {
     console.log("reserveSlot() called");
 
+    const { bookPrice, bookAvailable, bookId } = this.state;
+
     this.setState({ reserveSlotLoading: true }, async () => {
-      // TODO - replace with actual call to web3 to pay into contract
-      const bookId = await reserveSlotStub();
+      const { accounts, contract } = this.props;
+      let retrievedId;
+
+      await contract.methods
+        .createProduct(bookPrice, accounts[0], bookAvailable)
+        .send({ from: accounts[0], gas: 3000000 })
+        .on("receipt", function(receipt) {
+          retrievedId = receipt.events.ProductCreated.returnValues.id;
+        });
+
       this.setState({
-        bookId,
+        bookId: retrievedId,
         slotReserved: true,
         reserveSlotLoading: false
       });
+
+      console.log("bookId:", this.state.bookId)
     });
   };
 
@@ -80,6 +107,23 @@ export default class AddProduct extends React.Component {
             the blockchain by paying into the contract.
           </p>
           <p>The current cost for one product upload is: 1 MRI</p>
+          <Form>
+            <Form.Input
+              label="Price"
+              type="number"
+              value={this.state.bookPrice}
+              onChange={this.setBookPrice}
+              disabled={!showStage1}
+            />
+            <Form.Checkbox
+              label="Make this product available"
+              defaultChecked
+              onChange={this.setAvailable}
+              disabled={!showStage1}
+            />
+          </Form>
+          <Divider hidden />
+
           <Button
             onClick={this.reserveSlot}
             loading={reserveSlotLoading}
@@ -127,3 +171,13 @@ export default class AddProduct extends React.Component {
     );
   }
 }
+
+export default () => (
+  <Web3Container
+    contractJSON={MiraiCoreJSON}
+    renderLoading={() => <div>Loading Page...</div>}
+    render={({ web3, accounts, contract }) => (
+      <AddProduct accounts={accounts} contract={contract} web3={web3} />
+    )}
+  />
+);
