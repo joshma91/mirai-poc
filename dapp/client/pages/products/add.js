@@ -12,9 +12,6 @@ import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/Products.json";
 
-const reserveSlotStub = () =>
-  new Promise(resolve => setTimeout(() => resolve("MY_BOOK_ID"), 500));
-
 const uploadDataStub = () =>
   new Promise(resolve => setTimeout(() => resolve({ ok: true }), 500));
 
@@ -39,7 +36,7 @@ class AddProduct extends React.Component {
   reserveSlot = async () => {
     console.log("reserveSlot() called");
 
-    const { bookPrice, bookAvailable, bookId } = this.state;
+    const { bookPrice, bookAvailable } = this.state;
 
     this.setState({ reserveSlotLoading: true }, async () => {
       const { accounts, contract } = this.props;
