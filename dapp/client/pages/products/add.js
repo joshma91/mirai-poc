@@ -10,7 +10,7 @@ import {
 
 import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
-import MiraiCoreJSON from "../../lib/contracts/Products.json";
+import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
 
 const uploadDataStub = () =>
   new Promise(resolve => setTimeout(() => resolve({ ok: true }), 500));
