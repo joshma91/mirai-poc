@@ -12,19 +12,19 @@ import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
 
-const uploadDataStub = () =>
-  new Promise(resolve => setTimeout(() => resolve({ ok: true }), 500));
+const API_URL = "http://localhost:5678/books";
 
 class AddProduct extends React.Component {
   state = {
     bookId: null,
-    bookTitle: null,
-    bookPrice: null,
+    bookTitle: "",
+    bookPrice: "",
     bookAvailable: true,
     slotReserved: false,
     dataUploaded: false,
     reserveSlotLoading: false,
-    dataUploadLoading: false
+    dataUploadLoading: false,
+    bookURL: null
   };
 
   setBookTitle = e => this.setState({ bookTitle: e.target.value });
@@ -32,6 +32,22 @@ class AddProduct extends React.Component {
   setBookPrice = e => this.setState({ bookPrice: e.target.value });
 
   setAvailable = e => this.setState({ bookAvailable: e.target.value });
+
+  uploadDataStub = async () => {
+    const { bookId, bookTitle } = this.state;
+    const response = await fetch(API_URL, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        bookId: bookId,
+        bookTitle: bookTitle
+      })
+    });
+    return response;
+  };
+
+  getBookTitle = async () =>
+    await fetch(`${API_URL}?bookId=${this.state.bookId}`);
 
   reserveSlot = async () => {
     console.log("reserveSlot() called");
@@ -55,22 +71,24 @@ class AddProduct extends React.Component {
         reserveSlotLoading: false
       });
 
-      console.log("bookId:", this.state.bookId)
+      console.log("bookId:", this.state.bookId);
     });
   };
 
   uploadBookData = async () => {
     const { bookId, bookTitle } = this.state;
-    const bookData = { id: bookId, title: bookTitle };
-
-    console.log("uploadBookData() called");
-    console.log("bookData", bookData);
 
     this.setState({ dataUploadLoading: true }, async () => {
       // TODO - make actual call to server to upload data
-      const res = await uploadDataStub(bookData);
+      const res = await this.uploadDataStub();
+      if (res.status != 200) throw Error(body.message);
+      const storedBook = await this.getBookTitle(this.state.bookId);
       if (res.ok) {
-        this.setState({ dataUploaded: true, dataUploadLoading: false });
+        this.setState({
+          dataUploaded: true,
+          dataUploadLoading: false,
+          bookURL: `www.miraimarket.com/${bookId}_${bookTitle}`
+        });
       } else {
         alert("Uh oh, something bad happened.");
       }
@@ -82,7 +100,8 @@ class AddProduct extends React.Component {
       slotReserved,
       dataUploaded,
       reserveSlotLoading,
-      dataUploadLoading
+      dataUploadLoading,
+      bookURL
     } = this.state;
     const showStage1 = slotReserved === false;
     const showStage2 = slotReserved && !dataUploaded;
@@ -159,9 +178,7 @@ class AddProduct extends React.Component {
           </p>
           <p>
             Here is the link to your book:{" "}
-            <span style={{ color: "red" }}>
-              https://miraimarket.com/8AmVkD7
-            </span>
+            <span style={{ color: "red" }}>{bookURL}</span>
           </p>
         </Segment>
       </Layout>
