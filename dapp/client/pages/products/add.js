@@ -17,8 +17,8 @@ const API_URL = "http://localhost:5678/books";
 class AddProduct extends React.Component {
   state = {
     bookId: null,
-    bookTitle: null,
-    bookPrice: null,
+    bookTitle: '',
+    bookPrice: '',
     bookAvailable: true,
     slotReserved: false,
     dataUploaded: false,
