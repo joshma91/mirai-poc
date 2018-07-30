@@ -6,6 +6,12 @@ const books = {};
 
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 app.get("/books", (req, res) => {
   const { bookId } = req.query;
   if (books[bookId]) {
