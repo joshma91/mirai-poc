@@ -17,8 +17,8 @@ const API_URL = "http://localhost:5678/books";
 class AddProduct extends React.Component {
   state = {
     bookId: null,
-    bookTitle: null,
-    bookPrice: null,
+    bookTitle: "",
+    bookPrice: "",
     bookAvailable: true,
     slotReserved: false,
     dataUploaded: false,
@@ -36,14 +36,14 @@ class AddProduct extends React.Component {
   uploadDataStub = async () => {
     const { bookId, bookTitle } = this.state;
     const response = await fetch(API_URL, {
-      method: 'post',
-      headers: {'Content-Type':'application/json'},
+      method: "post",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         bookId: bookId,
         bookTitle: bookTitle
       })
     });
-    return response;  
+    return response;
   };
 
   getBookTitle = async () =>
@@ -84,7 +84,11 @@ class AddProduct extends React.Component {
       if (res.status != 200) throw Error(body.message);
       const storedBook = await this.getBookTitle(this.state.bookId);
       if (res.ok) {
-        this.setState({ dataUploaded: true, dataUploadLoading: false, bookURL: `www.miraimarket.com/${bookId}_${bookTitle}` });
+        this.setState({
+          dataUploaded: true,
+          dataUploadLoading: false,
+          bookURL: `www.miraimarket.com/${bookId}_${bookTitle}`
+        });
       } else {
         alert("Uh oh, something bad happened.");
       }
