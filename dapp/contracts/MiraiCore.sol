@@ -52,7 +52,7 @@ contract MiraiCore is Ownable {
    * @param _owner - the owner of the product
    * @param _available - whether the product should be available for sale (can be changed)
    */
-  function createProduct(uint256 _price, address _owner, bool _available) public onlyOwner {
+  function createProduct(uint256 _price, address _owner, bool _available) public {
     
     uint256 _productId = productLength; 
     Product memory _product = Product({
@@ -83,7 +83,7 @@ contract MiraiCore is Ownable {
    * @param _owner - the product owner we're querying for
    * @return the array of product ids 
    */
-  function getProductIdsByOwner(address _owner) public view onlyOwner returns (uint256[]) {
+  function getProductIdsByOwner(address _owner) public view returns (uint256[]) {
     return productIdsByOwner[_owner];
   }
 
@@ -109,7 +109,7 @@ contract MiraiCore is Ownable {
    * @param _productId - the product id we're querying for
    * @return all the attributes of the queried product
    */
-  function getProductById(uint256 _productId) public view onlyOwner returns (
+  function getProductById(uint256 _productId) public view returns (
     uint256 id, 
     address owner, 
     uint256 price, 
@@ -122,5 +122,18 @@ contract MiraiCore is Ownable {
     price = _product.price;
     available = _product.available;
     numberSold = _product.numberSold;
+  }
+  
+  function getAvailableProductIds() public view returns (
+    uint256[]
+  ) {
+    uint256[] memory availableProductIds = new uint256[](productLength);
+    for(uint256 i = 0; i < productLength; i++){
+      Product memory currProd = products[i];
+      if(currProd.available) {
+        availableProductIds[i] = (currProd.id);
+      }
+    }
+    return availableProductIds;
   }
 }      

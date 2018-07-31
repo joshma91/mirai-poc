@@ -25,7 +25,7 @@ contract("Testing MiraiCore contract", function(accounts) {
   const product3 = {
     price: 10,
     owner: accounts[0],
-    available: true
+    available: false
   };
 
   it("should retrieve the product information", async () => {
@@ -101,5 +101,19 @@ contract("Testing MiraiCore contract", function(accounts) {
     expect(JSON.stringify(retrievedProduct3)).to.equal(
       JSON.stringify(product3)
     );
+  });
+
+  it("should return available productIds", async () => {
+    const rawAvailableProductIds = await productsContract.methods
+      .getAvailableProductIds()
+      .call({ from: accounts[0] });
+
+    // filter necessary because Solidity does not allow resizing memory arrays
+    // this strips all zeros after the first
+    const availableProductIds = rawAvailableProductIds.filter(function(x, i) {
+      return i > 0 ? x != 0 : true;
+    });
+
+    expect(availableProductIds.toString()).to.equal("0,1,2");
   });
 });
