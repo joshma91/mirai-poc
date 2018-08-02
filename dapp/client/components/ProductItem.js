@@ -7,35 +7,24 @@ import {
   Icon,
   Loader
 } from "semantic-ui-react";
+
 const API_URL = "http://localhost:5678/books";
 
 export default class ProductItem extends React.Component {
-  state = {
-    product: null
-  };
+  state = { product: null };
 
   componentDidMount = async () => {
-    const { id } = this.props;
-
-    const product = await this.retrieveProductFromBlockchain();
-    const title = await fetch(`${API_URL}?bookId=${id}`)
-      .then(res => res.text())
-      .then(text => {
-        return JSON.parse(text).bookTitle;
-      });
-
-    product.title = title;
-    this.setState({ product });
-  };
-
-  retrieveProductFromBlockchain = async () => {
     const { contract, accounts, id } = this.props;
 
     const product = await contract.methods
       .getProductById(id)
       .call({ from: accounts[0] });
 
-    return product;
+    const title = await fetch(`${API_URL}?bookId=${id}`)
+      .then(res => res.text())
+      .then(text => JSON.parse(text).bookTitle);
+
+    this.setState({ product: { ...product, title } });
   };
 
   render() {
