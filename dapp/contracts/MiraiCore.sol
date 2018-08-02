@@ -125,13 +125,15 @@ contract MiraiCore is Ownable {
   }
   
   function getAvailableProductIds() public view returns (
-    uint256[]
+    int[]
   ) {
-    uint256[] memory availableProductIds = new uint256[](productLength);
+    int[] memory availableProductIds = new int[](productLength);
     for(uint256 i = 0; i < productLength; i++){
       Product memory currProd = products[i];
       if(currProd.available) {
-        availableProductIds[i] = (currProd.id);
+        availableProductIds[i] = int(currProd.id);
+      } else {
+        availableProductIds[i] = -1;
       }
     }
     return availableProductIds;
