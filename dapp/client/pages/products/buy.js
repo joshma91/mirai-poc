@@ -5,12 +5,9 @@ import Layout from "../../components/Layout";
 import ProductItem from "../../components/ProductItem";
 import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
-import './app.css'
 
 class BuyProducts extends React.Component {
-  state = {
-    productIds: []
-  };
+  state = { productIds: [] };
 
   componentDidMount = async () => {
     const { accounts, contract } = this.props;
@@ -40,9 +37,21 @@ class BuyProducts extends React.Component {
         <Header as="h1">Products</Header>
         <div className="wrapper">
           {productIds.map(id => (
-            <ProductItem key={id} id={id} accounts={accounts} contract={contract} />
+            <ProductItem
+              key={id}
+              id={id}
+              accounts={accounts}
+              contract={contract}
+            />
           ))}
         </div>
+        <style jsx>{`
+          .wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+          }
+        `}</style>
       </Layout>
     );
   }
