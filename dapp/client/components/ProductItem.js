@@ -35,7 +35,7 @@ export default class ProductItem extends React.Component {
       <div className="wrapper">
         <img
           className="product-image"
-          src="https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png"
+          src={`http://www.placecage.com/200/30${this.props.id}`}
           alt=""
         />
         <div className="title">{product.title}</div>
