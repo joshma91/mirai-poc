@@ -37,7 +37,7 @@ class BuyProducts extends React.Component {
           .wrapper {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-gap: 10px;
+            grid-gap: 40px;
           }
         `}</style>
       </div>
