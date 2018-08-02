@@ -7,25 +7,45 @@ import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
 
 class BuyProducts extends React.Component {
-  state = { productIds: [] };
+  state = { productIds: null };
 
   componentDidMount = async () => {
     const { accounts, contract } = this.props;
 
-    // get list of all available products
-    const rawProductIds = await contract.methods
+    const allProducts = await contract.methods
       .getAvailableProductIds()
       .call({ from: accounts[0] });
-    const productIds = rawProductIds.filter(function(x, i) {
-      return i > 0 ? x != 0 : true;
-    });
 
-    this.setState({ productIds });
+    this.setState({ productIds: allProducts.filter(x => x !== "-1") });
   };
+
+  renderProducts() {
+    const { productIds } = this.state;
+    const { accounts, contract } = this.props;
+    if (productIds.length === 0) return <div>No Items Found</div>;
+    return (
+      <div className="wrapper">
+        {productIds.map(id => (
+          <ProductItem
+            key={id}
+            id={id}
+            accounts={accounts}
+            contract={contract}
+          />
+        ))}
+        <style jsx>{`
+          .wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   render() {
     const { productIds } = this.state;
-    const { accounts, contract } = this.props;
     return (
       <Layout>
         <Link href="/">
@@ -35,23 +55,7 @@ class BuyProducts extends React.Component {
         <hr />
 
         <Header as="h1">Products</Header>
-        <div className="wrapper">
-          {productIds.map(id => (
-            <ProductItem
-              key={id}
-              id={id}
-              accounts={accounts}
-              contract={contract}
-            />
-          ))}
-        </div>
-        <style jsx>{`
-          .wrapper {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-gap: 10px;
-          }
-        `}</style>
+        {productIds ? this.renderProducts() : "Loading..."}
       </Layout>
     );
   }
