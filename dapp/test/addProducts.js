@@ -109,10 +109,8 @@ contract("Testing MiraiCore contract", function(accounts) {
       .call({ from: accounts[0] });
 
     // filter necessary because Solidity does not allow resizing memory arrays
-    // this strips all zeros after the first
-    const availableProductIds = rawAvailableProductIds.filter(function(x, i) {
-      return i > 0 ? x != 0 : true;
-    });
+    // this strips all -1's which mark unavailable items in MiraiCore
+    const availableProductIds = rawAvailableProductIds.filter(x => x !== "-1") 
 
     expect(availableProductIds.toString()).to.equal("0,1,2");
   });
