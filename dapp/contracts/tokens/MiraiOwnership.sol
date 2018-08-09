@@ -14,7 +14,8 @@ contract MiraiOwnership is ERC721Token {
   * @notice Issued is emitted when a new POP is issued
   */
   event POPIssued(
-    address indexed purchaser,
+    uint256 tokenId,
+    address purchaser,
     string productId,
     uint256 issuedTime
   );
@@ -25,22 +26,22 @@ contract MiraiOwnership is ERC721Token {
     registry = TokenRegistry(_registryAddress);
   }
 
-  function buyPOP(string _uri) public {
+  function buyPOP(string _uri, uint256 price) public {
 
     bool coinTransferSuccessful; 
     address daiTokenAddr = registry.getTokenAddressBySymbol("DAI");
     ERC20 daiToken = ERC20(daiTokenAddr);
 
     // price hard-coded at 1 for now
-    coinTransferSuccessful = daiToken.transferFrom(msg.sender, this, 1);
+    coinTransferSuccessful = daiToken.transferFrom(msg.sender, this, price);
     require(coinTransferSuccessful, "Transfer of coins from ERC20 contract unsuccessful");
 
-    uint256 newTokenId = super.totalSupply() + 1;
+    uint256 newTokenId = super.totalSupply();
     super._mint(msg.sender, newTokenId);
 
     super._setTokenURI(newTokenId, _uri);
 
-    emit POPIssued(msg.sender, _uri, now);
+    emit POPIssued(newTokenId, msg.sender, _uri, block.timestamp);
   }
 }
 
