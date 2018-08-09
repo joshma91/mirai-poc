@@ -15,7 +15,7 @@ import DSTokenJSON from "../lib/contracts/DSToken.json"
 
 const API_URL = "http://localhost:5678/books";
 
-export default class ProductItem extends React.Component {
+export default class BuyProductItem extends React.Component {
   state = { product: null };
 
   componentDidMount = async () => {
