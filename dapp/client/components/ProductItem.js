@@ -33,6 +33,7 @@ export default class ProductItem extends React.Component {
   };
 
   requestPOP = async () => {
+    const { price } = this.state.product;
     const { web3, accounts, id } = this.props;
     const ownershipContract = await getContract(
       web3,
@@ -45,11 +46,11 @@ export default class ProductItem extends React.Component {
     )
 
     await daiContract.methods
-    .approve(ownershipContract._address, 1)
+    .approve(ownershipContract._address, price)
     .send({ from: accounts[0], gas: 3000000 });
 
     await ownershipContract.methods
-      .buyPOP(id.toString())
+      .buyPOP(id.toString(), price)
       .send({ from: accounts[0], gas: 3000000 })
       .on("receipt", function(receipt) {
         console.log(receipt.events.POPIssued.returnValues);
