@@ -9,6 +9,10 @@ import {
   Loader
 } from "semantic-ui-react";
 
+import getContract from "../lib/getContract";
+import MiraiOwnershipJSON from "../lib/contracts/MiraiOwnership.json";
+import DSTokenJSON from "../lib/contracts/DSToken.json"
+
 const API_URL = "http://localhost:5678/books";
 
 export default class ProductItem extends React.Component {
@@ -28,6 +32,30 @@ export default class ProductItem extends React.Component {
     this.setState({ product: { ...product, title } });
   };
 
+  requestPOP = async () => {
+    const { web3, accounts, id } = this.props;
+    const ownershipContract = await getContract(
+      web3,
+      MiraiOwnershipJSON
+    );
+
+    const daiContract = await getContract(
+      web3,
+      DSTokenJSON
+    )
+
+    await daiContract.methods
+    .approve(ownershipContract._address, 1)
+    .send({ from: accounts[0], gas: 3000000 });
+
+    await ownershipContract.methods
+      .buyPOP(id.toString())
+      .send({ from: accounts[0], gas: 3000000 })
+      .on("receipt", function(receipt) {
+        console.log(receipt.events.POPIssued.returnValues);
+      });
+  };
+
   render() {
     const { product } = this.state;
     if (!product) return <Loader active />;
@@ -43,7 +71,7 @@ export default class ProductItem extends React.Component {
           <Label as="a" basic pointing="right">
             {product.price} DAI
           </Label>
-          <Button icon>
+          <Button icon onClick={this.requestPOP}>
             <Icon name="shop" />
             Buy
           </Button>
