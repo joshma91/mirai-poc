@@ -4,6 +4,7 @@ import { Header, Button } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
 import MiraiOwnershipJSON from "../../lib/contracts/MiraiOwnership.json";
+import ViewProductItem from "../../components/ViewProductItem";
 
 class ViewProducts extends React.Component {
   state = { productIds: null };
@@ -36,7 +37,21 @@ class ViewProducts extends React.Component {
 
     if (productIds.length === 0) return <div>No Items Found</div>;
     return (
-      <div className="wrapper">{productIds.map(id => <div>{id}</div>)}</div>
+      <div className="wrapper">
+        {productIds.map(id => (
+          <ViewProductItem
+            key={id}
+            id={id}
+          />
+        ))}
+        <style jsx>{`
+          .wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 40px;
+          }
+        `}</style>
+      </div>
     );
   }
 

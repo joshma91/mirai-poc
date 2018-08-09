@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Image, Grid, Header, Button, List, Icon } from "semantic-ui-react";
 
 import Layout from "../../components/Layout";
-import ProductItem from "../../components/ProductItem";
+import BuyProductItem from "../../components/BuyProductItem";
 import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
 
@@ -26,7 +26,7 @@ class BuyProducts extends React.Component {
     return (
       <div className="wrapper">
         {productIds.map(id => (
-          <ProductItem
+          <BuyProductItem
             key={id}
             id={id}
             web3={web3}
