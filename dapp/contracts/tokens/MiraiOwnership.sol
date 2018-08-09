@@ -9,13 +9,23 @@ import "./TokenRegistry.sol";
  * @notice MiraiOwnership is the entry point for interacting with the Mirai backend
  **/
 contract MiraiOwnership is ERC721Token {
+
+  /**
+  * @notice Issued is emitted when a new POP is issued
+  */
+  event POPIssued(
+    address indexed purchaser,
+    string productId,
+    uint256 issuedTime
+  );
+
   TokenRegistry registry;
 
   constructor (string _name, string _symbol, address _registryAddress) public ERC721Token(_name, _symbol){
     registry = TokenRegistry(_registryAddress);
   }
 
-  function buyPOP() public {
+  function buyPOP(string _uri) public {
 
     bool coinTransferSuccessful; 
     address daiTokenAddr = registry.getTokenAddressBySymbol("DAI");
@@ -27,6 +37,10 @@ contract MiraiOwnership is ERC721Token {
 
     uint256 newTokenId = super.totalSupply() + 1;
     super._mint(msg.sender, newTokenId);
+
+    super._setTokenURI(newTokenId, _uri);
+
+    emit POPIssued(msg.sender, _uri, now);
   }
 }
 
