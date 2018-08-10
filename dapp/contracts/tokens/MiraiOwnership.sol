@@ -54,5 +54,13 @@ contract MiraiOwnership is ERC721Token {
     bool coinTransferSuccessful = daiToken.transferFrom(msg.sender, this, _price);
     require(coinTransferSuccessful, "Transfer of coins from ERC20 contract unsuccessful");   
   }
+
+    /**
+  * @notice retrieves array of owned tokensIds. Uses inhereted mapping ownedTokens
+  * @param _owner the address to find owned tokenIds
+   */
+  function getTokensByOwner(address _owner) public view returns (uint256[]) {
+    return ownedTokens[_owner];
+  }
 }
 
