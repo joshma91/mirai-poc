@@ -40,7 +40,8 @@ class AddProduct extends React.Component {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         bookId: bookId,
-        bookTitle: bookTitle
+        bookTitle: bookTitle,
+        secret: `SECRET RESROUCE #${bookId}`
       })
     });
     return response;
