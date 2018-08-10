@@ -1,31 +1,64 @@
 import {
-  Image,
-  Grid,
-  Header,
-  Button,
-  List,
-  Icon,
-  Label,
-  Loader
+  Button
+
 } from "semantic-ui-react";
 
-const API_URL = "http://localhost:5678/books";
+const API_URL = "http://localhost:5678";
 
 export default class BuyProductItem extends React.Component {
-  state = { title: null };
+  state = { title: null, challenge: null, signature: null };
 
   componentDidMount = async () => {
     const { id } = this.props;
 
-    const title = await fetch(`${API_URL}?bookId=${id}`)
+    const title = await fetch(`${API_URL}/books?bookId=${id}`)
       .then(res => res.text())
       .then(text => JSON.parse(text).bookTitle);
 
     this.setState({ title });
   };
 
+  retrieveResource = async () => {
+    await this.getChallenge();
+    await this.signChallenge();
+  };
+  
+  getChallenge = async () => {
+    const { accounts } = this.props;
+    const res = await fetch(`${API_URL}/auth/${accounts[0].toLowerCase()}`);
+    this.setState({ challenge: await res.json() });
+  };
+
+  signChallenge = async () => {
+    const { web3, accounts } = this.props;
+    const { challenge } = this.state;
+    web3.currentProvider.sendAsync(
+      {
+        method: "eth_signTypedData",
+        params: [challenge, accounts[0]],
+        from: accounts[0]
+      },
+      (error, res) => {
+        if (error) return console.error(error);
+        this.setState({ signature: res.result });
+        this.verifySignature();
+      }
+    );
+  };
+
+  verifySignature = async () => {
+    const { id } = this.props;
+    const { challenge, signature } = this.state;
+    const secret = await fetch(
+      `${API_URL}/auth/${challenge[1].value}/${signature}?bookId=${id}`
+    ).then(res => res.text())
+    .then(text => JSON.parse(text).secret);
+
+    alert("You've revealed the secret: " + secret)
+  };
+
   render() {
-    const {title} = this.state
+    const { title } = this.state;
     return (
       <div className="wrapper">
         <img
@@ -34,6 +67,9 @@ export default class BuyProductItem extends React.Component {
           alt=""
         />
         <div className="title">{title}</div>
+        <Button icon onClick={this.retrieveResource}>
+          View Book
+        </Button>
         <style jsx>{`
           .wrapper {
             text-align: center;
