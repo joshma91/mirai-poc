@@ -6,9 +6,13 @@ const MiraiCore = artifacts.require("./tokens/MiraiCore");
 module.exports = function(deployer) {
   deployer.deploy(TokenRegistry).then(async registry => {
     const daiToken = await deployer.deploy(DSToken);
+    const account = web3.eth.accounts[0];
+
     await deployer.deploy(MiraiOwnership, "MiraiOwnership", "POP", registry.address);
     await deployer.deploy(MiraiCore);
     await setRegistry(daiToken, registry);
+    
+    await daiToken.mint(account, 100000, { from: account });
   });
 };
 
