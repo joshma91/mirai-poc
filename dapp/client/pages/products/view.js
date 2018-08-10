@@ -1,37 +1,47 @@
 import Link from "next/link";
-import { Image, Grid, Header, Button, List, Icon } from "semantic-ui-react";
+import { Header, Button } from "semantic-ui-react";
 
 import Layout from "../../components/Layout";
-import BuyProductItem from "../../components/BuyProductItem";
 import Web3Container from "../../lib/Web3Container";
-import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
+import MiraiOwnershipJSON from "../../lib/contracts/MiraiOwnership.json";
+import ViewProductItem from "../../components/ViewProductItem";
 
-class BuyProducts extends React.Component {
+class ViewProducts extends React.Component {
   state = { productIds: null };
 
   componentDidMount = async () => {
     const { accounts, contract } = this.props;
 
-    const allProducts = await contract.methods
-      .getAvailableProductIds()
-      .call({ from: accounts[0] });
+    const tokenIds = await contract.methods
+      .getTokensByOwner(accounts[0])
+      .call({ from: accounts[0], gas: 3000000 });
 
-    this.setState({ productIds: allProducts.filter(x => x !== "-1") });
+    const productIds = await this.getProductIdsFromTokens(tokenIds);
+
+    this.setState({ productIds });
+  };
+
+  getProductIdsFromTokens = async tokenIds => {
+    const { accounts, contract } = this.props;
+    const idPromises = tokenIds.map(id => {
+      return contract.methods.tokenURI(id).call({ from: accounts[0], gas: 3000000 });
+    });
+    const productIds = await Promise.all(idPromises);
+
+    // filter out duplicates. Can be enforced on the blockchain side but takes more work
+    return [...new Set(productIds)];
   };
 
   renderProducts() {
     const { productIds } = this.state;
-    const { web3, accounts, contract } = this.props;
+
     if (productIds.length === 0) return <div>No Items Found</div>;
     return (
       <div className="wrapper">
         {productIds.map(id => (
-          <BuyProductItem
+          <ViewProductItem
             key={id}
             id={id}
-            web3={web3}
-            accounts={accounts}
-            contract={contract}
           />
         ))}
         <style jsx>{`
@@ -55,7 +65,7 @@ class BuyProducts extends React.Component {
 
         <hr />
 
-        <Header as="h1">Products</Header>
+        <Header as="h1">My Products</Header>
         {productIds ? this.renderProducts() : "Loading..."}
       </Layout>
     );
@@ -64,10 +74,10 @@ class BuyProducts extends React.Component {
 
 export default () => (
   <Web3Container
-    contractJSON={MiraiCoreJSON}
+    contractJSON={MiraiOwnershipJSON}
     renderLoading={() => <div>Loading Page...</div>}
     render={({ web3, accounts, contract }) => (
-      <BuyProducts accounts={accounts} contract={contract} web3={web3} />
+      <ViewProducts accounts={accounts} contract={contract} web3={web3} />
     )}
   />
 );

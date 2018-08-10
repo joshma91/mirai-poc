@@ -20,5 +20,8 @@ export default () => (
     <Link href="/products/buy">
       <Button>Buy Products</Button>
     </Link>
+    <Link href="/products/view">
+      <Button>View My Products</Button>
+    </Link>
   </Layout>
 );
