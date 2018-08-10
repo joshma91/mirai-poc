@@ -21,7 +21,7 @@ class BuyProducts extends React.Component {
 
   renderProducts() {
     const { productIds } = this.state;
-    const { accounts, contract } = this.props;
+    const { web3, accounts, contract } = this.props;
     if (productIds.length === 0) return <div>No Items Found</div>;
     return (
       <div className="wrapper">
@@ -29,6 +29,7 @@ class BuyProducts extends React.Component {
           <ProductItem
             key={id}
             id={id}
+            web3={web3}
             accounts={accounts}
             contract={contract}
           />
