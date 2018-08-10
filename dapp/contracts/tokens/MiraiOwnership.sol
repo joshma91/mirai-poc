@@ -59,7 +59,7 @@ contract MiraiOwnership is ERC721Token {
   * @notice retrieves array of owned tokensIds. Uses inhereted mapping ownedTokens
   * @param _owner the address to find owned tokenIds
    */
-  function getTokensByOwner(address _owner) public returns (uint256[]) {
+  function getTokensByOwner(address _owner) public view returns (uint256[]) {
     return ownedTokens[_owner];
   }
 }
