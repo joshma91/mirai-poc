@@ -34,6 +34,7 @@ class ViewProducts extends React.Component {
 
   renderProducts() {
     const { productIds } = this.state;
+    const { web3, accounts } = this.props
 
     if (productIds.length === 0) return <div>No Items Found</div>;
     return (
@@ -42,6 +43,8 @@ class ViewProducts extends React.Component {
           <ViewProductItem
             key={id}
             id={id}
+            web3={web3}
+            accounts={accounts}
           />
         ))}
         <style jsx>{`
