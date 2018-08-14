@@ -11,9 +11,9 @@ import {
 
 import getContract from "../lib/getContract";
 import MiraiOwnershipJSON from "../lib/contracts/MiraiOwnership.json";
-import DSTokenJSON from "../lib/contracts/DSToken.json"
+import DSTokenJSON from "../lib/contracts/DSToken.json";
 
-const API_URL = "http://localhost:5678/books";
+const API_URL = "https://mirai-poc.firebaseapp.com/books";
 
 export default class BuyProductItem extends React.Component {
   state = { product: null };
@@ -25,9 +25,10 @@ export default class BuyProductItem extends React.Component {
       .getProductById(id)
       .call({ from: accounts[0] });
 
+    console.log(`${API_URL}?bookId=${id}`);
     const title = await fetch(`${API_URL}?bookId=${id}`)
       .then(res => res.text())
-      .then(text => JSON.parse(text).bookTitle);
+      .then(text => JSON.parse(text));
 
     this.setState({ product: { ...product, title } });
   };
@@ -35,19 +36,13 @@ export default class BuyProductItem extends React.Component {
   requestPOP = async () => {
     const { price } = this.state.product;
     const { web3, accounts, id } = this.props;
-    const ownershipContract = await getContract(
-      web3,
-      MiraiOwnershipJSON
-    );
+    const ownershipContract = await getContract(web3, MiraiOwnershipJSON);
 
-    const daiContract = await getContract(
-      web3,
-      DSTokenJSON
-    )
+    const daiContract = await getContract(web3, DSTokenJSON);
 
     await daiContract.methods
-    .approve(ownershipContract._address, price)
-    .send({ from: accounts[0], gas: 3000000 });
+      .approve(ownershipContract._address, price)
+      .send({ from: accounts[0], gas: 3000000 });
 
     await ownershipContract.methods
       .buyPOP(id.toString(), price)
