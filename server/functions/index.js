@@ -33,37 +33,41 @@ app.get("/books", (req, res) => {
   const { bookId } = req.query;
   const ref = firebaseApp.database().ref("books");
 
-  ref
-    .orderByChild("bookId")
-    .equalTo(bookId)
-    .once("value")
-    .then(snap => snap.val())
+  getBookAtId(bookId, ref)
     .then(x => {
       let id;
       for (const i in x) {
         id = i;
       }
       if (x) {
-        res.status(200).json(x[id].bookTitle);
+        return res.status(200).json(x[id].bookTitle);
       } else {
-        res.sendStatus(404);
+        return res.sendStatus(404);
       }
+    })
+    .catch(err => {
+      console.error(err);
     });
 });
 
 app.post("/books", (req, res) => {
   const { bookId, bookTitle, secret } = req.body;
   const ref = firebaseApp.database().ref("books");
-  checkIfBookExists(bookId, ref).then(x => {
-    if (x) return res.sendStatus(401);
-    const book = {
-      bookId: bookId,
-      bookTitle: bookTitle,
-      secret: secret
-    };
-    ref.push(book);
-    return res.sendStatus(200);
-  });
+  getBookAtId(bookId, ref)
+    .then(x => {
+      // return if the book is already in the database
+      if (x) return res.sendStatus(401);
+      const book = {
+        bookId: bookId,
+        bookTitle: bookTitle,
+        secret: secret
+      };
+      ref.push(book);
+      return res.sendStatus(200);
+    })
+    .catch(err => {
+      console.error(err);
+    });
 });
 
 app.get("/auth/:MetaAddress", metaAuth, (req, res) => {
@@ -77,17 +81,32 @@ app.get("/auth/:MetaMessage/:MetaSignature", metaAuth, (req, res) => {
   if (req.metaAuth && req.metaAuth.recovered) {
     // Signature matches the cache address/challenge
     // Authentication is valid, assign JWT, etc.
+
     const { bookId } = req.query;
-    if (books[bookId]) {
-      return res.status(200).json({ secret: books[bookId].secret });
-    }
+    const ref = firebaseApp.database().ref("books");
+
+    getBookAtId(bookId, ref)
+      .then(x => {
+        let id;
+        for (const i in x) {
+          id = i;
+        }
+        if (x) {
+          return res.status(200).json(x[id].secret);
+        } else {
+          return res.sendStatus(404);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   } else {
     // Sig did not match, invalid authentication
     res.status(400).send();
   }
 });
 
-function checkIfBookExists(bookId, ref) {
+function getBookAtId(bookId, ref) {
   const promise = new Promise((resolve, reject) => {
     ref
       .orderByChild("bookId")
@@ -96,7 +115,11 @@ function checkIfBookExists(bookId, ref) {
       .then(snap => snap.val())
       .then(x => {
         console.log(x);
-        resolve(x !== null);
+        resolve(x);
+        return;
+      })
+      .catch(err => {
+        console.error(err);
       });
   });
   return promise;

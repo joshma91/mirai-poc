@@ -3,7 +3,7 @@ import {
 
 } from "semantic-ui-react";
 
-const API_URL = "http://localhost:5678";
+const API_URL = "https://mirai-poc.firebaseapp.com";
 
 export default class BuyProductItem extends React.Component {
   state = { title: null, challenge: null, signature: null };
@@ -13,7 +13,7 @@ export default class BuyProductItem extends React.Component {
 
     const title = await fetch(`${API_URL}/books?bookId=${id}`)
       .then(res => res.text())
-      .then(text => JSON.parse(text).bookTitle);
+      .then(text => JSON.parse(text));
 
     this.setState({ title });
   };
@@ -52,7 +52,7 @@ export default class BuyProductItem extends React.Component {
     const secret = await fetch(
       `${API_URL}/auth/${challenge[1].value}/${signature}?bookId=${id}`
     ).then(res => res.text())
-    .then(text => JSON.parse(text).secret);
+    .then(text => JSON.parse(text));
 
     alert("You've revealed the secret: " + secret)
   };

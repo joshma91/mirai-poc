@@ -12,7 +12,7 @@ import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
 
-const API_URL = "http://localhost:5678/books";
+const API_URL = "https://mirai-poc.firebaseapp.com/books";
 
 class AddProduct extends React.Component {
   state = {
