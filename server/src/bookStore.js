@@ -6,7 +6,7 @@ const firebase = admin.initializeApp({
     private_key: process.env.FIREBASE_PRIVATE_KEY,
     client_email: process.env.FIREBASE_CLIENT_EMAIL
   }),
-  databaseURL: "https://mirai-poc.firebaseio.com/"
+  databaseURL: process.env.FIREBASE_DATABASE_URL
 });
 
 const ref = firebase.database().ref("books");
