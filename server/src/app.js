@@ -10,24 +10,24 @@ const metaAuth = new MetaAuth({
   banner: "Mirai Marketplace"
 });
 
-const { addBook, getBook } = require("./bookStore");
+const { addBook, getBookTitle, getBookSecret } = require("./bookStore");
 
 app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 
-app.get("/books", (req, res) => {
+app.get("/books", async (req, res) => {
   const { bookId } = req.query;
-  const book = getBook({ bookId });
-  if (book) {
-    return res.status(200).json({ bookTitle: book.title });
+  const bookTitle = await getBookTitle( bookId );
+  if (bookTitle) {
+    return res.status(200).json({ bookTitle });
   }
   return res.sendStatus(404);
 });
 
 app.post("/books", (req, res) => {
   const { bookId, bookTitle, secret } = req.body;
-  const success = addBook({ title: bookTitle, id: bookId, secret });
+  const success = addBook({ bookId, bookTitle, secret });
   if (success) {
     return res.sendStatus(200);
   }
@@ -41,14 +41,16 @@ app.get("/auth/:MetaAddress", metaAuth, (req, res) => {
   }
 });
 
-app.get("/auth/:MetaMessage/:MetaSignature", metaAuth, (req, res) => {
+app.get("/auth/:MetaMessage/:MetaSignature", metaAuth, async (req, res) => {
   if (req.metaAuth && req.metaAuth.recovered) {
     // Signature matches the cache address/challenge
     // Authentication is valid, assign JWT, etc.
     const { bookId } = req.query;
-    if (books[bookId]) {
-      return res.status(200).json({ secret: books[bookId].secret });
+    const secret = await getBookSecret( bookId );
+    if (secret) {
+      return res.status(200).json({ secret });
     }
+    return res.sendStatus(404);
   } else {
     // Sig did not match, invalid authentication
     res.status(400).send();
