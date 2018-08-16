@@ -16,11 +16,10 @@ const getBook = async bookId => {
     .orderByChild("bookId")
     .equalTo(bookId)
     .once("value");
-  let book;
-  bookRef.forEach(child => {
-    book = child.val();
-    return;
-  });
+
+  const id = Object.keys(bookRef.val())[0];
+  book = bookRef.val()[id];
+
   return book;
 };
 
