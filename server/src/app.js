@@ -18,8 +18,7 @@ app.use(bodyParser.json());
 
 app.get("/books", async (req, res) => {
   const { bookId } = req.query;
-  const book = await getBook(bookId);
-  const bookTitle = book.bookTitle;
+  const { bookTitle } = await getBook(bookId);
   if (bookTitle) {
     return res.status(200).json({ bookTitle });
   }
@@ -47,8 +46,7 @@ app.get("/auth/:MetaMessage/:MetaSignature", metaAuth, async (req, res) => {
     // Signature matches the cache address/challenge
     // Authentication is valid, assign JWT, etc.
     const { bookId } = req.query;
-    const book = await getBook(bookId);
-    const secret = book.secret;
+    const { secret } = await getBook(bookId);
     if (secret) {
       return res.status(200).json({ secret });
     }
