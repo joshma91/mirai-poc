@@ -1,44 +1,36 @@
 const admin = require("firebase-admin");
-const serviceAccount = require("../serviceAccountKey.json");
+require("dotenv").config();
 
 const firebase = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert({
+    private_key: process.env.FIREBASE_PRIVATE_KEY,
+    client_email: process.env.FIREBASE_CLIENT_EMAIL
+  }),
   databaseURL: "https://mirai-poc.firebaseio.com/"
 });
 
 const ref = firebase.database().ref("books");
 
-const getBookSnapshot = async bookId => {
-  const bookRef = ref.orderByChild("bookId").equalTo(bookId);
-
-  const snap = await bookRef.once("value");
-  return snap;
-};
-
-const getBookTitle = async bookId => {
-  const bookSnap = await getBookSnapshot(bookId);
-  let bookTitle;
-  bookSnap.forEach(child => {
-    bookTitle = child.val().bookTitle;
+const getBook = async bookId => {
+  const bookRef = await ref
+    .orderByChild("bookId")
+    .equalTo(bookId)
+    .once("value");
+  let book;
+  bookRef.forEach(child => {
+    book = child.val();
     return;
   });
-  return bookTitle;
-};
-
-const getBookSecret = async bookId => {
-  const bookSnap = await getBookSnapshot(bookId);
-  let bookSecret;
-  bookSnap.forEach(child => {
-    bookSecret = child.val().secret;
-    return;
-  });
-  return bookSecret;
+  return book;
 };
 
 const addBook = async ({ bookId, bookTitle, secret }) => {
   // check if the book already exists. if so, exit
-  const snap = await getBookSnapshot(bookId);
-  const bookExists = Boolean(snap.val());
+  const bookRef = await ref
+    .orderByChild("bookId")
+    .equalTo(bookId)
+    .once("value");
+  const bookExists = Boolean(bookRef.val());
   console.log("bookExists:", bookExists);
   if (bookExists) return false;
 
@@ -52,4 +44,4 @@ const addBook = async ({ bookId, bookTitle, secret }) => {
   return true;
 };
 
-module.exports = { addBook, getBookTitle, getBookSecret };
+module.exports = { addBook, getBook };

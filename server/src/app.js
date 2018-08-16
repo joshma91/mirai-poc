@@ -10,7 +10,7 @@ const metaAuth = new MetaAuth({
   banner: "Mirai Marketplace"
 });
 
-const { addBook, getBookTitle, getBookSecret } = require("./bookStore");
+const { addBook, getBook } = require("./bookStore");
 
 app.use(cors());
 app.use(morgan("dev"));
@@ -18,7 +18,8 @@ app.use(bodyParser.json());
 
 app.get("/books", async (req, res) => {
   const { bookId } = req.query;
-  const bookTitle = await getBookTitle( bookId );
+  const book = await getBook(bookId);
+  const bookTitle = book.bookTitle;
   if (bookTitle) {
     return res.status(200).json({ bookTitle });
   }
@@ -46,7 +47,8 @@ app.get("/auth/:MetaMessage/:MetaSignature", metaAuth, async (req, res) => {
     // Signature matches the cache address/challenge
     // Authentication is valid, assign JWT, etc.
     const { bookId } = req.query;
-    const secret = await getBookSecret( bookId );
+    const book = await getBook(bookId);
+    const secret = book.secret;
     if (secret) {
       return res.status(200).json({ secret });
     }
