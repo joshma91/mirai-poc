@@ -7,6 +7,7 @@ import {
   Divider,
   Form
 } from "semantic-ui-react";
+import Dropzone from "react-dropzone";
 
 import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
@@ -24,7 +25,8 @@ class AddProduct extends React.Component {
     dataUploaded: false,
     reserveSlotLoading: false,
     dataUploadLoading: false,
-    bookURL: null
+    bookURL: null,
+    bookFile: []
   };
 
   setBookTitle = e => this.setState({ bookTitle: e.target.value });
@@ -32,6 +34,11 @@ class AddProduct extends React.Component {
   setBookPrice = e => this.setState({ bookPrice: e.target.value });
 
   setAvailable = e => this.setState({ bookAvailable: e.target.value });
+
+  onDrop = (acceptedFiles, rejectedFiles) => {
+    console.log(acceptedFiles)
+    this.setState({ bookFile: acceptedFiles });
+  };
 
   uploadDataStub = async () => {
     const { bookId, bookTitle } = this.state;
@@ -102,7 +109,8 @@ class AddProduct extends React.Component {
       dataUploaded,
       reserveSlotLoading,
       dataUploadLoading,
-      bookURL
+      bookURL,
+      bookFile
     } = this.state;
     const showStage1 = slotReserved === false;
     const showStage2 = slotReserved && !dataUploaded;
@@ -162,6 +170,27 @@ class AddProduct extends React.Component {
             onChange={this.setBookTitle}
             disabled={!showStage2}
           />
+          <Dropzone onDrop={this.onDrop} accept="application/pdf" disabled={!showStage2}>
+            {({ isDragActive, isDragReject }) => {
+              if (isDragActive) {
+                return "All files will be accepted";
+              }
+              if (isDragReject) {
+                return "Some files will be rejected";
+              }
+              return "Dropping some files here...";
+            }}
+          </Dropzone>
+          <aside>
+            <h2>Dropped files</h2>
+            <ul>
+              {bookFile.map(f => (
+                <li key={f.name}>
+                  {f.name} - {f.size} bytes
+                </li>
+              ))}
+            </ul>
+          </aside>
           <Divider hidden />
           <Button
             onClick={this.uploadBookData}
