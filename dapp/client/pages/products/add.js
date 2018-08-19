@@ -7,6 +7,7 @@ import {
   Divider,
   Form
 } from "semantic-ui-react";
+import Dropzone from "react-dropzone";
 
 import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
@@ -24,7 +25,8 @@ class AddProduct extends React.Component {
     dataUploaded: false,
     reserveSlotLoading: false,
     dataUploadLoading: false,
-    bookURL: null
+    bookURL: null,
+    bookFile: null
   };
 
   setBookTitle = e => this.setState({ bookTitle: e.target.value });
@@ -33,16 +35,20 @@ class AddProduct extends React.Component {
 
   setAvailable = e => this.setState({ bookAvailable: e.target.value });
 
+  onDrop = (acceptedFiles, rejectedFiles) => {
+    console.log(acceptedFiles);
+    this.setState({ bookFile: acceptedFiles[0] });
+  };
+
   uploadDataStub = async () => {
-    const { bookId, bookTitle } = this.state;
+    const { bookId, bookTitle, bookFile } = this.state;
+    const formData = new FormData();
+    formData.append("bookId", bookId)
+    formData.append("bookTitle", bookTitle)
+    formData.append("bookFile", bookFile, bookFile.name)
     const response = await fetch(API_URL, {
       method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        bookId: bookId,
-        bookTitle: bookTitle,
-        secret: `SECRET RESROUCE #${bookId}`
-      })
+      body: formData
     });
     return response;
   };
@@ -83,7 +89,6 @@ class AddProduct extends React.Component {
       // TODO - make actual call to server to upload data
       const res = await this.uploadDataStub();
       if (res.status != 200) throw Error(body.message);
-      const storedBook = await this.getBookTitle(this.state.bookId);
       if (res.ok) {
         this.setState({
           dataUploaded: true,
@@ -102,7 +107,8 @@ class AddProduct extends React.Component {
       dataUploaded,
       reserveSlotLoading,
       dataUploadLoading,
-      bookURL
+      bookURL,
+      bookFile
     } = this.state;
     const showStage1 = slotReserved === false;
     const showStage2 = slotReserved && !dataUploaded;
@@ -162,6 +168,32 @@ class AddProduct extends React.Component {
             onChange={this.setBookTitle}
             disabled={!showStage2}
           />
+          <Dropzone
+            onDrop={this.onDrop}
+            accept="application/pdf"
+            disabled={!showStage2}
+            multiple={false}
+          >
+            {({ isDragActive, isDragReject }) => {
+              if (isDragActive) {
+                return "All files will be accepted";
+              }
+              if (isDragReject) {
+                return "Some files will be rejected";
+              }
+              return "Dropping some files here...";
+            }}
+          </Dropzone>
+          <aside>
+            <h2>Dropped files</h2>
+            {bookFile && (
+              <ul>
+                <li key={bookFile.name}>
+                  {bookFile.name} - {bookFile.size} bytes
+                </li>
+              </ul>
+            )}
+          </aside>
           <Divider hidden />
           <Button
             onClick={this.uploadBookData}

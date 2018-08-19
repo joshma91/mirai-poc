@@ -17,13 +17,17 @@ const getBook = async bookId => {
     .equalTo(bookId)
     .once("value");
 
-  const id = Object.keys(bookRef.val())[0];
-  book = bookRef.val()[id];
+  if (bookRef.val()) {
+    const id = Object.keys(bookRef.val())[0];
+    book = bookRef.val()[id];
 
-  return book;
+    return book;
+  }
+  return false;
 };
 
-const addBook = async ({ bookId, bookTitle, secret }) => {
+const addBook = async ({ bookId, bookTitle, bookFile }) => {
+
   // check if the book already exists. if so, exit
   const bookRef = await ref
     .orderByChild("bookId")
@@ -36,11 +40,14 @@ const addBook = async ({ bookId, bookTitle, secret }) => {
   const book = {
     bookId,
     bookTitle,
-    secret
+    bookFile
   };
 
-  ref.push(book);
-  return true;
+  console.log(book)
+
+  const res = await ref.push(book);
+  console.log(res)
+  if(res) return true;
 };
 
 module.exports = { addBook, getBook };

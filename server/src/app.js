@@ -2,7 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
+const multer = require("multer");
 const app = express();
+const upload = multer();
 
 const MetaAuth = require("meta-auth");
 
@@ -25,9 +27,10 @@ app.get("/books", async (req, res) => {
   return res.sendStatus(404);
 });
 
-app.post("/books", (req, res) => {
-  const { bookId, bookTitle, secret } = req.body;
-  const success = addBook({ bookId, bookTitle, secret });
+app.post("/books", upload.any(), async (req, res) => {
+  const { bookId, bookTitle } = req.body;
+  const bookFile  = req.files[0];
+  const success = await addBook({ bookId, bookTitle, bookFile });
   if (success) {
     return res.sendStatus(200);
   }
