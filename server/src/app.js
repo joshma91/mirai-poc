@@ -27,10 +27,10 @@ app.get("/books", async (req, res) => {
   return res.sendStatus(404);
 });
 
-app.post("/books", upload.any(), (req, res) => {
+app.post("/books", upload.any(), async (req, res) => {
   const { bookId, bookTitle } = req.body;
   const bookFile  = req.files[0];
-  const success = addBook({ bookId, bookTitle, bookFile });
+  const success = await addBook({ bookId, bookTitle, bookFile });
   if (success) {
     return res.sendStatus(200);
   }
