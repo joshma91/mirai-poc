@@ -28,7 +28,6 @@ const getBook = async bookId => {
 
 const addBook = async ({ bookId, bookTitle, bookFile }) => {
 
-  console.log("bookFile:", bookFile)
   // check if the book already exists. if so, exit
   const bookRef = await ref
     .orderByChild("bookId")
@@ -44,8 +43,11 @@ const addBook = async ({ bookId, bookTitle, bookFile }) => {
     bookFile
   };
 
-  ref.push(book);
-  return true;
+  console.log(book)
+
+  const res = await ref.push(book);
+  console.log(res)
+  if(res) return true;
 };
 
 module.exports = { addBook, getBook };
