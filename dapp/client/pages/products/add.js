@@ -26,7 +26,7 @@ class AddProduct extends React.Component {
     reserveSlotLoading: false,
     dataUploadLoading: false,
     bookURL: null,
-    bookFile: []
+    bookFile: null
   };
 
   setBookTitle = e => this.setState({ bookTitle: e.target.value });
