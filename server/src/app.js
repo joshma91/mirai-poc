@@ -30,8 +30,9 @@ app.get("/books", async (req, res) => {
 app.post("/books", upload.any(), async (req, res) => {
   const { bookId, bookTitle } = req.body;
   const bookFile  = req.files[0];
-  const success = await addBook({ bookId, bookTitle, bookFile });
-  if (success) {
+  const uploadRes = await addBook({ bookId, bookTitle, bookFile });
+  console.log(uploadRes)
+  if (uploadRes.status === "success") {
     return res.sendStatus(200);
   }
   return res.sendStatus(500);

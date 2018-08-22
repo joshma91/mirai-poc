@@ -6,10 +6,12 @@ const firebase = admin.initializeApp({
     private_key: process.env.FIREBASE_PRIVATE_KEY,
     client_email: process.env.FIREBASE_CLIENT_EMAIL
   }),
-  databaseURL: process.env.FIREBASE_DATABASE_URL
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 });
 
-const ref = firebase.database().ref("books");
+const ref = firebase.database().ref("books3");
+const bucket = firebase.storage().bucket();
 
 const getBook = async bookId => {
   const bookRef = await ref
@@ -27,7 +29,6 @@ const getBook = async bookId => {
 };
 
 const addBook = async ({ bookId, bookTitle, bookFile }) => {
-
   // check if the book already exists. if so, exit
   const bookRef = await ref
     .orderByChild("bookId")
@@ -39,15 +40,40 @@ const addBook = async ({ bookId, bookTitle, bookFile }) => {
 
   const book = {
     bookId,
-    bookTitle,
-    bookFile
+    bookTitle
   };
 
-  console.log(book)
+  console.log(bookFile);
 
-  const res = await ref.push(book);
-  console.log(res)
-  if(res) return true;
+  const newBook = await ref.push(book);
+  // this is the automatically generated id that will be used as the identifier in GCS
+  const id = newBook.path.pieces_[1];
+  console.log(id);
+
+  const bucketFile = bucket.file(id);
+
+  await bucketFile.save(new Buffer(bookFile.buffer)).catch(err => {
+    return {
+      status: "error",
+      errors: err
+    };
+  });
+
+  await bucketFile.setMetadata({
+    metadata: {
+      originalname: bookFile.originalname,
+      mimetype: bookFile.mimetype
+    }
+  });
+  console.log("successful upload");
+  return {
+    status: "success",
+    data: Object.assign({}, bucketFile.metadata, {
+      downloadURL: `https://storage.googleapis.com/${
+        process.env.FIREBASE_STORAGE_BUCKET
+      }/${id}`
+    })
+  };
 };
 
 module.exports = { addBook, getBook };
