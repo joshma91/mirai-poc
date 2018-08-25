@@ -12,6 +12,7 @@ import Dropzone from "react-dropzone";
 import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
+import { resolve } from "url";
 
 const API_URL = "http://localhost:5678/books";
 
@@ -36,21 +37,44 @@ class AddProduct extends React.Component {
   setAvailable = e => this.setState({ bookAvailable: e.target.value });
 
   onDrop = (acceptedFiles, rejectedFiles) => {
-    console.log(acceptedFiles);
     this.setState({ bookFile: acceptedFiles[0] });
   };
 
   uploadDataStub = async () => {
     const { bookId, bookTitle, bookFile } = this.state;
     const formData = new FormData();
-    formData.append("bookId", bookId)
-    formData.append("bookTitle", bookTitle)
-    formData.append("bookFile", bookFile, bookFile.name)
+    formData.append("bookId", bookId);
+    formData.append("bookTitle", bookTitle);
+    formData.append("bookFile", bookFile, bookFile.name);
     const response = await fetch(API_URL, {
       method: "post",
       body: formData
-    });
+    })
+      .then(res => {
+        if (res.status != 200) throw Error(body.message);
+        return res.text();
+      })
+      .then(text => JSON.parse(text).signedUrl);
     return response;
+  };
+
+  uploadBookFile = signedUrl => {
+    return new Promise((resolve, reject) => {
+      const { bookFile } = this.state;
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", signedUrl, true);
+      xhr.onload = e => {
+        console.log("File upload successful");
+        resolve(xhr);
+      };
+      xhr.upload.onprogress = e => {
+        if (e.lengthComputable) {
+          console.log((e.loaded / e.total) * 100);
+        }
+      };
+
+      xhr.send(bookFile);
+    });
   };
 
   getBookTitle = async () =>
@@ -87,9 +111,12 @@ class AddProduct extends React.Component {
 
     this.setState({ dataUploadLoading: true }, async () => {
       // TODO - make actual call to server to upload data
-      const res = await this.uploadDataStub();
-      if (res.status != 200) throw Error(body.message);
-      if (res.ok) {
+      const signedUrl = await this.uploadDataStub();
+      console.log(signedUrl);
+      const res = await this.uploadBookFile(signedUrl);
+      console.log(res);
+
+      if (res.status == 200) {
         this.setState({
           dataUploaded: true,
           dataUploadLoading: false,

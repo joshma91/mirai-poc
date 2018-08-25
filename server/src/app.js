@@ -29,11 +29,11 @@ app.get("/books", async (req, res) => {
 
 app.post("/books", upload.any(), async (req, res) => {
   const { bookId, bookTitle } = req.body;
-  const bookFile  = req.files[0];
-  const uploadRes = await addBook({ bookId, bookTitle, bookFile });
-  console.log(uploadRes)
-  if (uploadRes.status === "success") {
-    return res.sendStatus(200);
+  const bookFile = req.files[0];
+  const signedUrl = await addBook({ bookId, bookTitle, bookFile });
+  if (signedUrl) {
+    console.log(signedUrl);
+    console.log(res.status(200).send(signedUrl));
   }
   return res.sendStatus(500);
 });
