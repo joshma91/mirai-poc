@@ -41,14 +41,14 @@ class AddProduct extends React.Component {
   };
 
   uploadDataStub = async () => {
-    const { bookId, bookTitle, bookFile } = this.state;
-    const formData = new FormData();
-    formData.append("bookId", bookId);
-    formData.append("bookTitle", bookTitle);
-    formData.append("bookFile", bookFile, bookFile.name);
+    const { bookId, bookTitle } = this.state;
     const response = await fetch(API_URL, {
       method: "post",
-      body: formData
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        bookId: bookId,
+        bookTitle: bookTitle
+      })
     })
       .then(res => {
         if (res.status != 200) throw Error(body.message);
@@ -110,12 +110,10 @@ class AddProduct extends React.Component {
     const { bookId, bookTitle } = this.state;
 
     this.setState({ dataUploadLoading: true }, async () => {
-      // TODO - make actual call to server to upload data
-      const signedUrl = await this.uploadDataStub();
-      console.log(signedUrl);
-      const res = await this.uploadBookFile(signedUrl);
-      console.log(res);
 
+      const signedUrl = await this.uploadDataStub();
+      const res = await this.uploadBookFile(signedUrl);
+    
       if (res.status == 200) {
         this.setState({
           dataUploaded: true,
