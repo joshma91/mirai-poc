@@ -10,7 +10,7 @@ const firebase = admin.initializeApp({
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 });
 
-const ref = firebase.database().ref("books3");
+const ref = firebase.database().ref("books4");
 const bucket = firebase.storage().bucket();
 
 const getBook = async bookId => {
@@ -52,28 +52,14 @@ const addBook = async ({ bookId, bookTitle, bookFile }) => {
 
   const bucketFile = bucket.file(id);
 
-  await bucketFile.save(new Buffer(bookFile.buffer)).catch(err => {
-    return {
-      status: "error",
-      errors: err
-    };
-  });
-
-  await bucketFile.setMetadata({
-    metadata: {
-      originalname: bookFile.originalname,
-      mimetype: bookFile.mimetype
-    }
-  });
-  console.log("successful upload");
-  return {
-    status: "success",
-    data: Object.assign({}, bucketFile.metadata, {
-      downloadURL: `https://storage.googleapis.com/${
-        process.env.FIREBASE_STORAGE_BUCKET
-      }/${id}`
-    })
+  const config = {
+    action: "write",
+    expires: Date.now() + 3600,
+    contentType: "application/pdf"
   };
+
+  const signedUrl = await bucketFile.getSignedUrl(config);
+  return signedUrl;
 };
 
 module.exports = { addBook, getBook };
