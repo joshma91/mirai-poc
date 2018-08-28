@@ -48,7 +48,14 @@ const addBook = async ({ bookId, bookTitle }) => {
   const id = newBook.path.pieces_[1];
   console.log(id);
 
-  const bucketFile = bucket.file(id);
+  return id;
+
+  
+};
+
+const getSignedUrl = async (storageId) => {
+  // creates a placeholder file in the bucket for the front-end upload
+  const bucketFile = bucket.file(storageId);
 
   const config = {
     action: "write",
@@ -58,6 +65,6 @@ const addBook = async ({ bookId, bookTitle }) => {
 
   const signedUrl = await bucketFile.getSignedUrl(config);
   return signedUrl;
-};
+}
 
-module.exports = { addBook, getBook };
+module.exports = { addBook, getBook, getSignedUrl };
