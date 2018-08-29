@@ -50,12 +50,10 @@ class AddProduct extends React.Component {
         bookTitle: bookTitle
       })
     })
-      .then(res => {
-        if (res.status != 200) throw Error(body.message);
-        return res.text();
-      })
-      .then(text => JSON.parse(text).signedUrl);
-    return response;
+    if (response.status !=200) throw Error(response.message)
+    const text = await response.text()
+    return JSON.parse(text).signedUrl
+
   };
 
   uploadBookFile = signedUrl => {
