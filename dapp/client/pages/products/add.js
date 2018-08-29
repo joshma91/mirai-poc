@@ -7,10 +7,12 @@ import {
   Divider,
   Form
 } from "semantic-ui-react";
+import Dropzone from "react-dropzone";
 
 import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
+import { resolve } from "url";
 
 const API_URL = "http://localhost:5678/books";
 
@@ -24,7 +26,8 @@ class AddProduct extends React.Component {
     dataUploaded: false,
     reserveSlotLoading: false,
     dataUploadLoading: false,
-    bookURL: null
+    bookURL: null,
+    bookFile: null
   };
 
   setBookTitle = e => this.setState({ bookTitle: e.target.value });
@@ -33,6 +36,10 @@ class AddProduct extends React.Component {
 
   setAvailable = e => this.setState({ bookAvailable: e.target.value });
 
+  onDrop = (acceptedFiles, rejectedFiles) => {
+    this.setState({ bookFile: acceptedFiles[0] });
+  };
+
   uploadDataStub = async () => {
     const { bookId, bookTitle } = this.state;
     const response = await fetch(API_URL, {
@@ -40,11 +47,32 @@ class AddProduct extends React.Component {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         bookId: bookId,
-        bookTitle: bookTitle,
-        secret: `SECRET RESROUCE #${bookId}`
+        bookTitle: bookTitle
       })
+    })
+    if (response.status !=200) throw Error(response.message)
+    const text = await response.text()
+    return JSON.parse(text).signedUrl
+
+  };
+
+  uploadBookFile = signedUrl => {
+    return new Promise((resolve, reject) => {
+      const { bookFile } = this.state;
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", signedUrl, true);
+      xhr.onload = e => {
+        console.log("File upload successful");
+        resolve(xhr);
+      };
+      xhr.upload.onprogress = e => {
+        if (e.lengthComputable) {
+          console.log((e.loaded / e.total) * 100);
+        }
+      };
+
+      xhr.send(bookFile);
     });
-    return response;
   };
 
   getBookTitle = async () =>
@@ -80,11 +108,11 @@ class AddProduct extends React.Component {
     const { bookId, bookTitle } = this.state;
 
     this.setState({ dataUploadLoading: true }, async () => {
-      // TODO - make actual call to server to upload data
-      const res = await this.uploadDataStub();
-      if (res.status != 200) throw Error(body.message);
-      const storedBook = await this.getBookTitle(this.state.bookId);
-      if (res.ok) {
+
+      const signedUrl = await this.uploadDataStub();
+      const res = await this.uploadBookFile(signedUrl);
+    
+      if (res.status == 200) {
         this.setState({
           dataUploaded: true,
           dataUploadLoading: false,
@@ -102,7 +130,8 @@ class AddProduct extends React.Component {
       dataUploaded,
       reserveSlotLoading,
       dataUploadLoading,
-      bookURL
+      bookURL,
+      bookFile
     } = this.state;
     const showStage1 = slotReserved === false;
     const showStage2 = slotReserved && !dataUploaded;
@@ -162,6 +191,32 @@ class AddProduct extends React.Component {
             onChange={this.setBookTitle}
             disabled={!showStage2}
           />
+          <Dropzone
+            onDrop={this.onDrop}
+            accept="application/pdf"
+            disabled={!showStage2}
+            multiple={false}
+          >
+            {({ isDragActive, isDragReject }) => {
+              if (isDragActive) {
+                return "All files will be accepted";
+              }
+              if (isDragReject) {
+                return "Some files will be rejected";
+              }
+              return "Dropping some files here...";
+            }}
+          </Dropzone>
+          <aside>
+            <h2>Dropped files</h2>
+            {bookFile && (
+              <ul>
+                <li key={bookFile.name}>
+                  {bookFile.name} - {bookFile.size} bytes
+                </li>
+              </ul>
+            )}
+          </aside>
           <Divider hidden />
           <Button
             onClick={this.uploadBookData}

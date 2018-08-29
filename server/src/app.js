@@ -10,7 +10,7 @@ const metaAuth = new MetaAuth({
   banner: "Mirai Marketplace"
 });
 
-const { addBook, getBook } = require("./bookStore");
+const { addBook, getBook, getSignedUrl } = require("./bookStore");
 
 app.use(cors());
 app.use(morgan("dev"));
@@ -25,11 +25,13 @@ app.get("/books", async (req, res) => {
   return res.sendStatus(404);
 });
 
-app.post("/books", (req, res) => {
-  const { bookId, bookTitle, secret } = req.body;
-  const success = addBook({ bookId, bookTitle, secret });
-  if (success) {
-    return res.sendStatus(200);
+app.post("/books", async (req, res) => {
+  const { bookId, bookTitle } = req.body;
+  const storageId = await addBook({ bookId, bookTitle });
+  const signedUrl = await getSignedUrl(storageId);
+  if (signedUrl) {
+    console.log(signedUrl);
+    return res.status(200).send({ signedUrl });
   }
   return res.sendStatus(500);
 });
