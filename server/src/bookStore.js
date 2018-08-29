@@ -6,10 +6,12 @@ const firebase = admin.initializeApp({
     private_key: process.env.FIREBASE_PRIVATE_KEY,
     client_email: process.env.FIREBASE_CLIENT_EMAIL
   }),
-  databaseURL: process.env.FIREBASE_DATABASE_URL
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 });
 
-const ref = firebase.database().ref("books");
+const ref = firebase.database().ref("books4");
+const bucket = firebase.storage().bucket();
 
 const getBook = async bookId => {
   const bookRef = await ref
@@ -17,13 +19,16 @@ const getBook = async bookId => {
     .equalTo(bookId)
     .once("value");
 
-  const id = Object.keys(bookRef.val())[0];
-  book = bookRef.val()[id];
+  if (bookRef.val()) {
+    const id = Object.keys(bookRef.val())[0];
+    book = bookRef.val()[id];
 
-  return book;
+    return book;
+  }
+  return false;
 };
 
-const addBook = async ({ bookId, bookTitle, secret }) => {
+const addBook = async ({ bookId, bookTitle }) => {
   // check if the book already exists. if so, exit
   const bookRef = await ref
     .orderByChild("bookId")
@@ -35,12 +40,31 @@ const addBook = async ({ bookId, bookTitle, secret }) => {
 
   const book = {
     bookId,
-    bookTitle,
-    secret
+    bookTitle
   };
 
-  ref.push(book);
-  return true;
+  const newBook = await ref.push(book);
+  // this is the automatically generated id that will be used as the identifier in GCS
+  const id = newBook.path.pieces_[1];
+  console.log(id);
+
+  return id;
+
+  
 };
 
-module.exports = { addBook, getBook };
+const getSignedUrl = async (storageId) => {
+  // creates a placeholder file in the bucket for the front-end upload
+  const bucketFile = bucket.file(storageId);
+
+  const config = {
+    action: "write",
+    expires: Date.now() + 3600,
+    contentType: "application/pdf"
+  };
+
+  const signedUrl = await bucketFile.getSignedUrl(config);
+  return signedUrl;
+}
+
+module.exports = { addBook, getBook, getSignedUrl };
