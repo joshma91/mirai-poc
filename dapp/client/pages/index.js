@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import styled from "styled-components";
 import {
   Button,
   Container,
@@ -21,22 +22,38 @@ import {
 /* Heads up! HomepageHeading uses inline styling, however it's not the best practice. Use CSS or styled components for
  * such things.
  */
+
+const Splash = styled.div`
+  flex: 1;
+  height: 100%;
+  min-height: 700px;
+  background: rgba(0, 0, 0, 0)
+    url("https://www.toptal.com/designers/subtlepatterns/patterns/playstation-pattern.png")
+    repeat scroll 0% 0%;
+  z-index: 0;
+
+  @media screen and (min-width: 900px) {
+    background: url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D")
+      no-repeat center center fixed;
+    background-size: cover;
+  }
+`;
+
 const HomepageHeading = ({ mobile }) => (
   <Container text>
     <Header
       as="h1"
-      content="Imagine-a-Company"
+      content="Mirai"
       inverted
       style={{
         fontSize: mobile ? "2em" : "4em",
-        fontWeight: "normal",
         marginBottom: 0,
-        marginTop: mobile ? "1.5em" : "3em"
+        paddingTop: mobile ? "1.5em" : "3em"
       }}
     />
     <Header
       as="h2"
-      content="Do whatever you want when you want to."
+      content="Buy and sell books on the Blockchain."
       inverted
       style={{
         fontSize: mobile ? "1.5em" : "1.7em",
@@ -79,10 +96,15 @@ class DesktopContainer extends Component {
           <Segment
             inverted
             textAlign="center"
-            style={{ minHeight: 700, padding: "1em 0em" }}
+            style={{
+              minHeight: 700,
+              padding: "0em 0em",
+              background: "#10b7e3"
+            }}
             vertical
           >
             <Menu
+              style={{ background: "#ffec6d", padding: "12px", margin: "0px" }}
               fixed={fixed ? "top" : null}
               inverted={!fixed}
               pointing={!fixed}
@@ -91,19 +113,37 @@ class DesktopContainer extends Component {
             >
               <Container>
                 <Menu.Item>
-                  <Link href="/products/sell">
+                  <a
+                    style={{
+                      fontWeight: "bold",
+                      color: "darkslategrey"
+                    }}
+                    href="/products/sell"
+                  >
                     Sell Products
-                  </Link>
+                  </a>
                 </Menu.Item>
                 <Menu.Item>
-                  <Link href="/products/buy">
+                  <a
+                    style={{
+                      fontWeight: "bold",
+                      color: "darkslategrey"
+                    }}
+                    href="/products/buy"
+                  >
                     Buy Products
-                  </Link>
+                  </a>
                 </Menu.Item>
                 <Menu.Item>
-                  <Link href="/products/view">
+                  <a
+                    style={{
+                      fontWeight: "bold",
+                      color: "darkslategrey"
+                    }}
+                    href="/products/view"
+                  >
                     View My Products
-                  </Link>
+                  </a>
                 </Menu.Item>
                 <Menu.Item position="right">
                   <Button as="a" inverted={!fixed}>
@@ -120,7 +160,9 @@ class DesktopContainer extends Component {
                 </Menu.Item>
               </Container>
             </Menu>
-            <HomepageHeading />
+            <Splash>
+              <HomepageHeading />
+            </Splash>
           </Segment>
         </Visibility>
 
@@ -134,90 +176,11 @@ DesktopContainer.propTypes = {
   children: PropTypes.node
 };
 
-class MobileContainer extends Component {
-  state = {};
-
-  handlePusherClick = () => {
-    const { sidebarOpened } = this.state;
-
-    if (sidebarOpened) this.setState({ sidebarOpened: false });
-  };
-
-  handleToggle = () =>
-    this.setState({ sidebarOpened: !this.state.sidebarOpened });
-
-  render() {
-    const { children } = this.props;
-    const { sidebarOpened } = this.state;
-
-    return (
-      <Responsive maxWidth={Responsive.onlyMobile.maxWidth}>
-        <Sidebar.Pushable>
-          <Sidebar
-            as={Menu}
-            animation="uncover"
-            inverted
-            vertical
-            visible={sidebarOpened}
-          >
-            <Menu.Item as="a" active>
-              Home
-            </Menu.Item>
-            <Menu.Item as="a">Work</Menu.Item>
-            <Menu.Item as="a">Company</Menu.Item>
-            <Menu.Item as="a">Careers</Menu.Item>
-            <Menu.Item as="a">Log in</Menu.Item>
-            <Menu.Item as="a">Sign Up</Menu.Item>
-          </Sidebar>
-
-          <Sidebar.Pusher
-            dimmed={sidebarOpened}
-            onClick={this.handlePusherClick}
-            style={{ minHeight: "100vh" }}
-          >
-            <Segment
-              inverted
-              textAlign="center"
-              style={{ minHeight: 350, padding: "1em 0em" }}
-              vertical
-            >
-              <Container>
-                <Menu inverted pointing secondary size="large">
-                  <Menu.Item onClick={this.handleToggle}>
-                    <Icon name="sidebar" />
-                  </Menu.Item>
-                  <Menu.Item position="right">
-                    <Button as="a" inverted>
-                      Log in
-                    </Button>
-                    <Button as="a" inverted style={{ marginLeft: "0.5em" }}>
-                      Sign Up
-                    </Button>
-                  </Menu.Item>
-                </Menu>
-              </Container>
-              <HomepageHeading mobile />
-            </Segment>
-
-            {children}
-          </Sidebar.Pusher>
-        </Sidebar.Pushable>
-      </Responsive>
-    );
-  }
-}
-
-MobileContainer.propTypes = {
-  children: PropTypes.node
-};
-
 const ResponsiveContainer = ({ children }) => (
   <div>
     <DesktopContainer>{children}</DesktopContainer>
-    <MobileContainer>{children}</MobileContainer>
   </div>
 );
-
 ResponsiveContainer.propTypes = {
   children: PropTypes.node
 };
