@@ -17,30 +17,14 @@ import {
   Sidebar,
   Visibility
 } from "semantic-ui-react";
+import "../style.css";
 
 /* eslint-disable react/no-multi-comp */
 /* Heads up! HomepageHeading uses inline styling, however it's not the best practice. Use CSS or styled components for
  * such things.
  */
-
-const Splash = styled.div`
-  flex: 1;
-  height: 100%;
-  min-height: 700px;
-  background: rgba(0, 0, 0, 0)
-    url("https://www.toptal.com/designers/subtlepatterns/patterns/playstation-pattern.png")
-    repeat scroll 0% 0%;
-  z-index: 0;
-
-  @media screen and (min-width: 900px) {
-    background: url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D")
-      no-repeat center center fixed;
-    background-size: cover;
-  }
-`;
-
 const HomepageHeading = ({ mobile }) => (
-  <Container text>
+  <Container className="overlay">
     <Header
       as="h1"
       content="Mirai"
@@ -94,17 +78,17 @@ class DesktopContainer extends Component {
           onBottomPassedReverse={this.hideFixedMenu}
         >
           <Segment
+            className="overlay"
             inverted
             textAlign="center"
             style={{
-              minHeight: 700,
               padding: "0em 0em",
-              background: "#10b7e3"
+              position: "relative",
             }}
             vertical
           >
             <Menu
-              style={{ background: "#ffec6d", padding: "12px", margin: "0px" }}
+              className="yellow"
               fixed={fixed ? "top" : null}
               inverted={!fixed}
               pointing={!fixed}
@@ -160,10 +144,15 @@ class DesktopContainer extends Component {
                 </Menu.Item>
               </Container>
             </Menu>
-            <Splash>
-              <HomepageHeading />
-            </Splash>
+
           </Segment>
+          <video loop autoPlay>
+              <source
+                src="https://firebasestorage.googleapis.com/v0/b/mirai-poc.appspot.com/o/Productive-Morning.mp4?alt=media&token=db19bf02-75ec-4911-80bd-0fbbe6e67cfa"
+                type="video/mp4"
+              />
+            </video>
+            <HomepageHeading />
         </Visibility>
 
         {children}
