@@ -23,8 +23,5 @@
     "semantic-ui-react": "^0.82.0",
     "styled-components": "^4.0.2"
   },
-  "devDependencies": {
-    "html-loader": "^0.5.5",
-    "url-loader": "^1.1.2"
-  }
+  "devDependencies": {}
 }
