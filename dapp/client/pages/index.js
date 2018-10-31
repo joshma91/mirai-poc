@@ -17,6 +17,7 @@ import {
   Sidebar,
   Visibility
 } from "semantic-ui-react";
+import logo from "../mirai.svg"
 import "../style.css";
 
 /* eslint-disable react/no-multi-comp */
@@ -99,6 +100,7 @@ class DesktopContainer extends Component {
               size="large"
             >
               <Container>
+                <Image src={logo} height="75px" style={{left:"-50px"}}/>
                 <Menu.Item>
                   <a
                     style={{
