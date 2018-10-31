@@ -1,5 +1,9 @@
+body {
+  overflow-y:hidden
+}
+
 .yellow {
-  background: #ffec6d;
+  background-color: #ffec6d;
   padding: 12px;
   margin: 0px;
 }
@@ -13,10 +17,12 @@
 .container video {
     position:relative;
     z-index:0;
+    height: 100%;
+    width: 100%
 }
 .overlay {
     position:absolute;
-    top:0;
-    left:0;
+    top:10%;
+    left:60%;
     z-index:1;
 }

@@ -45,7 +45,7 @@ const HomepageHeading = ({ mobile }) => (
         marginTop: mobile ? "0.5em" : "1.5em"
       }}
     />
-    <Button primary size="huge">
+    <Button style={{color:"darkslategrey", backgroundColor:"#ffec6d"}} size="huge">
       Get Started
       <Icon name="right arrow" />
     </Button>
@@ -78,7 +78,6 @@ class DesktopContainer extends Component {
           onBottomPassedReverse={this.hideFixedMenu}
         >
           <Segment
-            className="overlay"
             inverted
             textAlign="center"
             style={{
@@ -88,7 +87,11 @@ class DesktopContainer extends Component {
             vertical
           >
             <Menu
-              className="yellow"
+              style={{
+                backgroundColor: "#ffec6d",
+                padding: "12px",
+                margin: "0px"
+              }}
               fixed={fixed ? "top" : null}
               inverted={!fixed}
               pointing={!fixed}
@@ -99,6 +102,7 @@ class DesktopContainer extends Component {
                 <Menu.Item>
                   <a
                     style={{
+                      fontSize: "large",
                       fontWeight: "bold",
                       color: "darkslategrey"
                     }}
@@ -110,6 +114,7 @@ class DesktopContainer extends Component {
                 <Menu.Item>
                   <a
                     style={{
+                      fontSize: "large",
                       fontWeight: "bold",
                       color: "darkslategrey"
                     }}
@@ -121,6 +126,7 @@ class DesktopContainer extends Component {
                 <Menu.Item>
                   <a
                     style={{
+                      fontSize: "large",
                       fontWeight: "bold",
                       color: "darkslategrey"
                     }}
@@ -146,7 +152,7 @@ class DesktopContainer extends Component {
             </Menu>
 
           </Segment>
-          <video loop autoPlay>
+          <video loop autoPlay style={{width:"100%", height:"100%"}}>
               <source
                 src="https://firebasestorage.googleapis.com/v0/b/mirai-poc.appspot.com/o/Productive-Morning.mp4?alt=media&token=db19bf02-75ec-4911-80bd-0fbbe6e67cfa"
                 type="video/mp4"
@@ -154,8 +160,6 @@ class DesktopContainer extends Component {
             </video>
             <HomepageHeading />
         </Visibility>
-
-        {children}
       </Responsive>
     );
   }
