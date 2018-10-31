@@ -1,9 +1,22 @@
 .yellow {
   background: #ffec6d;
-  padding: top 10px;
+  padding: 12px;
+  margin: 0px;
 }
 
 .menuText {
   color: black;
   font-weight: bold;
+}
+
+.container { position:relative; }
+.container video {
+    position:relative;
+    z-index:0;
+}
+.overlay {
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:1;
 }
