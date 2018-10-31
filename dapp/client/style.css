@@ -1,0 +1,28 @@
+body {
+  overflow-y:hidden
+}
+
+.yellow {
+  background-color: #ffec6d;
+  padding: 12px;
+  margin: 0px;
+}
+
+.menuText {
+  color: black;
+  font-weight: bold;
+}
+
+.container { position:relative; }
+.container video {
+    position:relative;
+    z-index:0;
+    height: 100%;
+    width: 100%
+}
+.overlay {
+    position:absolute;
+    top:10%;
+    left:60%;
+    z-index:1;
+}
