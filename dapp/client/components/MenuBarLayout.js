@@ -3,7 +3,7 @@ import Layout from "./Layout";
 import { Container } from "semantic-ui-react";
 
 const MenuBarLayout = ({ children }) => (
-  <div>
+  <div style={{backgroundColor:"#EFEEE9", height:"-webkit-fill-available"}}>
     <MenuBar />
     <Layout> {children}</Layout>;
   </div>

@@ -5,6 +5,7 @@ import Layout from "../../components/Layout";
 import BuyProductItem from "../../components/BuyProductItem";
 import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
+import MenuBarLayout from "../../components/MenuBarLayout";
 
 class BuyProducts extends React.Component {
   state = { productIds: null };
@@ -48,16 +49,10 @@ class BuyProducts extends React.Component {
   render() {
     const { productIds } = this.state;
     return (
-      <Layout>
-        <Link href="/">
-          <Button>Home</Button>
-        </Link>
-
-        <hr />
-
+      <MenuBarLayout>
         <Header as="h1">Products</Header>
         {productIds ? this.renderProducts() : "Loading..."}
-      </Layout>
+      </MenuBarLayout>
     );
   }
 }

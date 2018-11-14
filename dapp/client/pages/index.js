@@ -100,7 +100,7 @@ DesktopContainer.propTypes = {
 };
 
 const ResponsiveContainer = ({ children }) => (
-  <div>
+  <div style={{backgroundColor:"#EFEEE9", height:"-webkit-fill-available"}}>
     <DesktopContainer>{children}</DesktopContainer>
   </div>
 );

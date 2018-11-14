@@ -1,4 +1,4 @@
-import { Container, Image, Button, Menu, Segment } from "semantic-ui-react";
+import { Container, Image, Button, Menu, Segment, Link } from "semantic-ui-react";
 import logo from "../mirai.svg";
 import "../style.css";
 
@@ -13,6 +13,7 @@ const MenuBar = ({ children }) => (
     }}
     vertical
   >
+
     <Menu
       style={{
         backgroundColor: "#ffec6d",
@@ -22,7 +23,8 @@ const MenuBar = ({ children }) => (
       size="large"
     >
       <Container>
-        <Image src={logo} height="75px" style={{ left: "-50px" }} />
+
+        <Image src={logo} size="tiny" href={"/"} />
         <Menu.Item>
           <a
             style={{
