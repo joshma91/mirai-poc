@@ -2,9 +2,11 @@ import Link from "next/link";
 import { Modal, Header, Button, List, Icon, Form } from "semantic-ui-react";
 
 import Layout from "../../components/Layout";
+import MenuBar from "../../components/MenuBar";
+import MenuBarLayout from "../../components/MenuBarLayout";
 
 export default () => (
-  <Layout>
+  <MenuBarLayout>
     <Link href="/">
       <Button>Home</Button>
     </Link>
@@ -18,5 +20,5 @@ export default () => (
     <Link href="/products/add">
       <Button>Add Product</Button>
     </Link>
-  </Layout>
+  </MenuBarLayout>
 );

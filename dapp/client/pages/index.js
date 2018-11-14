@@ -18,6 +18,7 @@ import {
   Visibility
 } from "semantic-ui-react";
 import MenuBar from "../components/MenuBar"
+import logo from "../mirai.svg"
 import "../style.css";
 
 /* eslint-disable react/no-multi-comp */
@@ -78,31 +79,9 @@ class DesktopContainer extends Component {
           onBottomPassed={this.showFixedMenu}
           onBottomPassedReverse={this.hideFixedMenu}
         >
-          <Segment
-            inverted
-            textAlign="center"
-            style={{
-              padding: "0em 0em",
-              position: "relative",
-            }}
-            vertical
-          >
-            <Menu
-              style={{
-                backgroundColor: "#ffec6d",
-                padding: "12px",
-                margin: "0px"
-              }}
-              fixed={fixed ? "top" : null}
-              inverted={!fixed}
-              pointing={!fixed}
-              secondary={!fixed}
-              size="large"
-            >
-             <MenuBar/>
-            </Menu>
 
-          </Segment>
+           <MenuBar />
+
           <video loop autoPlay style={{width:"100%", height:"100%"}}>
               <source
                 src="https://firebasestorage.googleapis.com/v0/b/mirai-poc.appspot.com/o/Productive-Morning.mp4?alt=media&token=db19bf02-75ec-4911-80bd-0fbbe6e67cfa"
