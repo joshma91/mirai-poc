@@ -17,7 +17,7 @@ import {
   Sidebar,
   Visibility
 } from "semantic-ui-react";
-import logo from "../mirai.svg"
+import MenuBar from "../components/MenuBar"
 import "../style.css";
 
 /* eslint-disable react/no-multi-comp */
@@ -99,58 +99,7 @@ class DesktopContainer extends Component {
               secondary={!fixed}
               size="large"
             >
-              <Container>
-                <Image src={logo} height="75px" style={{left:"-50px"}}/>
-                <Menu.Item>
-                  <a
-                    style={{
-                      fontSize: "large",
-                      fontWeight: "bold",
-                      color: "darkslategrey"
-                    }}
-                    href="/products/sell"
-                  >
-                    Sell Products
-                  </a>
-                </Menu.Item>
-                <Menu.Item>
-                  <a
-                    style={{
-                      fontSize: "large",
-                      fontWeight: "bold",
-                      color: "darkslategrey"
-                    }}
-                    href="/products/buy"
-                  >
-                    Buy Products
-                  </a>
-                </Menu.Item>
-                <Menu.Item>
-                  <a
-                    style={{
-                      fontSize: "large",
-                      fontWeight: "bold",
-                      color: "darkslategrey"
-                    }}
-                    href="/products/view"
-                  >
-                    View My Products
-                  </a>
-                </Menu.Item>
-                <Menu.Item position="right">
-                  <Button as="a" inverted={!fixed}>
-                    Log in
-                  </Button>
-                  <Button
-                    as="a"
-                    inverted={!fixed}
-                    primary={fixed}
-                    style={{ marginLeft: "0.5em" }}
-                  >
-                    Sign Up
-                  </Button>
-                </Menu.Item>
-              </Container>
+             <MenuBar/>
             </Menu>
 
           </Segment>
