@@ -13,6 +13,7 @@ import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
 import { resolve } from "url";
+import MenuBarLayout from "../../components/MenuBarLayout"
 
 const API_URL = "http://localhost:5678/books";
 
@@ -137,13 +138,7 @@ class AddProduct extends React.Component {
     const showStage2 = slotReserved && !dataUploaded;
     const showStage3 = slotReserved && dataUploaded;
     return (
-      <Layout>
-        <Link href="/">
-          <Button>Home</Button>
-        </Link>
-
-        <hr />
-
+      <MenuBarLayout>
         <Header as="h1">Add Product</Header>
 
         <Segment disabled={!showStage1}>
@@ -237,7 +232,7 @@ class AddProduct extends React.Component {
             <span style={{ color: "red" }}>{bookURL}</span>
           </p>
         </Segment>
-      </Layout>
+      </MenuBarLayout>
     );
   }
 }

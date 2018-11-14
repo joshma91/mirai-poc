@@ -7,11 +7,6 @@ import MenuBarLayout from "../../components/MenuBarLayout";
 
 export default () => (
   <MenuBarLayout>
-    <Link href="/">
-      <Button>Home</Button>
-    </Link>
-
-    <hr />
 
     <Header as="h1">My Products</Header>
 
