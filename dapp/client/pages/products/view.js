@@ -62,7 +62,7 @@ class ViewProducts extends React.Component {
   render() {
     const { productIds } = this.state;
     return (
-      <MenuBarLayout>
+      <MenuBarLayout accounts={this.props.accounts}>
         <Header as="h1">My Products</Header>
         {productIds ? this.renderProducts() : "Loading..."}
       </MenuBarLayout>
@@ -73,7 +73,7 @@ class ViewProducts extends React.Component {
 export default () => (
   <Web3Container
     contractJSON={MiraiOwnershipJSON}
-    renderLoading={() => <div>Loading Page...</div>}
+    renderLoading={() => <ViewProducts/>}
     render={({ web3, accounts, contract }) => (
       <ViewProducts accounts={accounts} contract={contract} web3={web3} />
     )}

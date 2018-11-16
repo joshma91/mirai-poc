@@ -14,6 +14,7 @@ import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
 import { resolve } from "url";
 import MenuBarLayout from "../../components/MenuBarLayout"
+import "../../style.css"
 
 const API_URL = "http://localhost:5678/books";
 
@@ -138,7 +139,7 @@ class AddProduct extends React.Component {
     const showStage2 = slotReserved && !dataUploaded;
     const showStage3 = slotReserved && dataUploaded;
     return (
-      <MenuBarLayout>
+      <MenuBarLayout accounts={this.props.accounts}>
         <Header as="h1">Add Product</Header>
 
         <Segment disabled={!showStage1}>
@@ -240,7 +241,7 @@ class AddProduct extends React.Component {
 export default () => (
   <Web3Container
     contractJSON={MiraiCoreJSON}
-    renderLoading={() => <div>Loading Page...</div>}
+    renderLoading={() =>  <AddProduct/>}
     render={({ web3, accounts, contract }) => (
       <AddProduct accounts={accounts} contract={contract} web3={web3} />
     )}

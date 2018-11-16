@@ -53,6 +53,7 @@ const HomepageHeading = ({ mobile }) => (
       Get Started
       <Icon name="right arrow" />
     </Button>
+    <div className="example">Hello World!</div>
   </Container>
 );
 
