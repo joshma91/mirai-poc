@@ -12,7 +12,7 @@ import logo from "../mirai.svg";
 import "../style.css";
 
 const MetaMaskModal = () => (
-  <Modal
+  <Modal basic
     size={"tiny"}
     trigger={
       <Button style={{ color: "#EFEEE9", backgroundColor: "#6b7f87" }}>
@@ -21,7 +21,7 @@ const MetaMaskModal = () => (
       </Button>
     }
   >
-    <Modal.Header style={{ fontSize:"1.6em", color: "slategrey"}}>
+    <Modal.Header style={{ fontSize:"1.6em", color: "#EFEEE9"}}>
     <Image
         style={{
           display: "-webkit-inline-box",
@@ -56,7 +56,7 @@ const MetaMaskModal = () => (
           <Grid.Row>
             <Grid.Column>
             <h3 style={{ color: "#00B6E4"}}>
-              Click <a src="https://metamask.io/">here </a>to install
+              Click <a href="https://metamask.io/">here </a>to install
             </h3>
             </Grid.Column>
           </Grid.Row>
