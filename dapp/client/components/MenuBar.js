@@ -12,7 +12,13 @@ import logo from "../mirai.svg";
 import "../style.css";
 
 const MetaMaskModal = () => (
-  <Modal trigger={<Button>Show Modal</Button>}>
+  <Modal
+    trigger={
+      <Button style={{color:"#EFEEE9",backgroundColor:"#6b7f87"}}>
+        Get Metamask  <Image style={{display:"inline-block"}} src="/static/metamask.png" />
+      </Button>
+    }
+  >
     <Modal.Header>Select a Photo</Modal.Header>
     <Modal.Content image>
       <Image
@@ -93,7 +99,7 @@ export default class MenuBar extends React.Component {
             </Menu.Item>
             <Menu.Item position="right">
               {this.props.accounts == undefined ? (
-                <Button> nah </Button>
+                <MetaMaskModal />
               ) : (
                 <div>
                   {" "}
