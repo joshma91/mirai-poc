@@ -25,6 +25,10 @@ app.get("/books", async (req, res) => {
   return res.sendStatus(404);
 });
 
+app.get("/test", async (req, res) => {
+  return res.status(200).json({ key: "it's working" });
+});
+
 app.post("/books", async (req, res) => {
   const { bookId, bookTitle } = req.body;
   const storageId = await addBook({ bookId, bookTitle });
