@@ -17,6 +17,7 @@ import {
   Sidebar,
   Visibility
 } from "semantic-ui-react";
+import 'semantic-ui-css/semantic.min.css';
 import MenuBar from "../components/MenuBar"
 import logo from "../mirai.svg"
 import "../style.css";
@@ -68,7 +69,7 @@ class HomePage extends Component {
       <Responsive>
         <Visibility style={{backgroundColor:"#EFEEE9", height:"-webkit-fill-available"}}>
            <MenuBar accounts={accounts}/>
-          <video loop autoPlay style={{width:"100%", height:"100%"}}>
+          <video loop autoPlay muted style={{width:"100%", height:"100%"}}>
               <source
                 src="https://firebasestorage.googleapis.com/v0/b/mirai-poc.appspot.com/o/Productive-Morning.mp4?alt=media&token=db19bf02-75ec-4911-80bd-0fbbe6e67cfa"
                 type="video/mp4"
