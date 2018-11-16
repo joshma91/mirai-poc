@@ -20,6 +20,8 @@ import {
 import MenuBar from "../components/MenuBar"
 import logo from "../mirai.svg"
 import "../style.css";
+import Web3Container from "../lib/Web3Container"
+import MiraiCoreJSON from "../lib/contracts/MiraiCore.json";
 
 /* eslint-disable react/no-multi-comp */
 /* Heads up! HomepageHeading uses inline styling, however it's not the best practice. Use CSS or styled components for
@@ -63,7 +65,7 @@ class HomePage extends Component {
 
     return (
       <Responsive>
-        <Visibility>
+        <Visibility style={{backgroundColor:"#EFEEE9", height:"-webkit-fill-available"}}>
            <MenuBar />
           <video loop autoPlay style={{width:"100%", height:"100%"}}>
               <source
@@ -77,15 +79,14 @@ class HomePage extends Component {
     );
   }
 }
-export default HomePage;
 
-// export default () => (
-//   <Web3Container
-//     contractJSON={MiraiCoreJSON}
-//     renderLoading={() => <div>Loading Page...</div>}
-//     render={({ web3, accounts, contract }) => (
-//       <BuyProducts accounts={accounts} contract={contract} web3={web3} />
-//     )}
-//   />
-// );
+export default () => (
+  <Web3Container
+    contractJSON={MiraiCoreJSON}
+    renderLoading={() => <HomePage />}
+    render={({ web3, accounts, contract }) => (
+      <HomePage accounts={accounts} contract={contract} web3={web3} />
+    )}
+  />
+);
 
