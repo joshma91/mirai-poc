@@ -4,9 +4,13 @@ import { Modal, Header, Button, List, Icon, Form } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 import MenuBar from "../../components/MenuBar";
 import MenuBarLayout from "../../components/MenuBarLayout";
+import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
+import Web3Container from "../../lib/Web3Container"
 
-export default () => (
-  <MenuBarLayout>
+class Sell extends React.Component {
+ render () {
+   return(
+    <MenuBarLayout accounts={this.props.accounts}>
 
     <Header as="h1">My Products</Header>
 
@@ -16,4 +20,16 @@ export default () => (
       <Button>Add Product</Button>
     </Link>
   </MenuBarLayout>
+   )
+ }
+}
+
+export default () => (
+  <Web3Container
+    contractJSON={MiraiCoreJSON}
+    renderLoading={() =>  <Sell/>}
+    render={({ web3, accounts, contract }) => (
+      <Sell accounts={accounts} contract={contract} web3={web3} />
+    )}
+  />
 );

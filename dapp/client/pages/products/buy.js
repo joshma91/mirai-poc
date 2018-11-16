@@ -49,7 +49,7 @@ class BuyProducts extends React.Component {
   render() {
     const { productIds } = this.state;
     return (
-      <MenuBarLayout>
+      <MenuBarLayout accounts={this.props.accounts}>
         <Header as="h1">Products</Header>
         {productIds ? this.renderProducts() : "Loading..."}
       </MenuBarLayout>
@@ -60,7 +60,7 @@ class BuyProducts extends React.Component {
 export default () => (
   <Web3Container
     contractJSON={MiraiCoreJSON}
-    renderLoading={() => <div>Loading Page...</div>}
+    renderLoading={() => <BuyProducts/>}
     render={({ web3, accounts, contract }) => (
       <BuyProducts accounts={accounts} contract={contract} web3={web3} />
     )}
