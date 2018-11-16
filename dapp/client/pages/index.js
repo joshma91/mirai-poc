@@ -62,11 +62,12 @@ const HomepageHeading = ({ mobile }) => (
  */
 class HomePage extends Component {
   render() {
+    const { web3, accounts, contract} = this.props
 
     return (
       <Responsive>
         <Visibility style={{backgroundColor:"#EFEEE9", height:"-webkit-fill-available"}}>
-           <MenuBar />
+           <MenuBar accounts={accounts}/>
           <video loop autoPlay style={{width:"100%", height:"100%"}}>
               <source
                 src="https://firebasestorage.googleapis.com/v0/b/mirai-poc.appspot.com/o/Productive-Morning.mp4?alt=media&token=db19bf02-75ec-4911-80bd-0fbbe6e67cfa"
