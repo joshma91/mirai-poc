@@ -4,37 +4,99 @@ import {
   Button,
   Menu,
   Segment,
-  Link,
   Header,
-  Modal
+  Modal,
+  Grid
 } from "semantic-ui-react";
 import logo from "../mirai.svg";
 import "../style.css";
 
 const MetaMaskModal = () => (
   <Modal
+    size={"tiny"}
     trigger={
-      <Button style={{color:"#EFEEE9",backgroundColor:"#6b7f87"}}>
-        Get Metamask  <Image style={{display:"inline-block"}} src="/static/metamask.png" />
+      <Button style={{ color: "#EFEEE9", backgroundColor: "#6b7f87" }}>
+        Get Metamask{" "}
+        <Image style={{ display: "inline-block" }} src="/static/metamask.png" />
       </Button>
     }
   >
-    <Modal.Header>Select a Photo</Modal.Header>
-    <Modal.Content image>
-      <Image
-        wrapped
-        size="medium"
-        src="https://react.semantic-ui.com/images/avatar/large/rachel.png"
+    <Modal.Header style={{ fontSize:"1.6em", color: "slategrey"}}>
+    <Image
+        style={{
+          display: "-webkit-inline-box",
+          margin: "-10px",
+          paddingRight:"20px",
+          textAlign: "center"
+        }}
+        size="tiny"
+        src={logo}
       />
+      Welcome! Let's get you set up to use Mirai{" "}
+    </Modal.Header>
+    <Modal.Content image style={{ paddingLeft: "60px" }}>
       <Modal.Description>
-        <Header>Default Profile Image</Header>
-        <p>
-          We've found the following gravatar image associated with your e-mail
-          address.
-        </p>
-        <p>Is it okay to use this photo?</p>
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column>
+              <Header
+                as="h2"
+                content="Install and Setup MetaMask"
+                className="modalText"
+                style={{ color: "#00B6E4", marginBottom: "-20px" }}
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Image
+                style={{ display: "inline-block" }}
+                src="/static/metamask.png"
+              />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+            <h3 style={{ color: "#00B6E4"}}>
+              Click <a src="https://metamask.io/">here </a>to install
+            </h3>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column>
+              <Header
+                as="h2"
+                content="Unlock your MetaMask"
+                className="modalText"
+                style={{ color: "#00B6E4", marginBottom: "-20px" }}
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Image
+                style={{ display: "inline-block" }}
+                src="/static/metamask.png"
+              />
+            </Grid.Column>
+          </Grid.Row>
+
+        </Grid>
+
+         <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column>
+              <Header
+                as="h2"
+                content="Connect to the Kovan Ethereum network"
+                className="modalText"
+                style={{ color: "#00B6E4" }}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+
       </Modal.Description>
     </Modal.Content>
+    <div />
   </Modal>
 );
 
