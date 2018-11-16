@@ -1,4 +1,7 @@
 {
   "presets": ["next/babel"],
-  "plugins": []
+  
+  "plugins": [
+    "styled-jsx/babel"
+  ]
 }
