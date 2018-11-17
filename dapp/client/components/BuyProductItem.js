@@ -11,9 +11,9 @@ import {
 
 import getContract from "../lib/getContract";
 import MiraiOwnershipJSON from "../lib/contracts/MiraiOwnership.json";
-import DSTokenJSON from "../lib/contracts/DSToken.json"
+import DSTokenJSON from "../lib/contracts/DSToken.json";
 
-const API_URL = "http://localhost:5678/books";
+const API_URL = "https://mirai-server.now.sh/books";
 
 export default class BuyProductItem extends React.Component {
   state = { product: null };
@@ -26,28 +26,28 @@ export default class BuyProductItem extends React.Component {
       .call({ from: accounts[0] });
 
     const title = await fetch(`${API_URL}?bookId=${id}`)
-      .then(res => res.text())
-      .then(text => JSON.parse(text).bookTitle);
+      .then(res => {
+        return res.text();
+      })
+      .then(text => {
+        if (text != "Not Found") return JSON.parse(text).bookTitle;
+      });
 
-    this.setState({ product: { ...product, title } });
+    if (title != undefined) {
+      this.setState({ product: { ...product, title } });
+    }
   };
 
   requestPOP = async () => {
     const { price } = this.state.product;
     const { web3, accounts, id } = this.props;
-    const ownershipContract = await getContract(
-      web3,
-      MiraiOwnershipJSON
-    );
+    const ownershipContract = await getContract(web3, MiraiOwnershipJSON);
 
-    const daiContract = await getContract(
-      web3,
-      DSTokenJSON
-    )
+    const daiContract = await getContract(web3, DSTokenJSON);
 
     await daiContract.methods
-    .approve(ownershipContract._address, price)
-    .send({ from: accounts[0], gas: 3000000 });
+      .approve(ownershipContract._address, price)
+      .send({ from: accounts[0], gas: 3000000 });
 
     await ownershipContract.methods
       .buyPOP(id.toString(), price)
@@ -59,7 +59,7 @@ export default class BuyProductItem extends React.Component {
 
   render() {
     const { product } = this.state;
-    if (!product) return <Loader active />;
+    if (!product) return null;
     return (
       <div className="wrapper">
         <img

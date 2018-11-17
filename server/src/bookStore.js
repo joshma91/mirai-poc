@@ -10,7 +10,7 @@ const firebase = admin.initializeApp({
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 });
 
-const ref = firebase.database().ref("books4");
+const ref = firebase.database().ref("books6");
 const bucket = firebase.storage().bucket();
 
 const getBook = async bookId => {

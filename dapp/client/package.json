@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "link-contracts": "cd lib && ln -s ../../build/contracts contracts",
+    "copy-contracts": "cp -r ../build/contracts ./lib", 
     "export": "npm run build && next export"
   },
   "keywords": [],

@@ -3,7 +3,7 @@ import {
 
 } from "semantic-ui-react";
 
-const API_URL = "http://localhost:5678";
+const API_URL = "https://mirai-server.now.sh";
 
 export default class BuyProductItem extends React.Component {
   state = { title: null, challenge: null, signature: null };
