@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Header, Button } from "semantic-ui-react";
+import { Header, Button, Loader } from "semantic-ui-react";
 
 import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
@@ -64,7 +64,7 @@ class ViewProducts extends React.Component {
     const { productIds } = this.state;
     return (
       <MenuBarLayout accounts={this.props.accounts}>
-        <Header as="h1">My Products</Header>
+        <Header as="h1">My Purchased Books</Header>
         {productIds ? this.renderProducts() : "Loading..."}
       </MenuBarLayout>
     );
@@ -74,7 +74,10 @@ class ViewProducts extends React.Component {
 export default () => (
   <Web3Container
     contractJSON={MiraiOwnershipJSON}
-    renderLoading={() => <ViewProducts/>}
+    renderLoading={() =>       <MenuBarLayout>
+      <Header as="h1">My Purchased Books</Header>
+      <Loader active />
+    </MenuBarLayout>}
     render={({ web3, accounts, contract }) => (
       <ViewProducts accounts={accounts} contract={contract} web3={web3} />
     )}

@@ -28,7 +28,7 @@ const getBook = async bookId => {
   return false;
 };
 
-const addBook = async ({ bookId, bookTitle }) => {
+const addBook = async ({ bookId, bookTitle, secret }) => {
   // check if the book already exists. if so, exit
   const bookRef = await ref
     .orderByChild("bookId")
@@ -40,7 +40,8 @@ const addBook = async ({ bookId, bookTitle }) => {
 
   const book = {
     bookId,
-    bookTitle
+    bookTitle,
+    secret
   };
 
   const newBook = await ref.push(book);
@@ -48,9 +49,12 @@ const addBook = async ({ bookId, bookTitle }) => {
   const id = newBook.path.pieces_[1];
   console.log(id);
 
-  return id;
+  const update = {[id]: {...book, secret: id}}
+  console.log("update", update)
 
-  
+  const res = await ref.update(update)
+
+  return id;
 };
 
 const getSignedUrl = async (storageId) => {

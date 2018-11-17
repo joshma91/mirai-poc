@@ -52,7 +52,8 @@ class AddProduct extends React.Component {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         bookId: bookId,
-        bookTitle: bookTitle
+        bookTitle: bookTitle,
+        secret: `SECRET RESROUCE #${bookId}`
       })
     })
     if (response.status !=200) throw Error(response.message)
@@ -115,7 +116,6 @@ class AddProduct extends React.Component {
 
       const signedUrl = await this.uploadDataStub();
       const res = await this.uploadBookFile(signedUrl);
-    
       if (res.status == 200) {
         this.setState({
           dataUploaded: true,
