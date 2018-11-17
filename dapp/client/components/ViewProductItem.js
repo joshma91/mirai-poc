@@ -52,7 +52,11 @@ export default class BuyProductItem extends React.Component {
     const secret = await fetch(
       `${API_URL}/auth/${challenge[1].value}/${signature}?bookId=${id}`
     ).then(res => res.text())
-    .then(text => JSON.parse(text).secret);
+    .then(text => {
+      console.log(text)
+      return JSON.parse(text).secret
+    })
+      
 
     alert("You've revealed the secret: " + secret)
   };

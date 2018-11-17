@@ -57,7 +57,7 @@ class BuyProducts extends React.Component {
     const { productIds } = this.state;
     return (
       <MenuBarLayout accounts={this.props.accounts}>
-        <Header as="h1">Products</Header>
+        <Header as="h1">Buy Books</Header>
         {productIds ? this.renderProducts() : <Loader active />}
       </MenuBarLayout>
     );
@@ -69,7 +69,7 @@ export default () => (
     contractJSON={MiraiCoreJSON}
     renderLoading={() => (
       <MenuBarLayout>
-        <Header as="h1">Products</Header>
+        <Header as="h1">Buy Books</Header>
         <Loader active />
       </MenuBarLayout>
     )}
