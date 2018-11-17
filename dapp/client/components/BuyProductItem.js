@@ -11,7 +11,6 @@ import {
 
 import getContract from "../lib/getContract";
 import MiraiOwnershipJSON from "../lib/contracts/MiraiOwnership.json";
-import DSTokenJSON from "../lib/contracts/DSToken.json";
 
 const API_URL = "https://mirai-server.now.sh/books";
 
@@ -39,19 +38,13 @@ export default class BuyProductItem extends React.Component {
   };
 
   requestPOP = async () => {
-    const { price } = this.state.product;
+    const { price, owner } = this.state.product;
     const { web3, accounts, id } = this.props;
     const ownershipContract = await getContract(web3, MiraiOwnershipJSON);
 
-    const daiContract = await getContract(web3, DSTokenJSON);
-
-    await daiContract.methods
-      .approve(ownershipContract._address, price)
-      .send({ from: accounts[0], gas: 3000000 });
-
     await ownershipContract.methods
-      .buyPOP(id.toString(), price)
-      .send({ from: accounts[0], gas: 3000000 })
+      .buyPOP(id.toString(), owner)
+      .send({value: price*1000000000000000000, from: accounts[0], gas: 3000000 })
       .on("receipt", function(receipt) {
         console.log(receipt.events.POPIssued.returnValues);
       });
