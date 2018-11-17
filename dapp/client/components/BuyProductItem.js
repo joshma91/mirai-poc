@@ -70,7 +70,7 @@ export default class BuyProductItem extends React.Component {
         <div className="title">{product.title}</div>
         <Button as="div" labelPosition="left">
           <Label as="a" basic pointing="right">
-            {product.price} DAI
+            {product.price} ETH
           </Label>
           <Button icon onClick={this.requestPOP}>
             <Icon name="shop" />
