@@ -15,6 +15,7 @@
   "homepage": "https://github.com/adrianmcli/truffle-react#readme",
   "dependencies": {
     "openzeppelin-solidity": "1.10.0",
+    "truffle": "^4.1.14",
     "web3": "1.0.0-beta.34"
   },
   "devDependencies": {

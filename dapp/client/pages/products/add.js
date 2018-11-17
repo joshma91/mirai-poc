@@ -16,7 +16,7 @@ import { resolve } from "url";
 import MenuBarLayout from "../../components/MenuBarLayout"
 import "../../style.css"
 
-const API_URL = "http://localhost:5678/books";
+const API_URL = "https://mirai-server.now.sh/books";
 
 class AddProduct extends React.Component {
   state = {
@@ -58,7 +58,6 @@ class AddProduct extends React.Component {
     if (response.status !=200) throw Error(response.message)
     const text = await response.text()
     return JSON.parse(text).signedUrl
-
   };
 
   uploadBookFile = signedUrl => {
@@ -151,7 +150,6 @@ class AddProduct extends React.Component {
             In order to upload your book, you must first reserve your slot on
             the blockchain by paying into the contract.
           </p>
-          <p>The current cost for one product upload is: 1 MRI</p>
           <Form>
             <Form.Input
               label="Price"
