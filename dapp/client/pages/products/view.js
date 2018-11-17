@@ -12,6 +12,7 @@ class ViewProducts extends React.Component {
 
   componentDidMount = async () => {
     const { accounts, contract } = this.props;
+    document.title = "Mirai - View Products"    
 
     const tokenIds = await contract.methods
       .getTokensByOwner(accounts[0])

@@ -9,10 +9,9 @@ import MenuBarLayout from "../../components/MenuBarLayout";
 
 class BuyProducts extends React.Component {
   state = { productIds: null };
-
   componentDidMount = async () => {
     const { accounts, contract } = this.props;
-
+    document.title = "Mirai - Buy"
     const allProducts = await contract.methods
       .getAvailableProductIds()
       .call({ from: accounts[0] });

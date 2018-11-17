@@ -19,7 +19,7 @@ import {
 } from "semantic-ui-react";
 import 'semantic-ui-css/semantic.min.css';
 import MenuBar from "../components/MenuBar"
-import logo from "../mirai.svg"
+import logo from "../static/mirai.svg"
 import "../style.css";
 import Web3Container from "../lib/Web3Container"
 import MiraiCoreJSON from "../lib/contracts/MiraiCore.json";
@@ -62,6 +62,9 @@ const HomepageHeading = ({ mobile }) => (
  * It can be more complicated, but you can create really flexible markup.
  */
 class HomePage extends Component {
+  componentDidMount(){
+    document.title = "Mirai - Welcome!"
+  }
   render() {
     const { web3, accounts, contract} = this.props
 

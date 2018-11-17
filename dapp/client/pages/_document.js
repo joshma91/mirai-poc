@@ -1,5 +1,4 @@
 import Document, { Head, Main, NextScript } from 'next/document'
-
 import 'semantic-ui-css/semantic.min.css'
 
 export default class MyDocument extends Document {

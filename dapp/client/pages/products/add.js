@@ -31,6 +31,9 @@ class AddProduct extends React.Component {
     bookURL: null,
     bookFile: null
   };
+  componentDidMount(){
+    document.title = "Mirai - Add a Product"
+  }
 
   setBookTitle = e => this.setState({ bookTitle: e.target.value });
 
