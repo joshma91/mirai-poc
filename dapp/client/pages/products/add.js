@@ -286,13 +286,16 @@ class AddProduct extends React.Component {
             <Grid.Row>
               <Grid.Column>
               <aside>
-                <h3>Dropped file</h3>
+                
                 {bookFile && (
+                  <div>
+                  <h3>Dropped file</h3>
                   <ul>
                     <li key={bookFile.name}>
                       {bookFile.name} - {bookFile.size/1000000} MB
                     </li>
                   </ul>
+                  </div>
                 )}
               </aside>
               </Grid.Column>
@@ -301,8 +304,6 @@ class AddProduct extends React.Component {
                 </Grid.Column>
             </Grid.Row>
           </Grid>
-
-          <Divider hidden />
           <Button
             onClick={this.uploadBookData}
             loading={dataUploadLoading}
