@@ -5,7 +5,8 @@ import {
   Button,
   Input,
   Divider,
-  Form
+  Form,
+  Grid
 } from "semantic-ui-react";
 import Dropzone from "react-dropzone";
 
@@ -13,8 +14,49 @@ import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
 import { resolve } from "url";
-import MenuBarLayout from "../../components/MenuBarLayout"
-import "../../style.css"
+import MenuBarLayout from "../../components/MenuBarLayout";
+import ImageUpload from "../../components/ImageUpload";
+import "../../style.css";
+
+const thumbsContainer = {
+  display: "flex",
+  flexDirection: "row",
+  flexWrap: "wrap",
+  marginTop: 16
+};
+
+const thumb = {
+  display: "inline-flex",
+  marginBottom: 8,
+  marginRight: 8,
+  width: 100,
+  height: 100,
+  padding: 4,
+  boxSizing: "border-box"
+};
+
+const thumbInner = {
+  display: "flex",
+  minWidth: 0,
+  overflow: "hidden"
+};
+
+const img = {
+  display: "block",
+  width: "auto",
+  height: "100%"
+};
+
+const dropzone = {
+  width: "200px",
+  height: "100px",
+  textAlign: "center",
+  borderColor: "rgb(86, 155, 183)",
+  borderWidth: "1px",
+  borderStyle: "dashed",
+  borderRadius: "5px",
+  paddingTop: "10px"
+};
 
 const API_URL = "https://mirai-server.now.sh/books";
 
@@ -29,10 +71,11 @@ class AddProduct extends React.Component {
     reserveSlotLoading: false,
     dataUploadLoading: false,
     bookURL: null,
-    bookFile: null
+    bookFile: null,
+    imgFile: []
   };
-  componentDidMount(){
-    document.title = "Mirai - Add a Product"
+  componentDidMount() {
+    document.title = "Mirai - Add a Product";
   }
 
   setBookTitle = e => this.setState({ bookTitle: e.target.value });
@@ -45,6 +88,15 @@ class AddProduct extends React.Component {
     this.setState({ bookFile: acceptedFiles[0] });
   };
 
+  imgOnDrop(files) {
+    this.setState({
+      imgFile: files.map(file => ({
+        ...file,
+        preview: URL.createObjectURL(file)
+      }))
+    });
+  }
+
   uploadDataStub = async () => {
     const { bookId, bookTitle } = this.state;
     const response = await fetch(API_URL, {
@@ -55,10 +107,10 @@ class AddProduct extends React.Component {
         bookTitle: bookTitle,
         secret: `SECRET RESROUCE #${bookId}`
       })
-    })
-    if (response.status !=200) throw Error(response.message)
-    const text = await response.text()
-    return JSON.parse(text).signedUrl
+    });
+    if (response.status != 200) throw Error(response.message);
+    const text = await response.text();
+    return JSON.parse(text).signedUrl;
   };
 
   uploadBookFile = signedUrl => {
@@ -113,7 +165,6 @@ class AddProduct extends React.Component {
     const { bookId, bookTitle } = this.state;
 
     this.setState({ dataUploadLoading: true }, async () => {
-
       const signedUrl = await this.uploadDataStub();
       const res = await this.uploadBookFile(signedUrl);
       if (res.status == 200) {
@@ -135,8 +186,19 @@ class AddProduct extends React.Component {
       reserveSlotLoading,
       dataUploadLoading,
       bookURL,
-      bookFile
+      bookFile,
+      imgFile
     } = this.state;
+
+    console.log(imgFile);
+    const thumbs = imgFile.map(file => (
+      <div style={thumb}>
+        <div style={thumbInner}>
+          <img src={file.preview} style={img} />
+        </div>
+      </div>
+    ));
+
     const showStage1 = slotReserved === false;
     const showStage2 = slotReserved && !dataUploaded;
     const showStage3 = slotReserved && dataUploaded;
@@ -188,32 +250,58 @@ class AddProduct extends React.Component {
             onChange={this.setBookTitle}
             disabled={!showStage2}
           />
-          <Dropzone
-            onDrop={this.onDrop}
-            accept="application/pdf"
-            disabled={!showStage2}
-            multiple={false}
-          >
-            {({ isDragActive, isDragReject }) => {
-              if (isDragActive) {
-                return "All files will be accepted";
-              }
-              if (isDragReject) {
-                return "Some files will be rejected";
-              }
-              return "Dropping some files here...";
-            }}
-          </Dropzone>
-          <aside>
-            <h2>Dropped files</h2>
-            {bookFile && (
-              <ul>
-                <li key={bookFile.name}>
-                  {bookFile.name} - {bookFile.size} bytes
-                </li>
-              </ul>
-            )}
-          </aside>
+          <br />
+          <Grid columns={2} style={{ margin: "0px", width: "60%" }}>
+            <Grid.Row>
+              <Grid.Column>
+                <Header as="h3" content="Upload Book" />
+              </Grid.Column>
+              <Grid.Column>
+                <Header as="h3" content="Upload Book Cover" />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column>
+                <Dropzone
+                  onDrop={this.onDrop}
+                  accept="application/pdf"
+                  disabled={!showStage2}
+                  multiple={false}
+                  style={dropzone}
+                >
+                  Drop your book here or click to upload. Only PDFs
+                </Dropzone>
+              </Grid.Column>
+              <Grid.Column>
+                <Dropzone
+                  accept="image/*"
+                  onDrop={this.imgOnDrop.bind(this)}
+                  multiple={false}
+                  disabled={!showStage2}
+                  style={dropzone}>
+                  Drop your book cover here or click to upload. Only images
+                  </Dropzone>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column>
+              <aside>
+                <h3>Dropped file</h3>
+                {bookFile && (
+                  <ul>
+                    <li key={bookFile.name}>
+                      {bookFile.name} - {bookFile.size/1000000} MB
+                    </li>
+                  </ul>
+                )}
+              </aside>
+              </Grid.Column>
+              <Grid.Column>
+              <aside style={thumbsContainer}>{thumbs}</aside>
+                </Grid.Column>
+            </Grid.Row>
+          </Grid>
+
           <Divider hidden />
           <Button
             onClick={this.uploadBookData}
@@ -242,7 +330,7 @@ class AddProduct extends React.Component {
 export default () => (
   <Web3Container
     contractJSON={MiraiCoreJSON}
-    renderLoading={() =>  <AddProduct/>}
+    renderLoading={() => <AddProduct />}
     render={({ web3, accounts, contract }) => (
       <AddProduct accounts={accounts} contract={contract} web3={web3} />
     )}
