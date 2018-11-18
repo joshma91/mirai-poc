@@ -103,7 +103,7 @@ class AddProduct extends React.Component {
     console.log(bookImage[0].file)
     formData.append("bookId", bookId)
     formData.append("bookTitle", bookTitle)
-    formData.append("bookImage", bookImage[0].file, "blah")
+    formData.append("bookImage", bookImage[0].file)
     formData.append("blah", "blah")
     formData.append("secret", "secre1t")
     const response = await fetch(API_URL, {
