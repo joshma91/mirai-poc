@@ -58,7 +58,7 @@ const dropzone = {
   paddingTop: "10px"
 };
 
-const API_URL = "https://mirai-server.now.sh/books";
+const API_URL = "http://localhost:5678/books";
 
 class AddProduct extends React.Component {
   state = {
@@ -100,9 +100,11 @@ class AddProduct extends React.Component {
   uploadDataStub = async () => {
     const { bookId, bookTitle, bookImage } = this.state;
     const formData = new FormData();
+    console.log(bookImage[0].file)
     formData.append("bookId", bookId)
     formData.append("bookTitle", bookTitle)
-    formData.append("bookImage", bookImage[0].file)
+    formData.append("bookImage", bookImage[0].file, "blah")
+    formData.append("blah", "blah")
     formData.append("secret", "secre1t")
     const response = await fetch(API_URL, {
       method: "post",

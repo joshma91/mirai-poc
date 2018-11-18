@@ -28,7 +28,7 @@ const getBook = async bookId => {
   return false;
 };
 
-const addBook = async ({ bookId, bookTitle, secret }) => {
+const addBook = async ({ bookId, bookTitle, bookImage }) => {
   // check if the book already exists. if so, exit
   const bookRef = await ref
     .orderByChild("bookId")
@@ -41,8 +41,9 @@ const addBook = async ({ bookId, bookTitle, secret }) => {
   const book = {
     bookId,
     bookTitle,
-    secret
+    bookImage
   };
+  console.log("book", book)
 
   const newBook = await ref.push(book);
   // this is the automatically generated id that will be used as the identifier in GCS

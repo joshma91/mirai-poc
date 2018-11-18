@@ -32,8 +32,9 @@ app.get("/test", async (req, res) => {
 });
 
 app.post("/books", upload.any(), async (req, res) => {
-  const { bookId, bookTitle, secret } = req.body;
-  const storageId = await addBook({ bookId, bookTitle, secret });
+  const { bookId, bookTitle } = req.body;
+  const bookImage = req.files[0]
+  const storageId = await addBook({ bookId, bookTitle, bookImage });
   const signedUrl = await getSignedUrl(storageId);
   if (signedUrl) {
     console.log(signedUrl);
