@@ -3,7 +3,7 @@ import {
 
 } from "semantic-ui-react";
 
-const API_URL = "http://localhost:5678";
+const API_URL = "https://mirai-server.now.sh";
 
 export default class BuyProductItem extends React.Component {
   state = { title: null, challenge: null, signature: null };
@@ -38,10 +38,11 @@ export default class BuyProductItem extends React.Component {
         params: [challenge, accounts[0]],
         from: accounts[0]
       },
-      (error, res) => {
+      async (error, res) => {
         if (error) return console.error(error);
         this.setState({ signature: res.result });
-        this.verifySignature();
+        const file = await this.verifySignature();
+        window.open(file)
       }
     );
   };
@@ -52,9 +53,11 @@ export default class BuyProductItem extends React.Component {
     const secret = await fetch(
       `${API_URL}/auth/${challenge[1].value}/${signature}?bookId=${id}`
     ).then(res => res.text())
-    .then(text => JSON.parse(text).secret);
-
-    alert("You've revealed the secret: " + secret)
+    .then(text => {
+      console.log(text)
+      return JSON.parse(text)
+    })
+    return secret.bookURL
   };
 
   render() {

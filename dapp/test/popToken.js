@@ -1,7 +1,6 @@
 const { getWeb3, getContractInstance } = require("./helpers");
 const web3 = getWeb3();
 const getInstance = getContractInstance(web3);
-const daiToken = getInstance("DSToken");
 const pop = getInstance("MiraiOwnership");
 
 contract("Testing MiraiOwnership contract", function(accounts) {

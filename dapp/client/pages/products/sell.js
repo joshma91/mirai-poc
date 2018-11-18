@@ -8,6 +8,10 @@ import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
 import Web3Container from "../../lib/Web3Container"
 
 class Sell extends React.Component {
+  componentDidMount(){
+    document.title = "Mirai - Sell"
+  }
+
  render () {
    return(
     <MenuBarLayout accounts={this.props.accounts}>
