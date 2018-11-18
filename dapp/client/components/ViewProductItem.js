@@ -38,10 +38,11 @@ export default class BuyProductItem extends React.Component {
         params: [challenge, accounts[0]],
         from: accounts[0]
       },
-      (error, res) => {
+      async (error, res) => {
         if (error) return console.error(error);
         this.setState({ signature: res.result });
-        this.verifySignature();
+        const file = await this.verifySignature();
+        window.open(file)
       }
     );
   };
@@ -54,11 +55,9 @@ export default class BuyProductItem extends React.Component {
     ).then(res => res.text())
     .then(text => {
       console.log(text)
-      return JSON.parse(text).secret
+      return JSON.parse(text)
     })
-      
-
-    alert("You've revealed the secret: " + secret)
+    return secret.bookURL
   };
 
   render() {
