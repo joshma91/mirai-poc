@@ -63,7 +63,7 @@ const getSignedUrl = async (storageId) => {
 
   const config = {
     action: "write",
-    expires: Date.now() + 3600,
+    expires: Date.now() + 10000,
     contentType: "application/pdf"
   };
 
@@ -71,4 +71,15 @@ const getSignedUrl = async (storageId) => {
   return signedUrl;
 }
 
-module.exports = { addBook, getBook, getSignedUrl };
+const retrieveBookURL = async (secret) => {
+  const bucketFile = bucket.file(secret);
+  const config = {
+    action: "read",
+    expires: Date.now() + 10000
+  };
+
+  const signedUrl = await bucketFile.getSignedUrl(config);
+  return signedUrl;
+}
+
+module.exports = { addBook, getBook, getSignedUrl, retrieveBookURL };
