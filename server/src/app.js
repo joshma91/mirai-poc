@@ -10,7 +10,7 @@ const metaAuth = new MetaAuth({
   banner: "Mirai Marketplace"
 });
 
-const { addBook, getBook, getSignedUrl } = require("./bookStore");
+const { addBook, getBook, getSignedUrl, retrieveBookURL } = require("./bookStore");
 
 app.use(cors());
 app.use(morgan("dev"));
@@ -30,8 +30,8 @@ app.get("/test", async (req, res) => {
 });
 
 app.post("/books", async (req, res) => {
-  const { bookId, bookTitle } = req.body;
-  const storageId = await addBook({ bookId, bookTitle });
+  const { bookId, bookTitle, secret } = req.body;
+  const storageId = await addBook({ bookId, bookTitle, secret });
   const signedUrl = await getSignedUrl(storageId);
   if (signedUrl) {
     console.log(signedUrl);
@@ -53,8 +53,10 @@ app.get("/auth/:MetaMessage/:MetaSignature", metaAuth, async (req, res) => {
     // Authentication is valid, assign JWT, etc.
     const { bookId } = req.query;
     const { secret } = await getBook(bookId);
+    const bookURL = await retrieveBookURL(secret)
+    console.log("download", bookURL)
     if (secret) {
-      return res.status(200).json({ secret });
+      return res.status(200).json({ bookURL });
     }
     return res.sendStatus(404);
   } else {

@@ -10,7 +10,7 @@ const firebase = admin.initializeApp({
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 });
 
-const ref = firebase.database().ref("books4");
+const ref = firebase.database().ref("books6");
 const bucket = firebase.storage().bucket();
 
 const getBook = async bookId => {
@@ -28,7 +28,7 @@ const getBook = async bookId => {
   return false;
 };
 
-const addBook = async ({ bookId, bookTitle }) => {
+const addBook = async ({ bookId, bookTitle, secret }) => {
   // check if the book already exists. if so, exit
   const bookRef = await ref
     .orderByChild("bookId")
@@ -40,7 +40,8 @@ const addBook = async ({ bookId, bookTitle }) => {
 
   const book = {
     bookId,
-    bookTitle
+    bookTitle,
+    secret
   };
 
   const newBook = await ref.push(book);
@@ -48,9 +49,12 @@ const addBook = async ({ bookId, bookTitle }) => {
   const id = newBook.path.pieces_[1];
   console.log(id);
 
-  return id;
+  const update = {[id]: {...book, secret: id}}
+  console.log("update", update)
 
-  
+  const res = await ref.update(update)
+
+  return id;
 };
 
 const getSignedUrl = async (storageId) => {
@@ -59,7 +63,7 @@ const getSignedUrl = async (storageId) => {
 
   const config = {
     action: "write",
-    expires: Date.now() + 3600,
+    expires: Date.now() + 10000,
     contentType: "application/pdf"
   };
 
@@ -67,4 +71,15 @@ const getSignedUrl = async (storageId) => {
   return signedUrl;
 }
 
-module.exports = { addBook, getBook, getSignedUrl };
+const retrieveBookURL = async (secret) => {
+  const bucketFile = bucket.file(secret);
+  const config = {
+    action: "read",
+    expires: Date.now() + 10000
+  };
+
+  const signedUrl = await bucketFile.getSignedUrl(config);
+  return signedUrl;
+}
+
+module.exports = { addBook, getBook, getSignedUrl, retrieveBookURL };

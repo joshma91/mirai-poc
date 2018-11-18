@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { Image, Grid, Header, Button, List, Icon } from "semantic-ui-react";
+import {
+  Image,
+  Grid,
+  Header,
+  Button,
+  List,
+  Icon,
+  Loader
+} from "semantic-ui-react";
 
 import Layout from "../../components/Layout";
 import BuyProductItem from "../../components/BuyProductItem";
@@ -9,10 +17,9 @@ import MenuBarLayout from "../../components/MenuBarLayout";
 
 class BuyProducts extends React.Component {
   state = { productIds: null };
-
   componentDidMount = async () => {
     const { accounts, contract } = this.props;
-
+    document.title = "Mirai - Buy";
     const allProducts = await contract.methods
       .getAvailableProductIds()
       .call({ from: accounts[0] });
@@ -50,8 +57,8 @@ class BuyProducts extends React.Component {
     const { productIds } = this.state;
     return (
       <MenuBarLayout accounts={this.props.accounts}>
-        <Header as="h1">Products</Header>
-        {productIds ? this.renderProducts() : "Loading..."}
+        <Header as="h1">Buy Books</Header>
+        {productIds ? this.renderProducts() : <Loader active />}
       </MenuBarLayout>
     );
   }
@@ -60,7 +67,12 @@ class BuyProducts extends React.Component {
 export default () => (
   <Web3Container
     contractJSON={MiraiCoreJSON}
-    renderLoading={() => <BuyProducts/>}
+    renderLoading={() => (
+      <MenuBarLayout>
+        <Header as="h1">Buy Books</Header>
+        <Loader active />
+      </MenuBarLayout>
+    )}
     render={({ web3, accounts, contract }) => (
       <BuyProducts accounts={accounts} contract={contract} web3={web3} />
     )}

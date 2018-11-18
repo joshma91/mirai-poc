@@ -124,6 +124,10 @@ contract MiraiCore is Ownable {
     numberSold = _product.numberSold;
   }
   
+    /**
+   * @notice getAvailableProductIds returns all created product ids
+   * @return array of all availalbe product ids
+   */
   function getAvailableProductIds() public view returns (
     int[]
   ) {

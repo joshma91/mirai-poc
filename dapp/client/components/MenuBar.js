@@ -8,7 +8,7 @@ import {
   Modal,
   Grid
 } from "semantic-ui-react";
-import logo from "../mirai.svg";
+import logo from "../static/mirai.svg";
 import "../style.css";
 
 const MetaMaskModal = () => (

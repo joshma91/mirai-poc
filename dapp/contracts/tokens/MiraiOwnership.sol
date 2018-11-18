@@ -29,30 +29,17 @@ contract MiraiOwnership is ERC721Token {
   /**
   * @notice Makes a purchase of a product, issuing a proof of purchase token
   * @param _uri the string of the productId to purchase
-  * @param _price the purchase product of the product
+  * @param owner the owner of the product - who to send the ETH to
    */
-  function buyPOP(string _uri, uint256 _price) public {
-
-    _approveDaiTransfer(_price);
-
+  function buyPOP(string _uri, address owner) public payable {
+    
     uint256 newTokenId = super.totalSupply();
     super._mint(msg.sender, newTokenId);
 
     super._setTokenURI(newTokenId, _uri);
     emit POPIssued(newTokenId, msg.sender, _uri, block.timestamp);
-  }
 
-  /**
-  * @notice transfers a pre-approved amount of dai equal to the purchase price from the sender to this contract
-  * @param _price the purchase product of the product
-   */
-  function _approveDaiTransfer(uint256 _price) private returns (bool) {
-    
-    address daiTokenAddr = registry.getTokenAddressBySymbol("DAI");
-    ERC20 daiToken = ERC20(daiTokenAddr);
-
-    bool coinTransferSuccessful = daiToken.transferFrom(msg.sender, this, _price);
-    require(coinTransferSuccessful, "Transfer of coins from ERC20 contract unsuccessful");   
+    owner.transfer(msg.value);   
   }
 
     /**
