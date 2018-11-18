@@ -74,7 +74,7 @@ class HomePage extends Component {
            <MenuBar accounts={accounts}/>
           <video loop autoPlay muted style={{width:"100%", height:"100%"}}>
               <source
-                src="https://firebasestorage.googleapis.com/v0/b/mirai-poc.appspot.com/o/Productive-Morning.mp4?alt=media&token=db19bf02-75ec-4911-80bd-0fbbe6e67cfa"
+                src="https://firebasestorage.googleapis.com/v0/b/mirai-poc.appspot.com/o/Productive-Morning.mp4?alt=media&token=0570dc49-3594-40d6-ae37-14ad463002e9"
                 type="video/mp4"
               />
             </video>
