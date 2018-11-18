@@ -72,7 +72,7 @@ class AddProduct extends React.Component {
     dataUploadLoading: false,
     bookURL: null,
     bookFile: null,
-    imgFile: []
+    bookImage: []
   };
   componentDidMount() {
     document.title = "Mirai - Add a Product";
@@ -90,23 +90,23 @@ class AddProduct extends React.Component {
 
   imgOnDrop(files) {
     this.setState({
-      imgFile: files.map(file => ({
-        ...file,
+      bookImage: files.map(file => ({
+        file: file,
         preview: URL.createObjectURL(file)
       }))
     });
   }
 
   uploadDataStub = async () => {
-    const { bookId, bookTitle } = this.state;
+    const { bookId, bookTitle, bookImage } = this.state;
+    const formData = new FormData();
+    formData.append("bookId", bookId)
+    formData.append("bookTitle", bookTitle)
+    formData.append("bookImage", bookImage[0].file)
+    formData.append("secret", "secre1t")
     const response = await fetch(API_URL, {
       method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        bookId: bookId,
-        bookTitle: bookTitle,
-        secret: `SECRET RESROUCE #${bookId}`
-      })
+      body: formData
     });
     if (response.status != 200) throw Error(response.message);
     const text = await response.text();
@@ -187,11 +187,10 @@ class AddProduct extends React.Component {
       dataUploadLoading,
       bookURL,
       bookFile,
-      imgFile
+      bookImage
     } = this.state;
 
-    console.log(imgFile);
-    const thumbs = imgFile.map(file => (
+    const thumbs = bookImage.map(file => (
       <div style={thumb}>
         <div style={thumbInner}>
           <img src={file.preview} style={img} />

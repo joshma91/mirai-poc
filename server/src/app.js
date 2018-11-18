@@ -2,7 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
+const multer = require("multer");
 const app = express();
+const upload = multer()
 
 const MetaAuth = require("meta-auth");
 
@@ -29,7 +31,7 @@ app.get("/test", async (req, res) => {
   return res.status(200).json({ key: "it's working" });
 });
 
-app.post("/books", async (req, res) => {
+app.post("/books", upload.any(), async (req, res) => {
   const { bookId, bookTitle, secret } = req.body;
   const storageId = await addBook({ bookId, bookTitle, secret });
   const signedUrl = await getSignedUrl(storageId);
