@@ -20,16 +20,12 @@ export default class BuyProductItem extends React.Component {
 
   componentDidMount = async () => {
     const { contract, accounts, id } = this.props;
-    console.log(id)
-
     const product = await contract.methods
       .getProductById(id)
       .call({ from: accounts[0] });
 
     const title = await fetch(`${API_URL}?bookId=${id}`)
-      .then(res => {
-        return res.text();
-      })
+      .then(res => res.text())
       .then(text => {
         if (text != "Not Found") return JSON.parse(text).bookTitle;
       });
@@ -38,7 +34,6 @@ export default class BuyProductItem extends React.Component {
       this.setState({ product: { ...product, title } });
     }
     const imageURL = await getImage(id)
-    console.log(id, imageURL)
     if (imageURL != undefined) {
       this.setState({ imageURL });
     }
@@ -86,6 +81,7 @@ export default class BuyProductItem extends React.Component {
           }
           .product-image {
             width: 100%;
+            max-height:200px;
             max-width: 120px;
           }
           .title {
