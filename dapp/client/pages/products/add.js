@@ -72,10 +72,14 @@ class AddProduct extends React.Component {
     dataUploadLoading: false,
     bookURL: null,
     bookFile: null,
-    imgFile: []
+    imgFile: [],
+    ethUSD:""
   };
-  componentDidMount() {
+  async componentDidMount() {
     document.title = "Mirai - Add a Product";
+    const ethUSD = await fetch("https://api.coinmarketcap.com/v2/ticker/1027/").then(x => x.json()).then(x => x.data.quotes.USD.price)
+    console.log(ethUSD)
+    this.setState({ethUSD})
   }
 
   setBookTitle = e => this.setState({ bookTitle: e.target.value });
@@ -115,14 +119,14 @@ class AddProduct extends React.Component {
 
   uploadFile = (isBook, signedUrl) => {
     return new Promise((resolve, reject) => {
-      let file
-      if(isBook) {
+      let file;
+      if (isBook) {
         file = this.state.bookFile;
       } else {
-        file = this.state.imgFile[0].file
+        file = this.state.imgFile[0].file;
       }
-      console.log(signedUrl)
-      
+      console.log(signedUrl);
+
       const xhr = new XMLHttpRequest();
       xhr.open("PUT", signedUrl, true);
       xhr.onload = e => {
@@ -172,7 +176,7 @@ class AddProduct extends React.Component {
     const { bookId, bookTitle } = this.state;
 
     this.setState({ dataUploadLoading: true }, async () => {
-      const {bookSignedUrl, imageSignedUrl} = await this.uploadDataStub();
+      const { bookSignedUrl, imageSignedUrl } = await this.uploadDataStub();
       const res = await this.uploadFile(true, bookSignedUrl);
       const res2 = await this.uploadFile(false, imageSignedUrl);
       if (res.status == 200) {
@@ -195,7 +199,9 @@ class AddProduct extends React.Component {
       dataUploadLoading,
       bookURL,
       bookFile,
-      imgFile
+      imgFile,
+      bookPrice,
+      ethUSD
     } = this.state;
 
     const thumbs = imgFile.map(file => (
@@ -217,16 +223,18 @@ class AddProduct extends React.Component {
           <Header as="h2">1. Reserve a slot for your book</Header>
           <p>
             In order to upload your book, you must first reserve your slot on
-            the blockchain by paying into the contract.
+            the blockchain by calling the contract.
           </p>
           <Form>
             <Form.Input
-              label="Price"
+              label="Price (ETH)"
               type="number"
               value={this.state.bookPrice}
               onChange={this.setBookPrice}
               disabled={!showStage1}
-            />
+              style={{width:"200px", float:"left"}}
+            /> 
+            <span style={{float:"left"}}> {' '} = {(bookPrice && parseFloat(ethUSD*bookPrice).toFixed(2)) + ' '} USD </span>
             <Form.Checkbox
               label="Make this product available"
               defaultChecked
@@ -256,6 +264,7 @@ class AddProduct extends React.Component {
             value={this.state.bookTitle}
             onChange={this.setBookTitle}
             disabled={!showStage2}
+            style={{ width: "300px" }}
           />
           <br />
           <Grid columns={2} style={{ margin: "0px", width: "60%" }}>
@@ -285,30 +294,30 @@ class AddProduct extends React.Component {
                   onDrop={this.imgOnDrop.bind(this)}
                   multiple={false}
                   disabled={!showStage2}
-                  style={dropzone}>
+                  style={dropzone}
+                >
                   Drop your book cover here or click to upload. Only images
-                  </Dropzone>
+                </Dropzone>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
-              <aside>
-                
-                {bookFile && (
-                  <div>
-                  <h3>Dropped file</h3>
-                  <ul>
-                    <li key={bookFile.name}>
-                      {bookFile.name} - {bookFile.size/1000000} MB
-                    </li>
-                  </ul>
-                  </div>
-                )}
-              </aside>
+                <aside>
+                  {bookFile && (
+                    <div>
+                      <h3>Dropped file</h3>
+                      <ul>
+                        <li key={bookFile.name}>
+                          {bookFile.name} - {bookFile.size / 1000000} MB
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </aside>
               </Grid.Column>
               <Grid.Column>
-              <aside style={thumbsContainer}>{thumbs}</aside>
-                </Grid.Column>
+                <aside style={thumbsContainer}>{thumbs}</aside>
+              </Grid.Column>
             </Grid.Row>
           </Grid>
           <Button
