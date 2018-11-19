@@ -160,5 +160,12 @@ contract MiraiCore is Ownable {
     Product memory _product = products[_productId];
     _product.price = _newPrice;
     products[_productId] = _product;
+    emit PriceChanged(
+      _product.id,
+      _product.owner, 
+      _product.price,
+      _product.available,
+      _product.numberSold
+    );
   }
 }      

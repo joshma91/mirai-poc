@@ -13,7 +13,7 @@ import Layout from "../../components/Layout";
 import MenuBar from "../../components/MenuBar";
 import MenuBarLayout from "../../components/MenuBarLayout";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
-import ViewProductItem from "../../components/ViewProductItem";
+import EditProductItem from "../../components/EditProductItem";
 import Web3Container from "../../lib/Web3Container";
 
 class Sell extends React.Component {
@@ -30,12 +30,12 @@ class Sell extends React.Component {
   };
   renderProducts = () => {
     const { productIds } = this.state;
-    const { web3, accounts } = this.props;
+    const { web3, accounts, contract } = this.props;
 
     return (
       <div className="wrapper">
         {productIds.map(id => (
-          <ViewProductItem key={id} id={id} web3={web3} accounts={accounts} />
+          <EditProductItem contract={contract} key={id} id={id} web3={web3} accounts={accounts} />
         ))}
         <style jsx>{`
           .wrapper {

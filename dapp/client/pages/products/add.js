@@ -233,6 +233,7 @@ class AddProduct extends React.Component {
               value={this.state.bookPrice}
               onChange={this.setBookPrice}
               disabled={!showStage1}
+              placeholder='0'
               style={{width:"200px", float:"left"}}
             /> 
             <span style={{float:"left"}}> {' '} = {(bookPrice && parseFloat(ethUSD*bookPrice).toFixed(2)) + ' '} USD </span>
