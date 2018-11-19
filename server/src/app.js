@@ -14,7 +14,8 @@ const {
   addBook,
   getBook,
   getSignedUrl,
-  retrieveBookURL
+  retrieveBookURL,
+  retrieveImageURL
 } = require("./bookStore");
 
 app.use(cors());
@@ -29,6 +30,18 @@ app.get("/books", async (req, res) => {
   }
   return res.sendStatus(404);
 });
+
+app.get("/books/image", async(req, res) => {
+  const { bookId } = req.query;
+  const { secret } = await getBook(bookId);
+  const imageURL = await retrieveImageURL(secret)
+  console.log(imageURL)
+  
+  if (imageURL) {
+    return res.status(200).json({ imageURL });
+  }
+  return res.sendStatus(404);
+})
 
 app.get("/test", async (req, res) => {
   return res.status(200).json({ key: "it's working" });

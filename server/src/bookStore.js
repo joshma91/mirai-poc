@@ -90,4 +90,21 @@ const retrieveBookURL = async (secret) => {
   return signedUrl;
 }
 
-module.exports = { addBook, getBook, getSignedUrl, retrieveBookURL };
+const retrieveImageURL = async (secret) => {
+  const bucketFile = bucket.file('image/' + secret);
+  const exists = await bucketFile.exists()
+  console.log(exists[0])
+  if(exists[0]){
+    const config = {
+      action: "read",
+      expires: Date.now() + 10000
+    };
+    const signedUrl = await bucketFile.getSignedUrl(config);
+    return signedUrl;
+  } else {
+    return null;
+  }
+}
+
+
+module.exports = { addBook, getBook, getSignedUrl, retrieveBookURL, retrieveImageURL };
