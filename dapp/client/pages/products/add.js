@@ -8,6 +8,7 @@ import {
   Form,
   Grid
 } from "semantic-ui-react";
+import 'semantic-ui-css/semantic.min.css'
 import Dropzone from "react-dropzone";
 
 import Layout from "../../components/Layout";
@@ -219,7 +220,7 @@ class AddProduct extends React.Component {
       <MenuBarLayout accounts={this.props.accounts}>
         <Header as="h1">Add Product</Header>
 
-        <Segment disabled={!showStage1}>
+        <Segment style={{borderRadius:"0.7em",background:"#f6f9fc"}} disabled={!showStage1}>
           <Header as="h2">1. Reserve a slot for your book</Header>
           <p>
             In order to upload your book, you must first reserve your slot on
@@ -248,12 +249,13 @@ class AddProduct extends React.Component {
             onClick={this.reserveSlot}
             loading={reserveSlotLoading}
             disabled={!showStage1}
+            style={{backgroundColor:"#00B9E0", color:"#EFEEE9 !important" }}
           >
             Reserve
           </Button>
         </Segment>
 
-        <Segment disabled={!showStage2}>
+        <Segment style={{borderRadius:"0.7em",background:"#f6f9fc"}} disabled={!showStage2}>
           <Header as="h2">2. Upload your book and metadata</Header>
           <p>
             Now that you own an open slot on the marketplace, it's time to
@@ -324,12 +326,13 @@ class AddProduct extends React.Component {
             onClick={this.uploadBookData}
             loading={dataUploadLoading}
             disabled={!showStage2}
+            style={{color:"#EFEEE9 !important",backgroundColor:"#00B9E0"}}
           >
             Upload
           </Button>
         </Segment>
 
-        <Segment disabled={!showStage3}>
+        <Segment style={{borderRadius:"0.7em",background:"#f6f9fc"}} disabled={!showStage3}>
           <Header as="h2">3. Complete!</Header>
           <p>
             Your book has been uploaded and is now on the Mirai Marketplace!

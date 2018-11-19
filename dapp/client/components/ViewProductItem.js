@@ -14,7 +14,8 @@ export default class BuyProductItem extends React.Component {
 
     const title = await fetch(`${API_URL}/books?bookId=${id}`)
       .then(res => res.text())
-      .then(text => JSON.parse(text).bookTitle);
+      .then(text => JSON.parse(text).bookTitle)
+      .catch(err => console.log(err));
 
     this.setState({ title });
     const imageURL = await getImage(id)

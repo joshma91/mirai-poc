@@ -15,7 +15,7 @@ const MetaMaskModal = () => (
   <Modal basic
     size={"tiny"}
     trigger={
-      <Button style={{ color: "#EFEEE9", backgroundColor: "#6b7f87" }}>
+      <Button style={{ color: "#EFEEE9 !important", backgroundColor: "#6b7f87" }}>
         Get Metamask{" "}
         <Image style={{ display: "inline-block" }} src="/static/metamask.png" />
       </Button>
