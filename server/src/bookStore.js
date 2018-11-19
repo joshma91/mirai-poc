@@ -59,20 +59,28 @@ const addBook = async ({ bookId, bookTitle, secret }) => {
 
 const getSignedUrl = async (storageId) => {
   // creates a placeholder file in the bucket for the front-end upload
-  const bucketFile = bucket.file(storageId);
+  const bucketFile = bucket.file('pdf/'+ storageId);
 
-  const config = {
+  const bookConfig = {
     action: "write",
     expires: Date.now() + 10000,
     contentType: "application/pdf"
   };
+  
+  const bucketImage = bucket.file('image/' + storageId);
+  const imageConfig = {
+    action: "write",
+    expires: Date.now() + 10000,
+    contentType: "image/jpeg"
+  }
 
-  const signedUrl = await bucketFile.getSignedUrl(config);
-  return signedUrl;
+  const bookSignedUrl = await bucketFile.getSignedUrl(bookConfig);
+  const imageSignedUrl = await bucketImage.getSignedUrl(imageConfig)
+  return {bookSignedUrl, imageSignedUrl};
 }
 
 const retrieveBookURL = async (secret) => {
-  const bucketFile = bucket.file(secret);
+  const bucketFile = bucket.file('pdf/' + secret);
   const config = {
     action: "read",
     expires: Date.now() + 10000
