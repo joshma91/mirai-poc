@@ -92,7 +92,7 @@ contract MiraiCore is Ownable {
    * @param _id - the product id we're querying for
    * @return the price of the queried product
    */
-  function getPriceById(uint256 _id) public view onlyOwner returns (uint256) {
+  function getPriceById(uint256 _id) public view returns (uint256) {
     return products[_id].price;
   }
 
@@ -100,7 +100,7 @@ contract MiraiCore is Ownable {
    * @notice getAllProductIds returns all created product ids
    * @return array of all product ids
    */
-  function getAllProductIds() public view onlyOwner returns (uint256[]) {
+  function getAllProductIds() public view returns (uint256[]) {
     return allProductIds;
   }
 
@@ -141,5 +141,24 @@ contract MiraiCore is Ownable {
       }
     }
     return availableProductIds;
+  }
+
+  modifier onlySeller(address _seller) {
+    require(
+      msg.sender == _seller
+    );
+    _;
+  }
+
+ /**
+   * @notice editProductPrice changes the price of a given product
+   * @param _seller - the account that created the product
+   * @param _productId - the product being changed
+   * @param _newPrice - what the new price should be
+   */
+  function editProductPrice(address _seller, uint256 _productId, uint256 _newPrice) public onlySeller(_seller) {
+    Product memory _product = products[_productId];
+    _product.price = _newPrice;
+    products[_productId] = _product;
   }
 }      

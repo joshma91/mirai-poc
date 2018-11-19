@@ -29,6 +29,7 @@ contract MiraiOwnership is ERC721Token {
   /**
   * @notice Makes a purchase of a product, issuing a proof of purchase token
   * @param _uri the string of the productId to purchase
+  *tokenId <-> bookId relationship kept track in tokenURI
   * @param owner the owner of the product - who to send the ETH to
    */
   function buyPOP(string _uri, address owner) public payable {
