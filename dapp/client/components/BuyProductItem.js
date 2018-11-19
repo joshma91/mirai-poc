@@ -11,29 +11,31 @@ import {
 
 import getContract from "../lib/getContract";
 import MiraiOwnershipJSON from "../lib/contracts/MiraiOwnership.json";
+import getImage from "../lib/getImage"
 
-const API_URL = "https://mirai-server.now.sh/books";
+const API_URL = "http://localhost:5678/books";
 
 export default class BuyProductItem extends React.Component {
-  state = { product: null };
+  state = { product: null, imageURL: null };
 
   componentDidMount = async () => {
     const { contract, accounts, id } = this.props;
-
     const product = await contract.methods
       .getProductById(id)
       .call({ from: accounts[0] });
 
     const title = await fetch(`${API_URL}?bookId=${id}`)
-      .then(res => {
-        return res.text();
-      })
+      .then(res => res.text())
       .then(text => {
         if (text != "Not Found") return JSON.parse(text).bookTitle;
       });
 
     if (title != undefined) {
       this.setState({ product: { ...product, title } });
+    }
+    const imageURL = await getImage(id)
+    if (imageURL != undefined) {
+      this.setState({ imageURL });
     }
   };
 
@@ -51,15 +53,18 @@ export default class BuyProductItem extends React.Component {
   };
 
   render() {
-    const { product } = this.state;
+    const { product, imageURL } = this.state;
     if (!product) return null;
     return (
       <div className="wrapper">
-        <img
-          className="product-image"
-          src={`http://www.placecage.com/200/30${this.props.id}`}
-          alt=""
-        />
+        {imageURL ? (
+          <img className="product-image" src={imageURL} />
+        ) : (
+          <img
+            className="product-image"
+            src={`http://www.placecage.com/200/30${this.props.id}`}
+          />
+        )}
         <div className="title">{product.title}</div>
         <Button as="div" labelPosition="left">
           <Label as="a" basic pointing="right">
@@ -76,6 +81,7 @@ export default class BuyProductItem extends React.Component {
           }
           .product-image {
             width: 100%;
+            max-height:200px;
             max-width: 120px;
           }
           .title {

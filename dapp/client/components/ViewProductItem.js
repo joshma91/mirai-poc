@@ -2,11 +2,12 @@ import {
   Button
 
 } from "semantic-ui-react";
+import getImage from "../lib/getImage"
 
-const API_URL = "https://mirai-server.now.sh";
+const API_URL = "http://localhost:5678";
 
 export default class BuyProductItem extends React.Component {
-  state = { title: null, challenge: null, signature: null };
+  state = { title: null, challenge: null, signature: null, imageURL: null };
 
   componentDidMount = async () => {
     const { id } = this.props;
@@ -16,6 +17,10 @@ export default class BuyProductItem extends React.Component {
       .then(text => JSON.parse(text).bookTitle);
 
     this.setState({ title });
+    const imageURL = await getImage(id)
+    if (imageURL != undefined) {
+      this.setState({ imageURL });
+    }
   };
 
   retrieveResource = async () => {
@@ -61,14 +66,17 @@ export default class BuyProductItem extends React.Component {
   };
 
   render() {
-    const { title } = this.state;
+    const { title, imageURL } = this.state;
     return (
       <div className="wrapper">
-        <img
-          className="product-image"
-          src={`http://www.placecage.com/200/30${this.props.id}`}
-          alt=""
-        />
+        {imageURL ? (
+          <img className="product-image" src={imageURL} />
+        ) : (
+          <img
+            className="product-image"
+            src={`http://www.placecage.com/200/30${this.props.id}`}
+          />
+        )}
         <div className="title">{title}</div>
         <Button icon onClick={this.retrieveResource}>
           View Book
@@ -79,6 +87,7 @@ export default class BuyProductItem extends React.Component {
           }
           .product-image {
             width: 100%;
+            max-height:200px;
             max-width: 120px;
           }
           .title {
