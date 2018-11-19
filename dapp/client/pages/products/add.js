@@ -58,7 +58,7 @@ const dropzone = {
   paddingTop: "10px"
 };
 
-const API_URL = "https://mirai-server.now.sh/books";
+const API_URL = "http://localhost:5678/books";
 
 class AddProduct extends React.Component {
   state = {
@@ -91,7 +91,7 @@ class AddProduct extends React.Component {
   imgOnDrop(files) {
     this.setState({
       imgFile: files.map(file => ({
-        ...file,
+        file,
         preview: URL.createObjectURL(file)
       }))
     });
@@ -110,16 +110,23 @@ class AddProduct extends React.Component {
     });
     if (response.status != 200) throw Error(response.message);
     const text = await response.text();
-    return JSON.parse(text).signedUrl;
+    return JSON.parse(text);
   };
 
-  uploadBookFile = signedUrl => {
+  uploadFile = (isBook, signedUrl) => {
     return new Promise((resolve, reject) => {
-      const { bookFile } = this.state;
+      let file
+      if(isBook) {
+        file = this.state.bookFile;
+      } else {
+        file = this.state.imgFile[0].file
+      }
+      console.log(signedUrl)
+      
       const xhr = new XMLHttpRequest();
       xhr.open("PUT", signedUrl, true);
       xhr.onload = e => {
-        console.log("File upload successful");
+        console.log(`${isBook ? "Book" : "Image"} upload successful`);
         resolve(xhr);
       };
       xhr.upload.onprogress = e => {
@@ -128,7 +135,7 @@ class AddProduct extends React.Component {
         }
       };
 
-      xhr.send(bookFile);
+      xhr.send(file);
     });
   };
 
@@ -165,8 +172,9 @@ class AddProduct extends React.Component {
     const { bookId, bookTitle } = this.state;
 
     this.setState({ dataUploadLoading: true }, async () => {
-      const signedUrl = await this.uploadDataStub();
-      const res = await this.uploadBookFile(signedUrl);
+      const {bookSignedUrl, imageSignedUrl} = await this.uploadDataStub();
+      const res = await this.uploadFile(true, bookSignedUrl);
+      const res2 = await this.uploadFile(false, imageSignedUrl);
       if (res.status == 200) {
         this.setState({
           dataUploaded: true,
@@ -190,7 +198,6 @@ class AddProduct extends React.Component {
       imgFile
     } = this.state;
 
-    console.log(imgFile);
     const thumbs = imgFile.map(file => (
       <div style={thumb}>
         <div style={thumbInner}>
