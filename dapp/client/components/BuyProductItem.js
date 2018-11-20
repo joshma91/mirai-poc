@@ -16,7 +16,7 @@ import getImage from "../lib/getImage";
 const API_URL = "http://localhost:5678/books";
 
 export default class BuyProductItem extends React.Component {
-  state = { product: null, imageURL: null };
+  state = { product: null, imageURL: null, isOwner: false };
 
   componentDidMount = async () => {
     const { contract, accounts, id } = this.props;
@@ -31,11 +31,14 @@ export default class BuyProductItem extends React.Component {
       });
 
     if (title != undefined) {
-      this.setState({ product: { ...product, title } });
+      await this.setState({ product: { ...product, title } });
     }
     const imageURL = await getImage(id);
     if (imageURL != undefined) {
       this.setState({ imageURL });
+    }
+    if(product.owner == accounts[0]) {
+      await this.setState ({ isOwner: true })
     }
   };
 
@@ -57,8 +60,8 @@ export default class BuyProductItem extends React.Component {
   };
 
   render() {
-    const { product, imageURL } = this.state;
-    if (!product) return null;
+    const { product, imageURL, isOwner } = this.state;
+    if (!product || isOwner) return null;
     return (
       <div className="wrapper">
         {imageURL ? (
@@ -96,6 +99,7 @@ export default class BuyProductItem extends React.Component {
             height:200px;
           }
           .title {
+            margin-bottom: 10px;
             font-weight: 600;
             font-size: 18px;
           }
