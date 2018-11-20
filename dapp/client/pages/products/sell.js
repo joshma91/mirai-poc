@@ -55,7 +55,7 @@ class Sell extends React.Component {
       <MenuBarLayout accounts={this.props.accounts}>
         <Header as="h1">My Bookstore</Header>
 
-        {productIds ? (
+        {productIds && productIds.length > 0 ? (
           <div>
             <Link href="/products/add">
               <Button style={{ color: "#EFEEE9 !important", backgroundColor:"#00B9E0", marginBottom:"30px"}}>Add a Book</Button>
@@ -66,7 +66,7 @@ class Sell extends React.Component {
           <div>
             <p>You have not added any products, add one!</p>
             <Link href="/products/add">
-              <Button>Add a Book</Button>
+              <Button style={{ color: "#EFEEE9 !important", backgroundColor:"#00B9E0", marginBottom:"30px"}}>Add a Book</Button>
             </Link>
           </div>
         )}

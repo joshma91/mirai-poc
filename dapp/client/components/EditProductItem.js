@@ -48,15 +48,19 @@ export default class EditProductItem extends React.Component {
   setNewPrice = e => this.setState({ newPrice: e.target.value });
 
   editPrice = async () => {
-    const { price, owner } = this.state.product;
+    const { product } = this.state;
+    const { newPrice } = this.state;
     const { web3, accounts, id, contract } = this.props;
 
-    await contract.methods
-      .editProductPrice(owner, id, newPrice)
+    const tx = await contract.methods
+      .editProductPrice(product.owner, id, newPrice)
       .send({ from: accounts[0], gas: 3000000 })
       .on("receipt", function(receipt) {
-        console.log(receipt.events.PriceChanged.returnValues);
+       console.log(receipt.events.PriceChanged.returnValues.price)
       });
+    const price = tx.events.PriceChanged.returnValues.price
+    
+    this.setState({ product: { ...product, price } });
   };
 
   render() {
@@ -73,6 +77,7 @@ export default class EditProductItem extends React.Component {
           />
         )}
         <div className="title">{product.title}</div>
+        <div className="sold">Number sold: {product.numberSold}</div>
         <Button as="div" labelPosition="left">
           <Label as="a" basic pointing="right">
             {product.price} ETH
@@ -81,8 +86,14 @@ export default class EditProductItem extends React.Component {
             <Icon name="edit outline" />
             Edit Price
           </Button>
-          <Input value={newPrice} type="number" placeholder="0" onChange={this.setNewPrice} style={{ width: "75px" }} />
-        </Button>  <span >{(newPrice && ('= ' + parseFloat(ethUSD*newPrice).toFixed(2)) + '  USD')}</span>
+          <Input
+            value={newPrice}
+            type="number"
+            placeholder="0"
+            onChange={this.setNewPrice}
+            style={{ width: "75px" }}
+          />
+        </Button>
         <style jsx>{`
           .wrapper {
             text-align: center;
@@ -93,9 +104,13 @@ export default class EditProductItem extends React.Component {
             max-width: 120px;
           }
           .title {
-            margin: 18px;
+            margin: 10px;
             font-weight: 600;
             font-size: 18px;
+          }
+          .sold {
+            margin-bottom: 5px;
+            font-size: 14px;
           }
         `}</style>
       </div>

@@ -49,7 +49,7 @@ const img = {
 };
 
 const dropzone = {
-  width: "200px",
+  maxWidth: "200px",
   height: "100px",
   textAlign: "center",
   borderColor: "rgb(86, 155, 183)",
@@ -79,7 +79,6 @@ class AddProduct extends React.Component {
   async componentDidMount() {
     document.title = "Mirai - Add a Product";
     const ethUSD = await fetch("https://api.coinmarketcap.com/v2/ticker/1027/").then(x => x.json()).then(x => x.data.quotes.USD.price)
-    console.log(ethUSD)
     this.setState({ethUSD})
   }
 

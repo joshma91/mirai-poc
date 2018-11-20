@@ -31,6 +31,14 @@ contract MiraiCore is Ownable {
     uint256 numberSold
   );
 
+  event PriceChanged(
+    uint256 id,
+    address owner, 
+    uint256 price,
+    bool available,
+    uint256 numberSold
+  );
+
   // @notice A mapping from product id to Product
   mapping (uint256 => Product) public products;
   
