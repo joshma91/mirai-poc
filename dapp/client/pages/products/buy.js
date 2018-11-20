@@ -8,7 +8,7 @@ import {
   Icon,
   Loader
 } from "semantic-ui-react";
-
+import 'semantic-ui-css/semantic.min.css'
 import Layout from "../../components/Layout";
 import BuyProductItem from "../../components/BuyProductItem";
 import Web3Container from "../../lib/Web3Container";

@@ -70,7 +70,6 @@ export default class BuyProductItem extends React.Component {
     const { title, imageURL } = this.state;
     return (
       <div className="wrapper">
-      <div className="wrapper">
         {imageURL ? (
           <div className="image-wrapper">
             <img className="product-image" src={imageURL} />
@@ -100,6 +99,7 @@ export default class BuyProductItem extends React.Component {
             height:200px;
           }
           .title {
+            padding-bottom: 10px;
             font-weight: 600;
             font-size: 18px;
           }
