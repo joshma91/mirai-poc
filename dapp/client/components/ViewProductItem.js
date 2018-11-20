@@ -70,13 +70,18 @@ export default class BuyProductItem extends React.Component {
     const { title, imageURL } = this.state;
     return (
       <div className="wrapper">
+      <div className="wrapper">
         {imageURL ? (
-          <img className="product-image" src={imageURL} />
+          <div className="image-wrapper">
+            <img className="product-image" src={imageURL} />
+          </div>
         ) : (
-          <img
-            className="product-image"
-            src={`http://www.placecage.com/200/30${this.props.id}`}
-          />
+          <div className="image-wrapper">
+            <img
+              className="product-image"
+              src={`http://www.placecage.com/200/30${this.props.id}`}
+            />
+          </div>
         )}
         <div className="title">{title}</div>
         <Button icon onClick={this.retrieveResource}>
@@ -91,8 +96,10 @@ export default class BuyProductItem extends React.Component {
             max-height:200px;
             max-width: 120px;
           }
+          .image-wrapper{
+            height:200px;
+          }
           .title {
-            margin: 18px;
             font-weight: 600;
             font-size: 18px;
           }

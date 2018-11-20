@@ -11,7 +11,7 @@ import {
 
 import getContract from "../lib/getContract";
 import MiraiOwnershipJSON from "../lib/contracts/MiraiOwnership.json";
-import getImage from "../lib/getImage"
+import getImage from "../lib/getImage";
 
 const API_URL = "http://localhost:5678/books";
 
@@ -33,7 +33,7 @@ export default class BuyProductItem extends React.Component {
     if (title != undefined) {
       this.setState({ product: { ...product, title } });
     }
-    const imageURL = await getImage(id)
+    const imageURL = await getImage(id);
     if (imageURL != undefined) {
       this.setState({ imageURL });
     }
@@ -46,7 +46,11 @@ export default class BuyProductItem extends React.Component {
 
     await ownershipContract.methods
       .buyPOP(id.toString(), owner)
-      .send({value: price*1000000000000000000, from: accounts[0], gas: 3000000 })
+      .send({
+        value: price * 1000000000000000000,
+        from: accounts[0],
+        gas: 3000000
+      })
       .on("receipt", function(receipt) {
         console.log(receipt.events.POPIssued.returnValues);
       });
@@ -58,12 +62,16 @@ export default class BuyProductItem extends React.Component {
     return (
       <div className="wrapper">
         {imageURL ? (
-          <img className="product-image" src={imageURL} />
+          <div className="image-wrapper">
+            <img className="product-image" src={imageURL} />
+          </div>
         ) : (
-          <img
-            className="product-image"
-            src={`http://www.placecage.com/200/30${this.props.id}`}
-          />
+          <div className="image-wrapper">
+            <img
+              className="product-image"
+              src={`http://www.placecage.com/200/30${this.props.id}`}
+            />
+          </div>
         )}
         <div className="title">{product.title}</div>
         <Button as="div" labelPosition="left">
@@ -81,11 +89,13 @@ export default class BuyProductItem extends React.Component {
           }
           .product-image {
             width: 100%;
-            max-height:200px;
+            max-height: 200px;
             max-width: 120px;
           }
+          .image-wrapper{
+            height:200px;
+          }
           .title {
-            margin: 18px;
             font-weight: 600;
             font-size: 18px;
           }

@@ -69,12 +69,16 @@ export default class EditProductItem extends React.Component {
     return (
       <div className="wrapper">
         {imageURL ? (
-          <img className="product-image" src={imageURL} />
+          <div className="image-wrapper">
+            <img className="product-image" src={imageURL} />
+          </div>
         ) : (
-          <img
-            className="product-image"
-            src={`http://www.placecage.com/200/30${this.props.id}`}
-          />
+          <div className="image-wrapper">
+            <img
+              className="product-image"
+              src={`http://www.placecage.com/200/30${this.props.id}`}
+            />
+          </div>
         )}
         <div className="title">{product.title}</div>
         <div className="sold">Number sold: {product.numberSold}</div>
@@ -103,8 +107,10 @@ export default class EditProductItem extends React.Component {
             max-height: 200px;
             max-width: 120px;
           }
+          .image-wrapper{
+            height:200px;
+          }
           .title {
-            margin: 10px;
             font-weight: 600;
             font-size: 18px;
           }
