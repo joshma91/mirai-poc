@@ -25,24 +25,20 @@ export default class EditProductItem extends React.Component {
       .getProductById(id)
       .call({ from: accounts[0] });
 
+      const ethUSD = await fetch("https://api.coinmarketcap.com/v2/ticker/1027/")
+      .then(x => x.json())
+      .then(x => x.data.quotes.USD.price);
+
     const title = await fetch(`${API_URL}?bookId=${id}`)
       .then(res => res.text())
       .then(text => {
         if (text != "Not Found") return JSON.parse(text).bookTitle;
       });
 
-    if (title != undefined) {
-      this.setState({ product: { ...product, title } });
-    }
+    const updateProduct = title != undefined ? { ...product, title } : null;
     const imageURL = await getImage(id);
-    if (imageURL != undefined) {
-      this.setState({ imageURL });
-    }
 
-    const ethUSD = await fetch("https://api.coinmarketcap.com/v2/ticker/1027/")
-      .then(x => x.json())
-      .then(x => x.data.quotes.USD.price);
-    this.setState({ ethUSD });
+    this.setState({ product: updateProduct, imageURL, ethUSD });
   };
 
   setNewPrice = e => this.setState({ newPrice: e.target.value });
@@ -56,30 +52,22 @@ export default class EditProductItem extends React.Component {
       .editProductPrice(product.owner, id, newPrice)
       .send({ from: accounts[0], gas: 3000000 })
       .on("receipt", function(receipt) {
-       console.log(receipt.events.PriceChanged.returnValues.price)
+        console.log(receipt.events.PriceChanged.returnValues.price);
       });
-    const price = tx.events.PriceChanged.returnValues.price
-    
+    const price = tx.events.PriceChanged.returnValues.price;
+
     this.setState({ product: { ...product, price } });
   };
 
   render() {
     const { product, imageURL, newPrice, ethUSD } = this.state;
-    if (!product) return null;
+    if (!product || !imageURL) return null;
     return (
       <div className="wrapper">
-        {imageURL ? (
-          <div className="image-wrapper">
-            <img className="product-image" src={imageURL} />
-          </div>
-        ) : (
-          <div className="image-wrapper">
-            <img
-              className="product-image"
-              src={`http://www.placecage.com/200/30${this.props.id}`}
-            />
-          </div>
-        )}
+        <div className="image-wrapper">
+          <img className="product-image" src={imageURL} />
+        </div>
+
         <div className="title">{product.title}</div>
         <div className="sold">Number sold: {product.numberSold}</div>
         <Button as="div" labelPosition="left">
@@ -107,8 +95,8 @@ export default class EditProductItem extends React.Component {
             max-height: 200px;
             max-width: 120px;
           }
-          .image-wrapper{
-            height:200px;
+          .image-wrapper {
+            height: 200px;
           }
           .title {
             font-weight: 600;

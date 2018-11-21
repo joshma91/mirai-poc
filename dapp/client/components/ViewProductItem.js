@@ -1,8 +1,5 @@
-import {
-  Button
-
-} from "semantic-ui-react";
-import getImage from "../lib/getImage"
+import { Button } from "semantic-ui-react";
+import getImage from "../lib/getImage";
 
 const API_URL = "http://localhost:5678";
 
@@ -17,18 +14,15 @@ export default class BuyProductItem extends React.Component {
       .then(text => JSON.parse(text).bookTitle)
       .catch(err => console.log(err));
 
-    this.setState({ title });
-    const imageURL = await getImage(id)
-    if (imageURL != undefined) {
-      this.setState({ imageURL });
-    }
+    const imageURL = await getImage(id);
+    this.setState({ imageURL, title });
   };
 
   retrieveResource = async () => {
     await this.getChallenge();
     await this.signChallenge();
   };
-  
+
   getChallenge = async () => {
     const { accounts } = this.props;
     const res = await fetch(`${API_URL}/auth/${accounts[0].toLowerCase()}`);
@@ -48,7 +42,7 @@ export default class BuyProductItem extends React.Component {
         if (error) return console.error(error);
         this.setState({ signature: res.result });
         const file = await this.verifySignature();
-        window.open(file)
+        window.open(file);
       }
     );
   };
@@ -58,30 +52,23 @@ export default class BuyProductItem extends React.Component {
     const { challenge, signature } = this.state;
     const secret = await fetch(
       `${API_URL}/auth/${challenge[1].value}/${signature}?bookId=${id}`
-    ).then(res => res.text())
-    .then(text => {
-      console.log(text)
-      return JSON.parse(text)
-    })
-    return secret.bookURL
+    )
+      .then(res => res.text())
+      .then(text => {
+        console.log(text);
+        return JSON.parse(text);
+      });
+    return secret.bookURL;
   };
 
   render() {
     const { title, imageURL } = this.state;
+    if (!imageURL) return null
     return (
       <div className="wrapper">
-        {imageURL ? (
-          <div className="image-wrapper">
-            <img className="product-image" src={imageURL} />
-          </div>
-        ) : (
-          <div className="image-wrapper">
-            <img
-              className="product-image"
-              src={`http://www.placecage.com/200/30${this.props.id}`}
-            />
-          </div>
-        )}
+        <div className="image-wrapper">
+          <img className="product-image" src={imageURL} />
+        </div>
         <div className="title">{title}</div>
         <Button icon onClick={this.retrieveResource}>
           View Book
@@ -92,11 +79,11 @@ export default class BuyProductItem extends React.Component {
           }
           .product-image {
             width: 100%;
-            max-height:200px;
+            max-height: 200px;
             max-width: 120px;
           }
-          .image-wrapper{
-            height:200px;
+          .image-wrapper {
+            height: 200px;
           }
           .title {
             padding-bottom: 10px;

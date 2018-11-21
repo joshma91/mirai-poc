@@ -16,11 +16,15 @@ import getImage from "../lib/getImage";
 const API_URL = "http://localhost:5678/books";
 
 export default class BuyProductItem extends React.Component {
-  state = { product: null, imageURL: null, isOwner: false, alreadyOwned: false };
+  state = {
+    product: null,
+    imageURL: null,
+    isOwner: false,
+    alreadyOwned: false
+  };
 
   componentDidMount = async () => {
     const { contract, accounts, id, ownedProductIds } = this.props;
-    console.log(ownedProductIds)
     const product = await contract.methods
       .getProductById(id)
       .call({ from: accounts[0] });
@@ -31,20 +35,13 @@ export default class BuyProductItem extends React.Component {
         if (text != "Not Found") return JSON.parse(text).bookTitle;
       });
 
-    if (title != undefined) {
-      await this.setState({ product: { ...product, title } });
-    }
-    const imageURL = await getImage(id);
-    if (imageURL != undefined) {
-      this.setState({ imageURL });
-    }
-    if(product.owner == accounts[0]) {
-      await this.setState ({ isOwner: true })
-    }
+    const updateProduct = title != undefined ? { ...product, title } : null;
 
-    if(ownedProductIds.includes(id)){
-      await this.setState({ alreadyOwned: true })
-    }
+    const imageURL = await getImage(id);
+    const isOwner = product.owner == accounts[0] ? true : false;
+    const alreadyOwned = ownedProductIds.includes(id) ? true : false;
+
+    this.setState({ product: updateProduct, imageURL, isOwner, alreadyOwned });
   };
 
   requestPOP = async () => {
@@ -66,50 +63,45 @@ export default class BuyProductItem extends React.Component {
 
   render() {
     const { product, imageURL, isOwner, alreadyOwned } = this.state;
-    if (!product || isOwner || alreadyOwned) return null;
-    return (
-      <div className="wrapper">
-        {imageURL ? (
+    if (!product || isOwner || alreadyOwned || !imageURL) {
+      return null;
+    } else {
+      return (
+        <div className="wrapper">
           <div className="image-wrapper">
             <img className="product-image" src={imageURL} />
           </div>
-        ) : (
-          <div className="image-wrapper">
-            <img
-              className="product-image"
-              src={`http://www.placecage.com/200/30${this.props.id}`}
-            />
-          </div>
-        )}
-        <div className="title">{product.title}</div>
-        <Button as="div" labelPosition="left">
-          <Label as="a" basic pointing="right">
-            {product.price} ETH
-          </Label>
-          <Button icon onClick={this.requestPOP}>
-            <Icon name="shop" />
-            Buy
+
+          <div className="title">{product.title}</div>
+          <Button as="div" labelPosition="left">
+            <Label as="a" basic pointing="right">
+              {product.price} ETH
+            </Label>
+            <Button icon onClick={this.requestPOP}>
+              <Icon name="shop" />
+              Buy
+            </Button>
           </Button>
-        </Button>
-        <style jsx>{`
-          .wrapper {
-            text-align: center;
-          }
-          .product-image {
-            width: 100%;
-            max-height: 200px;
-            max-width: 120px;
-          }
-          .image-wrapper{
-            height:200px;
-          }
-          .title {
-            margin-bottom: 10px;
-            font-weight: 600;
-            font-size: 18px;
-          }
-        `}</style>
-      </div>
-    );
+          <style jsx>{`
+            .wrapper {
+              text-align: center;
+            }
+            .product-image {
+              width: 100%;
+              max-height: 200px;
+              max-width: 120px;
+            }
+            .image-wrapper {
+              height: 200px;
+            }
+            .title {
+              margin-bottom: 10px;
+              font-weight: 600;
+              font-size: 18px;
+            }
+          `}</style>
+        </div>
+      );
+    }
   }
 }
