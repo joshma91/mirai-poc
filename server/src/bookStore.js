@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-require("dotenv").config();
+require('now-env')
 
 const firebase = admin.initializeApp({
   credential: admin.credential.cert({

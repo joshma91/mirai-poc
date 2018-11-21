@@ -1,3 +1,9 @@
 {
-    "version": 1
+    "version": 1,
+    "env": {
+        "FIREBASE_PRIVATE_KEY": "@firebase-private-key",
+        "FIREBASE_CLIENT_EMAIL": "firebase-adminsdk-wpo63@mirai-poc.iam.gserviceaccount.com",
+        "FIREBASE_DATABASE_URL": "https://mirai-poc.firebaseio.com",
+        "FIREBASE_STORAGE_BUCKET": "mirai-poc.appspot.com"
+    }
 }
