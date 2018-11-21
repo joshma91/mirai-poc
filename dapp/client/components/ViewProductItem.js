@@ -81,6 +81,8 @@ export default class BuyProductItem extends React.Component {
             width: 100%;
             max-height: 200px;
             max-width: 120px;
+            border: slategray;
+            border-style: double;
           }
           .image-wrapper {
             height: 200px;

@@ -94,6 +94,8 @@ export default class EditProductItem extends React.Component {
             width: 100%;
             max-height: 200px;
             max-width: 120px;
+            border: slategray;
+            border-style: double;
           }
           .image-wrapper {
             height: 200px;
