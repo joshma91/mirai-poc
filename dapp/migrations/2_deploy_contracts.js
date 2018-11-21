@@ -6,8 +6,15 @@ module.exports = function(deployer) {
   deployer.deploy(TokenRegistry).then(async registry => {
     const account = web3.eth.accounts[0];
 
-    await deployer.deploy(MiraiOwnership, "MiraiOwnership", "POP", registry.address);
-    await deployer.deploy(MiraiCore);
+    await deployer.deploy(MiraiCore).then(async core => {
+      await deployer.deploy(
+        MiraiOwnership,
+        "MiraiOwnership",
+        "POP",
+        registry.address,
+        core.address
+      );
+    });
   });
 };
 
@@ -23,4 +30,3 @@ async function setRegistry(contract, registry) {
     contractDecimals
   );
 }
-

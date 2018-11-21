@@ -3,6 +3,7 @@ pragma solidity ^0.4.24;
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 import "./TokenRegistry.sol";
+import "../MiraiCore.sol";
 
 /**
  * @title MiraiOwnership
@@ -21,9 +22,11 @@ contract MiraiOwnership is ERC721Token {
   );
 
   TokenRegistry registry;
+  MiraiCore core;
 
-  constructor (string _name, string _symbol, address _registryAddress) public ERC721Token(_name, _symbol){
+  constructor (string _name, string _symbol, address _registryAddress, address _coreAddress) public ERC721Token(_name, _symbol){
     registry = TokenRegistry(_registryAddress);
+    core = MiraiCore(_coreAddress);
   }
 
   /**
@@ -40,7 +43,8 @@ contract MiraiOwnership is ERC721Token {
     super._setTokenURI(newTokenId, _uri);
     emit POPIssued(newTokenId, msg.sender, _uri, block.timestamp);
 
-    owner.transfer(msg.value);   
+    owner.transfer(msg.value);  
+    core.incrementNumberSold(_uri);
   }
 
     /**

@@ -151,6 +151,13 @@ contract MiraiCore is Ownable {
     return availableProductIds;
   }
 
+  function incrementNumberSold(string _productIdStr) external {
+    uint _productId = parseInt(_productIdStr);
+    Product memory _product = products[_productId];
+    _product.numberSold++;
+    products[_productId] = _product;
+  }
+
   modifier onlySeller(address _seller) {
     require(
       msg.sender == _seller
@@ -175,5 +182,24 @@ contract MiraiCore is Ownable {
       _product.available,
       _product.numberSold
     );
+  }
+
+  // Copyright (c) 2015-2016 Oraclize srl, Thomas Bertani
+  function parseInt(string _a) internal returns (uint) {
+    bytes memory bresult = bytes(_a);
+    uint mint = 0;
+    uint _b = 0;
+    bool decimals = false;
+    for (uint i = 0; i < bresult.length; i++) {
+      if ((bresult[i] >= 48) && (bresult[i] <= 57)) {
+        if (decimals) {
+          if (_b == 0) break;
+            else _b--;
+        }
+        mint *= 10;
+        mint += uint(bresult[i]) - 48;
+      } else if (bresult[i] == 46) decimals = true;
+    }
+    return mint;
   }
 }      

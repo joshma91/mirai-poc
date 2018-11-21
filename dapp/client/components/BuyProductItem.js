@@ -96,6 +96,7 @@ export default class BuyProductItem extends React.Component {
             }
             .title {
               margin-bottom: 10px;
+              margin-top: 10px;
               font-weight: 600;
               font-size: 18px;
             }

@@ -86,6 +86,7 @@ export default class BuyProductItem extends React.Component {
             height: 200px;
           }
           .title {
+            padding-top:10px;
             padding-bottom: 10px;
             font-weight: 600;
             font-size: 18px;

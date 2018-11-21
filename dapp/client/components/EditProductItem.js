@@ -99,6 +99,7 @@ export default class EditProductItem extends React.Component {
             height: 200px;
           }
           .title {
+            margin-top:10px;
             font-weight: 600;
             font-size: 18px;
           }
