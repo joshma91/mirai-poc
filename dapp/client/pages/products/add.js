@@ -8,7 +8,7 @@ import {
   Form,
   Grid
 } from "semantic-ui-react";
-import 'semantic-ui-css/semantic.min.css'
+import "semantic-ui-css/semantic.min.css";
 import Dropzone from "react-dropzone";
 
 import Layout from "../../components/Layout";
@@ -71,15 +71,16 @@ class AddProduct extends React.Component {
     dataUploaded: false,
     reserveSlotLoading: false,
     dataUploadLoading: false,
-    bookURL: null,
     bookFile: null,
     imgFile: [],
-    ethUSD:""
+    ethUSD: ""
   };
   async componentDidMount() {
     document.title = "Mirai - Add a Product";
-    const ethUSD = await fetch("https://api.coinmarketcap.com/v2/ticker/1027/").then(x => x.json()).then(x => x.data.quotes.USD.price)
-    this.setState({ethUSD})
+    const ethUSD = await fetch("https://api.coinmarketcap.com/v2/ticker/1027/")
+      .then(x => x.json())
+      .then(x => x.data.quotes.USD.price);
+    this.setState({ ethUSD });
   }
 
   setBookTitle = e => this.setState({ bookTitle: e.target.value });
@@ -182,8 +183,7 @@ class AddProduct extends React.Component {
       if (res.status == 200) {
         this.setState({
           dataUploaded: true,
-          dataUploadLoading: false,
-          bookURL: `www.miraimarket.com/${bookId}_${bookTitle}`
+          dataUploadLoading: false
         });
       } else {
         alert("Uh oh, something bad happened.");
@@ -197,7 +197,6 @@ class AddProduct extends React.Component {
       dataUploaded,
       reserveSlotLoading,
       dataUploadLoading,
-      bookURL,
       bookFile,
       imgFile,
       bookPrice,
@@ -219,7 +218,10 @@ class AddProduct extends React.Component {
       <MenuBarLayout accounts={this.props.accounts}>
         <Header as="h1">Add Product</Header>
 
-        <Segment style={{borderRadius:"0.7em",background:"#f6f9fc"}} disabled={!showStage1}>
+        <Segment
+          style={{ borderRadius: "0.7em", background: "#f6f9fc" }}
+          disabled={!showStage1}
+        >
           <Header as="h2">1. Reserve a slot for your book</Header>
           <p>
             In order to upload your book, you must first reserve your slot on
@@ -232,10 +234,15 @@ class AddProduct extends React.Component {
               value={this.state.bookPrice}
               onChange={this.setBookPrice}
               disabled={!showStage1}
-              placeholder='0'
-              style={{width:"200px", float:"left"}}
-            /> 
-            <span style={{float:"left"}}> {' '} = {(bookPrice && parseFloat(ethUSD*bookPrice).toFixed(2)) + ' '} USD </span>
+              placeholder="0"
+              style={{ width: "200px", float: "left" }}
+            />
+            <span style={{ float: "left" }}>
+              {" "}
+              = {(bookPrice && parseFloat(ethUSD * bookPrice).toFixed(2)) +
+                " "}{" "}
+              USD{" "}
+            </span>
             <Form.Checkbox
               label="Make this product available"
               defaultChecked
@@ -246,17 +253,19 @@ class AddProduct extends React.Component {
           <Divider hidden />
 
           <Button
-          className="primaryBtn"
+            className="primaryBtn"
             onClick={this.reserveSlot}
             loading={reserveSlotLoading}
             disabled={!showStage1}
-
           >
             Reserve
           </Button>
         </Segment>
 
-        <Segment style={{borderRadius:"0.7em",background:"#f6f9fc"}} disabled={!showStage2}>
+        <Segment
+          style={{ borderRadius: "0.7em", background: "#f6f9fc" }}
+          disabled={!showStage2}
+        >
           <Header as="h2">2. Upload your book and metadata</Header>
           <p>
             Now that you own an open slot on the marketplace, it's time to
@@ -293,13 +302,13 @@ class AddProduct extends React.Component {
               </Grid.Column>
               <Grid.Column>
                 <Dropzone
-                  accept="image/*"
+                  accept="image/jpeg"
                   onDrop={this.imgOnDrop.bind(this)}
                   multiple={false}
                   disabled={!showStage2}
                   style={dropzone}
                 >
-                  Drop your book cover here or click to upload. Only images
+                  Drop your book cover here or click to upload. Only JPGs
                 </Dropzone>
               </Grid.Column>
             </Grid.Row>
@@ -333,15 +342,31 @@ class AddProduct extends React.Component {
           </Button>
         </Segment>
 
-        <Segment style={{borderRadius:"0.7em",background:"#f6f9fc"}} disabled={!showStage3}>
+        <Segment
+          style={{ borderRadius: "0.7em", background: "#f6f9fc" }}
+          disabled={!showStage3}
+        >
           <Header as="h2">3. Complete!</Header>
           <p>
             Your book has been uploaded and is now on the Mirai Marketplace!
           </p>
-          <p>
-            Here is the link to your book:{" "}
-            <span style={{ color: "red" }}>{bookURL}</span>
-          </p>
+            <Button
+              onClick={() => window.location.reload()}
+              disabled={!showStage3}
+              className="primaryBtn"
+            >
+              Sell More!
+            </Button>
+
+          <Link href="/products/sell">
+            <Button
+              style={{marginLeft:"50px"}}
+              disabled={!showStage3}
+              className="primaryBtn"
+            >
+              My Bookstore
+            </Button>
+          </Link>
         </Segment>
       </MenuBarLayout>
     );
