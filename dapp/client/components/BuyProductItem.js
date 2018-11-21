@@ -16,10 +16,11 @@ import getImage from "../lib/getImage";
 const API_URL = "http://localhost:5678/books";
 
 export default class BuyProductItem extends React.Component {
-  state = { product: null, imageURL: null, isOwner: false };
+  state = { product: null, imageURL: null, isOwner: false, alreadyOwned: false };
 
   componentDidMount = async () => {
-    const { contract, accounts, id } = this.props;
+    const { contract, accounts, id, ownedProductIds } = this.props;
+    console.log(ownedProductIds)
     const product = await contract.methods
       .getProductById(id)
       .call({ from: accounts[0] });
@@ -39,6 +40,10 @@ export default class BuyProductItem extends React.Component {
     }
     if(product.owner == accounts[0]) {
       await this.setState ({ isOwner: true })
+    }
+
+    if(ownedProductIds.includes(id)){
+      await this.setState({ alreadyOwned: true })
     }
   };
 
@@ -60,8 +65,8 @@ export default class BuyProductItem extends React.Component {
   };
 
   render() {
-    const { product, imageURL, isOwner } = this.state;
-    if (!product || isOwner) return null;
+    const { product, imageURL, isOwner, alreadyOwned } = this.state;
+    if (!product || isOwner || alreadyOwned) return null;
     return (
       <div className="wrapper">
         {imageURL ? (
