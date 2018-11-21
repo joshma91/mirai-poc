@@ -39,6 +39,10 @@ button.ui.button.margin30 {
     z-index:1;
 }
 
+.ui.inverted.header {
+  color: #EFEEE9 !important;
+}
+
 .modalText {
   color:#00B6E4
 }

@@ -17,11 +17,11 @@ import {
   Sidebar,
   Visibility
 } from "semantic-ui-react";
-import 'semantic-ui-css/semantic.min.css';
-import MenuBar from "../components/MenuBar"
-import logo from "../static/mirai.svg"
+import "semantic-ui-css/semantic.min.css";
+import MenuBar from "../components/MenuBar";
+import logo from "../static/mirai.svg";
 import "../style.css";
-import Web3Container from "../lib/Web3Container"
+import Web3Container from "../lib/Web3Container";
 import MiraiCoreJSON from "../lib/contracts/MiraiCore.json";
 
 /* eslint-disable react/no-multi-comp */
@@ -50,10 +50,15 @@ const HomepageHeading = ({ mobile }) => (
         marginTop: mobile ? "0.5em" : "1.5em"
       }}
     />
-    <Button style={{color:"darkslategrey", backgroundColor:"#ffec6d"}} size="huge">
-      Get Started
-      <Icon name="right arrow" />
-    </Button>
+    <a href="../products/add">
+      <Button
+        style={{ color: "darkslategrey", backgroundColor: "#ffec6d" }}
+        size="huge"
+      >
+        Start Selling
+        <Icon name="right arrow" />
+      </Button>
+    </a>
   </Container>
 );
 
@@ -62,23 +67,28 @@ const HomepageHeading = ({ mobile }) => (
  * It can be more complicated, but you can create really flexible markup.
  */
 class HomePage extends Component {
-  componentDidMount(){
-    document.title = "Mirai - Welcome!"
+  componentDidMount() {
+    document.title = "Mirai - Welcome!";
   }
   render() {
-    const { web3, accounts, contract} = this.props
+    const { web3, accounts, contract } = this.props;
 
     return (
       <Responsive>
-        <Visibility style={{backgroundColor:"#EFEEE9", height:"-webkit-fill-available"}}>
-           <MenuBar accounts={accounts}/>
-          <video loop autoPlay muted style={{width:"100%", height:"100%"}}>
-              <source
-                src="https://firebasestorage.googleapis.com/v0/b/mirai-poc.appspot.com/o/Productive-Morning.mp4?alt=media&token=0570dc49-3594-40d6-ae37-14ad463002e9"
-                type="video/mp4"
-              />
-            </video>
-            <HomepageHeading />
+        <Visibility
+          style={{
+            backgroundColor: "#EFEEE9",
+            height: "-webkit-fill-available"
+          }}
+        >
+          <MenuBar accounts={accounts} />
+          <video loop autoPlay muted style={{ width: "100%", height: "100%" }}>
+            <source
+              src="https://firebasestorage.googleapis.com/v0/b/mirai-poc.appspot.com/o/Productive-Morning.mp4?alt=media&token=0570dc49-3594-40d6-ae37-14ad463002e9"
+              type="video/mp4"
+            />
+          </video>
+          <HomepageHeading />
         </Visibility>
       </Responsive>
     );
@@ -94,4 +104,3 @@ export default () => (
     )}
   />
 );
-

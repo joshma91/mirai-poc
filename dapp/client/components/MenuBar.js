@@ -132,7 +132,7 @@ export default class MenuBar extends React.Component {
                 }}
                 href="../products/sell"
               >
-                Sell Products
+                My Bookstore
               </a>
             </Menu.Item>
             <Menu.Item>
@@ -144,7 +144,7 @@ export default class MenuBar extends React.Component {
                 }}
                 href="../products/buy"
               >
-                Buy Products
+                Buy Books
               </a>
             </Menu.Item>
             <Menu.Item>
@@ -156,7 +156,7 @@ export default class MenuBar extends React.Component {
                 }}
                 href="../products/view"
               >
-                View My Products
+                My Purchases
               </a>
             </Menu.Item>
             <Menu.Item position="right">
