@@ -52,7 +52,7 @@ export default class BuyProductItem extends React.Component {
     await ownershipContract.methods
       .buyPOP(id.toString(), owner)
       .send({
-        value: price * 1000000000000000000,
+        value: price,
         from: accounts[0],
         gas: 3000000
       })
@@ -75,7 +75,7 @@ export default class BuyProductItem extends React.Component {
           <div className="title">{product.title}</div>
           <Button as="div" labelPosition="left">
             <Label as="a" basic pointing="right">
-              {product.price} ETH
+              {product.price/(10**18)} ETH
             </Label>
             <Button icon onClick={this.requestPOP}>
               <Icon name="shop" />

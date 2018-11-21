@@ -49,7 +49,7 @@ export default class EditProductItem extends React.Component {
     const { web3, accounts, id, contract } = this.props;
 
     const tx = await contract.methods
-      .editProductPrice(product.owner, id, newPrice)
+      .editProductPrice(product.owner, id, newPrice*10**18)
       .send({ from: accounts[0], gas: 3000000 })
       .on("receipt", function(receipt) {
         console.log(receipt.events.PriceChanged.returnValues.price);
@@ -72,7 +72,7 @@ export default class EditProductItem extends React.Component {
         <div className="sold">Number sold: {product.numberSold}</div>
         <Button as="div" labelPosition="left">
           <Label as="a" basic pointing="right">
-            {product.price} ETH
+            {product.price/(10**18)} ETH
           </Label>
           <Button icon onClick={this.editPrice}>
             <Icon name="edit outline" />

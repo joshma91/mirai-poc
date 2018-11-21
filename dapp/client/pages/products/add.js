@@ -157,7 +157,7 @@ class AddProduct extends React.Component {
       let retrievedId;
 
       await contract.methods
-        .createProduct(bookPrice, accounts[0], bookAvailable)
+        .createProduct(bookPrice*10**18, accounts[0], bookAvailable)
         .send({ from: accounts[0], gas: 3000000 })
         .on("receipt", function(receipt) {
           retrievedId = receipt.events.ProductCreated.returnValues.id;
@@ -238,7 +238,7 @@ class AddProduct extends React.Component {
               style={{ width: "200px", float: "left" }}
             />
             <span style={{ float: "left" }}>
-              {" "}
+              {" "} 
               = {(bookPrice && parseFloat(ethUSD * bookPrice).toFixed(2)) +
                 " "}{" "}
               USD{" "}
