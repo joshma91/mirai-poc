@@ -246,10 +246,11 @@ class AddProduct extends React.Component {
           <Divider hidden />
 
           <Button
+          className="primaryBtn"
             onClick={this.reserveSlot}
             loading={reserveSlotLoading}
             disabled={!showStage1}
-            style={{backgroundColor:"#00B9E0", color:"#EFEEE9 !important" }}
+
           >
             Reserve
           </Button>
@@ -326,7 +327,7 @@ class AddProduct extends React.Component {
             onClick={this.uploadBookData}
             loading={dataUploadLoading}
             disabled={!showStage2}
-            style={{color:"#EFEEE9 !important",backgroundColor:"#00B9E0"}}
+            className="primaryBtn"
           >
             Upload
           </Button>

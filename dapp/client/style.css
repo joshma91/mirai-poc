@@ -6,7 +6,13 @@ body {
   overflow-y:hidden
 }
 
-
+button.ui.button.primaryBtn {
+  color: #EFEEE9 !important;
+  background-color: #00B9E0;
+}
+button.ui.button.margin30 {
+  margin-bottom: 30px
+}
 
 .yellow {
   background-color: #ffec6d;

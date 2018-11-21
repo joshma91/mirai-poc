@@ -58,15 +58,16 @@ class Sell extends React.Component {
         {productIds && productIds.length > 0 ? (
           <div>
             <Link href="/products/add">
-              <Button style={{ color: "#EFEEE9 !important", backgroundColor:"#00B9E0", marginBottom:"30px"}}>Add a Book</Button>
+              <Button className="primaryBtn margin30">Add a Book</Button>
             </Link>
+
             {this.renderProducts()}
           </div>
         ) : (
           <div>
             <p>You have not added any products, add one!</p>
             <Link href="/products/add">
-              <Button style={{ color: "#EFEEE9 !important", backgroundColor:"#00B9E0", marginBottom:"30px"}}>Add a Book</Button>
+              <Button className="primaryBtn margin30">Add a Book</Button>
             </Link>
           </div>
         )}
