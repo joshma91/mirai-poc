@@ -22,8 +22,7 @@ import "../../style.css";
 const thumbsContainer = {
   display: "flex",
   flexDirection: "row",
-  flexWrap: "wrap",
-  marginTop: 16
+  flexWrap: "wrap"
 };
 
 const thumb = {
@@ -243,14 +242,9 @@ class AddProduct extends React.Component {
                 " "}{" "}
               USD{" "}
             </span>
-            <Form.Checkbox
-              label="Make this product available"
-              defaultChecked
-              onChange={this.setAvailable}
-              disabled={!showStage1}
-            />
+
           </Form>
-          <Divider hidden />
+          <Divider style={{paddingTop:"30px"}}hidden />
 
           <Button
             className="primaryBtn"
@@ -336,6 +330,7 @@ class AddProduct extends React.Component {
             onClick={this.uploadBookData}
             loading={dataUploadLoading}
             disabled={!showStage2}
+            style={{marginTop:"-20px"}}
             className="primaryBtn"
           >
             Upload
