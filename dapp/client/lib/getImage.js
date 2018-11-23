@@ -1,6 +1,6 @@
 const getImage = async (bookId) => {
 
-  const API_URL = "http://localhost:5678/books/image";
+  const API_URL = "https://mirai-server.now.sh/books/image";
 
   const imageUrl = await fetch(
     `${API_URL}?bookId=${bookId}`

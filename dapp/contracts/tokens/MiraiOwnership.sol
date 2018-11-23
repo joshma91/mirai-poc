@@ -2,7 +2,6 @@ pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
-import "./TokenRegistry.sol";
 import "../MiraiCore.sol";
 
 /**
@@ -21,11 +20,9 @@ contract MiraiOwnership is ERC721Token {
     uint256 issuedTime
   );
 
-  TokenRegistry registry;
   MiraiCore core;
 
-  constructor (string _name, string _symbol, address _registryAddress, address _coreAddress) public ERC721Token(_name, _symbol){
-    registry = TokenRegistry(_registryAddress);
+  constructor (string _name, string _symbol, address _coreAddress) public ERC721Token(_name, _symbol){
     core = MiraiCore(_coreAddress);
   }
 

@@ -58,7 +58,7 @@ const dropzone = {
   paddingTop: "10px"
 };
 
-const API_URL = "http://localhost:5678/books";
+const API_URL = "https://mirai-server.now.sh/books";
 
 class AddProduct extends React.Component {
   state = {

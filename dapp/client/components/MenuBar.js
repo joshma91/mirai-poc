@@ -130,7 +130,7 @@ export default class MenuBar extends React.Component {
                   fontWeight: "bold",
                   color: "darkslategrey"
                 }}
-                href="../products/sell"
+                href="/products/sell"
               >
                 My Bookstore
               </a>
@@ -142,7 +142,7 @@ export default class MenuBar extends React.Component {
                   fontWeight: "bold",
                   color: "darkslategrey"
                 }}
-                href="../products/buy"
+                href="/products/buy"
               >
                 Buy Books
               </a>
@@ -154,7 +154,7 @@ export default class MenuBar extends React.Component {
                   fontWeight: "bold",
                   color: "darkslategrey"
                 }}
-                href="../products/view"
+                href="/products/view"
               >
                 My Purchases
               </a>

@@ -13,7 +13,7 @@ import getContract from "../lib/getContract";
 import MiraiOwnershipJSON from "../lib/contracts/MiraiOwnership.json";
 import getImage from "../lib/getImage";
 
-const API_URL = "http://localhost:5678/books";
+const API_URL = "https://mirai-server.now.sh/books";
 
 export default class BuyProductItem extends React.Component {
   state = {

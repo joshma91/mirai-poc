@@ -1,3 +1,4 @@
 node_modules
 .env
 now-secrets.json
+now.json
