@@ -1,32 +1,20 @@
-const TokenRegistry = artifacts.require("./tokens/TokenRegistry.sol");
 const MiraiOwnership = artifacts.require("./tokens/MiraiOwnership.sol");
 const MiraiCore = artifacts.require("./tokens/MiraiCore");
 
-module.exports = function(deployer) {
-  deployer.deploy(TokenRegistry).then(async registry => {
-    const account = web3.eth.accounts[0];
-
-    await deployer.deploy(MiraiCore).then(async core => {
-      await deployer.deploy(
-        MiraiOwnership,
-        "MiraiOwnership",
-        "POP",
-        registry.address,
-        core.address
-      );
-    });
+module.exports = deployer => {
+  deployer.deploy(MiraiCore).then(core => {
+    console.log(core.address)
+    return deployOwnership(deployer, core.address).then( x => {
+      Promise.resolve()
+    })
   });
 };
 
-async function setRegistry(contract, registry) {
-  const contractName = await contract.name.call();
-  const contractSymbol = await contract.symbol.call();
-  const contractDecimals = await contract.decimals.call();
-
-  await registry.addToken(
-    contract.address,
-    contractName,
-    contractSymbol,
-    contractDecimals
+const deployOwnership = (deployer, coreAddress) => new Promise((resolve,reject) => {
+  deployer.deploy(
+    MiraiOwnership,
+    "MiraiOwnership",
+    "POP",
+    coreAddress,
   );
-}
+})
