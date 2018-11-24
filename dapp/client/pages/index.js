@@ -77,7 +77,7 @@ class HomePage extends Component {
       <Responsive>
         <Visibility
           style={{
-            backgroundColor: "#EFEEE9",
+            backgroundColor: "#F0F2EB",
             height: "-webkit-fill-available"
           }}
         >

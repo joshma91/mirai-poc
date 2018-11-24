@@ -7,8 +7,8 @@ body {
 }
 
 button.ui.button.primaryBtn {
-  color: #EFEEE9 !important;
-  background-color: #00B9E0;
+  color: #F0F2EB !important;
+  background-color: #6b7f87;
 }
 button.ui.button.margin30 {
   margin-bottom: 30px
@@ -40,7 +40,7 @@ button.ui.button.margin30 {
 }
 
 .ui.inverted.header {
-  color: #EFEEE9 !important;
+  color: #F0F2EB !important;
 }
 
 .modalText {
