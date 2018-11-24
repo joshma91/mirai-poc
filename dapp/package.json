@@ -7,13 +7,14 @@
     "url": "git+https://github.com/adrianmcli/truffle-react.git"
   },
   "keywords": [],
-  "author": "Adrian Li",
+  "author": "Josh Ma",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/adrianmcli/truffle-react/issues"
   },
   "homepage": "https://github.com/adrianmcli/truffle-react#readme",
   "dependencies": {
+    "@digix/doxity-solc": "0.6.0",
     "dotenv": "^6.1.0",
     "openzeppelin-solidity": "1.10.0",
     "truffle": "^4.1.14",
