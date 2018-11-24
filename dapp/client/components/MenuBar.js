@@ -15,13 +15,13 @@ const MetaMaskModal = () => (
   <Modal basic
     size={"tiny"}
     trigger={
-      <Button style={{ color: "#EFEEE9 !important", backgroundColor: "#6b7f87" }}>
+      <Button style={{ color: "#F0F2EB !important", backgroundColor: "#6b7f87" }}>
         Get Metamask{" "}
         <Image style={{ display: "inline-block" }} src="/static/metamask.png" />
       </Button>
     }
   >
-    <Modal.Header style={{ fontSize:"1.6em", color: "#EFEEE9"}}>
+    <Modal.Header style={{ fontSize:"1.6em", color: "#F0F2EB"}}>
     <Image
         style={{
           display: "-webkit-inline-box",
