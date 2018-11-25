@@ -1,4 +1,4 @@
-# Mirai Marketplace
+# Mirai
 
 http://mirai.now.sh
 
