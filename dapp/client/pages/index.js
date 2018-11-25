@@ -19,7 +19,6 @@ import {
 } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import MenuBar from "../components/MenuBar";
-import logo from "../static/mirai.svg";
 import "../style.css";
 import Web3Container from "../lib/Web3Container";
 import MiraiCoreJSON from "../lib/contracts/MiraiCore.json";
@@ -37,7 +36,8 @@ const HomepageHeading = ({ mobile }) => (
       style={{
         fontSize: mobile ? "2em" : "4em",
         marginBottom: 0,
-        paddingTop: mobile ? "1.5em" : "3em"
+        paddingTop: mobile ? "1.5em" : "3em",
+        textShadow: "0 0 12px rgba(0,0,0,0.5)"
       }}
     />
     <Header
@@ -47,12 +47,13 @@ const HomepageHeading = ({ mobile }) => (
       style={{
         fontSize: mobile ? "1.5em" : "1.7em",
         fontWeight: "normal",
-        marginTop: mobile ? "0.5em" : "1.5em"
+        marginTop: mobile ? "0.5em" : "1.5em",
+        textShadow: "0 0 12px rgba(0,0,0,0.5)"
       }}
     />
     <a href="../products/add">
       <Button
-        style={{ color: "darkslategrey", backgroundColor: "#ffec6d" }}
+        className="primaryBtn"
         size="huge"
       >
         Start Selling

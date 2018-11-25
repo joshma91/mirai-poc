@@ -7,15 +7,26 @@ body {
 }
 
 button.ui.button.primaryBtn {
-  color: #F0F2EB !important;
-  background-color: #6b7f87;
+  color: white !important;
+  background-color: tomato;
 }
+
 button.ui.button.margin30 {
   margin-bottom: 30px
 }
 
+button.ui.button.metaBtn{
+  color: #F0F2EB !important;
+   background-color: #6b7f87 
+}
+.ui.button:not(.icon)>.right.icon:not(.button):not(.dropdown){
+  color: white !important
+}
+
+
+
 .yellow {
-  background-color: #ffec6d;
+  background-color: white;
   padding: 12px;
   margin: 0px;
 }

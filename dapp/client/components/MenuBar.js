@@ -8,30 +8,19 @@ import {
   Modal,
   Grid
 } from "semantic-ui-react";
-import logo from "../static/mirai.svg";
 import "../style.css";
 
 const MetaMaskModal = () => (
   <Modal basic
     size={"tiny"}
     trigger={
-      <Button style={{ color: "#F0F2EB !important", backgroundColor: "#6b7f87" }}>
+      <Button className="metaBtn">
         Get Metamask{" "}
         <Image style={{ display: "inline-block" }} src="/static/metamask.png" />
       </Button>
     }
   >
     <Modal.Header style={{ fontSize:"1.6em", color: "#F0F2EB"}}>
-    <Image
-        style={{
-          display: "-webkit-inline-box",
-          margin: "-10px",
-          paddingRight:"20px",
-          textAlign: "center"
-        }}
-        size="tiny"
-        src={logo}
-      />
       Welcome! Let's get you set up to use Mirai{" "}
     </Modal.Header>
     <Modal.Content image style={{ paddingLeft: "60px" }}>
@@ -115,14 +104,14 @@ export default class MenuBar extends React.Component {
       >
         <Menu
           style={{
-            backgroundColor: "#ffec6d",
+            backgroundColor: "white",
             padding: "12px",
             margin: "0px"
           }}
           size="large"
         >
           <Container>
-            <Image src={logo} size="tiny" href={"/"} />
+            
             <Menu.Item>
               <a
                 style={{
