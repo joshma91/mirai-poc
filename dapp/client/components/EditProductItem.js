@@ -60,7 +60,7 @@ export default class EditProductItem extends React.Component {
   };
 
   render() {
-    const { product, imageURL, newPrice, ethUSD } = this.state;
+    const { product, imageURL, newPrice } = this.state;
     if (!product || !imageURL) return null;
     return (
       <div className="wrapper">

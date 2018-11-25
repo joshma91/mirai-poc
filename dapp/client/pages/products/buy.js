@@ -80,7 +80,7 @@ class BuyProducts extends React.Component {
   render() {
     const { productIds } = this.state;
     return (
-      <MenuBarLayout accounts={this.props.accounts}>
+      <MenuBarLayout accounts={this.props.accounts} contract={this.props.contract}>
         <Header as="h1">Buy Books</Header>
         {productIds ? this.renderProducts() : <Loader active />}
       </MenuBarLayout>

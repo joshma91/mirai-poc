@@ -52,7 +52,7 @@ class Sell extends React.Component {
     const { productIds } = this.state;
     console.log(productIds);
     return (
-      <MenuBarLayout accounts={this.props.accounts}>
+      <MenuBarLayout accounts={this.props.accounts} contract={this.props.contract}>
         <Header as="h1">My Bookstore</Header>
 
         {productIds && productIds.length > 0 ? (

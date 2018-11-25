@@ -54,8 +54,33 @@ button.ui.button.metaBtn{
   color: #F0F2EB !important;
 }
 
+.modalHeader {
+  color: white !important
+}
+
 .modalText {
-  color:#00B6E4
+  color: tomato !important
+}
+
+.modalSubText{
+  color: white !important
+}
+
+.modalLink{
+  color: tomato !important;
+  text-decoration: underline
+}
+
+.menuItem{
+  font-size: large;
+  font-weight: bold
+}
+
+.logo {
+  font-size: x-large;
+  font-family: monospace;
+  color: tomato !important;
+  font-weight: bold;
 }
 
 input[type=number]::-webkit-inner-spin-button,

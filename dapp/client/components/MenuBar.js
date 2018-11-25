@@ -11,7 +11,8 @@ import {
 import "../style.css";
 
 const MetaMaskModal = () => (
-  <Modal basic
+  <Modal
+    basic
     size={"tiny"}
     trigger={
       <Button className="metaBtn">
@@ -20,7 +21,10 @@ const MetaMaskModal = () => (
       </Button>
     }
   >
-    <Modal.Header style={{ fontSize:"1.6em", color: "#F0F2EB"}}>
+    <Modal.Header
+      className="modalHeader"
+      style={{ fontSize: "1.6em", color: "#F0F2EB" }}
+    >
       Welcome! Let's get you set up to use Mirai{" "}
     </Modal.Header>
     <Modal.Content image style={{ paddingLeft: "60px" }}>
@@ -44,9 +48,13 @@ const MetaMaskModal = () => (
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-            <h3 style={{ color: "#00B6E4"}}>
-              Click <a href="https://metamask.io/">here </a>to install
-            </h3>
+              <h3 className="modalSubText">
+                Click{" "}
+                <a className="modalLink" href="https://metamask.io/">
+                  here{" "}
+                </a>
+                to install
+              </h3>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -67,22 +75,20 @@ const MetaMaskModal = () => (
               />
             </Grid.Column>
           </Grid.Row>
-
         </Grid>
 
-         <Grid columns={2}>
+        <Grid columns={2}>
           <Grid.Row>
             <Grid.Column>
               <Header
                 as="h2"
-                content="Connect to the Kovan Ethereum network"
+                content="Connect to the Ropsten Ethereum network"
                 className="modalText"
                 style={{ color: "#00B6E4" }}
               />
             </Grid.Column>
           </Grid.Row>
         </Grid>
-
       </Modal.Description>
     </Modal.Content>
     <div />
@@ -90,6 +96,32 @@ const MetaMaskModal = () => (
 );
 
 export default class MenuBar extends React.Component {
+  renderWelcome = () => {
+    const { accounts, contract } = this.props;
+
+    if (contract == undefined) {
+      return <MetaMaskModal />;
+    } else if (accounts && accounts.length == 0) {
+      return (
+        <div>
+          {" "}
+          <strong>Please unlock your Metamask account! </strong>
+          <Image
+            style={{ display: "inline-block" }}
+            src="/static/metamask.png"
+          />
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          {" "}
+          Welcome, <strong>{this.props.accounts}</strong>!
+        </div>
+      );
+    }
+  };
+
   render() {
     return (
       <Segment
@@ -111,14 +143,14 @@ export default class MenuBar extends React.Component {
           size="large"
         >
           <Container>
-            
+            <Menu.Item style={{ borderLeft: "0px" }}>
+              <a className="logo" href={"/"}>
+                Mirai
+              </a>
+            </Menu.Item>
             <Menu.Item>
               <a
-                style={{
-                  fontSize: "large",
-                  fontWeight: "bold",
-                  color: "darkslategrey"
-                }}
+                className="menuItem"
                 href="/products/sell"
               >
                 My Bookstore
@@ -126,11 +158,7 @@ export default class MenuBar extends React.Component {
             </Menu.Item>
             <Menu.Item>
               <a
-                style={{
-                  fontSize: "large",
-                  fontWeight: "bold",
-                  color: "darkslategrey"
-                }}
+                className="menuItem"
                 href="/products/buy"
               >
                 Buy Books
@@ -138,26 +166,16 @@ export default class MenuBar extends React.Component {
             </Menu.Item>
             <Menu.Item>
               <a
+                className="menuItem"
                 style={{
-                  fontSize: "large",
-                  fontWeight: "bold",
-                  color: "darkslategrey"
+                  borderRight:"0px"
                 }}
                 href="/products/view"
               >
                 My Purchases
               </a>
             </Menu.Item>
-            <Menu.Item position="right">
-              {this.props.accounts == undefined ? (
-                <MetaMaskModal />
-              ) : (
-                <div>
-                  {" "}
-                  Welcome, <strong>{this.props.accounts}</strong>!
-                </div>
-              )}
-            </Menu.Item>
+            <Menu.Item style={{borderLeft:"0px"}} position="right">{this.renderWelcome()}</Menu.Item>
           </Container>
         </Menu>
       </Segment>
