@@ -1,4 +1,4 @@
-# Mirai Marketplace
+# Mirai
 
 http://mirai.now.sh
 
@@ -14,3 +14,7 @@ This decentralized app (DApp) was built on top of the following:
 - [Express.js](https://expressjs.com) (middleware web framework for Node.js)
 - [Firebase](https://firebase.google.com/) (cloud development platform leveraged for database and storage needs)
 - And many more...
+
+## Screenshots
+
+![Whole Site](screenshots/mirai.gif)
