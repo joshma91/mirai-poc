@@ -82,7 +82,7 @@ class HomePage extends Component {
             height: "-webkit-fill-available"
           }}
         >
-          <MenuBar accounts={accounts} />
+          <MenuBar accounts={accounts} contract={contract}/>
           <video loop autoPlay muted style={{ width: "100%", height: "100%" }}>
             <source
               src="https://firebasestorage.googleapis.com/v0/b/mirai-poc.appspot.com/o/Productive-Morning.mp4?alt=media&token=0570dc49-3594-40d6-ae37-14ad463002e9"
