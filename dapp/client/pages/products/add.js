@@ -214,7 +214,7 @@ class AddProduct extends React.Component {
     const showStage2 = slotReserved && !dataUploaded;
     const showStage3 = slotReserved && dataUploaded;
     return (
-      <MenuBarLayout accounts={this.props.accounts} contract={this.props.contract}>
+      <MenuBarLayout small={true} accounts={this.props.accounts} contract={this.props.contract}>
         <Header as="h1">Add Product</Header>
 
         <Segment
