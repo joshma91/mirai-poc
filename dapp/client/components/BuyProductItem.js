@@ -20,11 +20,13 @@ export default class BuyProductItem extends React.Component {
     product: null,
     imageURL: null,
     isOwner: false,
-    alreadyOwned: false
+    alreadyOwned: false,
+    loading: false
   };
 
   componentDidMount = async () => {
     const { contract, accounts, id, ownedProductIds } = this.props;
+    this.setState({ loading: true });
     const product = await contract.methods
       .getProductById(id)
       .call({ from: accounts[0] });
@@ -41,7 +43,7 @@ export default class BuyProductItem extends React.Component {
     const isOwner = product.owner == accounts[0] ? true : false;
     const alreadyOwned = ownedProductIds.includes(id) ? true : false;
 
-    this.setState({ product: updateProduct, imageURL, isOwner, alreadyOwned });
+    this.setState({ product: updateProduct, imageURL, isOwner, alreadyOwned, loading: false });
   };
 
   requestPOP = async () => {
@@ -62,7 +64,8 @@ export default class BuyProductItem extends React.Component {
   };
 
   render() {
-    const { product, imageURL, isOwner, alreadyOwned } = this.state;
+    const { product, imageURL, isOwner, alreadyOwned, loading } = this.state;
+    if (loading) return <Loader active />;
     if (!product || isOwner || alreadyOwned || !imageURL) {
       return null;
     } else {

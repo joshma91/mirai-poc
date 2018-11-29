@@ -17,17 +17,14 @@ import getImage from "../lib/getImage";
 const API_URL = "https://mirai-server.now.sh/books";
 
 export default class EditProductItem extends React.Component {
-  state = { product: null, imageURL: null, newPrice: "", ethUSD: "" };
+  state = { product: null, imageURL: null, newPrice: "", loading: false };
 
   componentDidMount = async () => {
     const { contract, accounts, id } = this.props;
+    this.setState({ loading: true });
     const product = await contract.methods
       .getProductById(id)
       .call({ from: accounts[0] });
-
-      const ethUSD = await fetch("https://api.coinmarketcap.com/v2/ticker/1027/")
-      .then(x => x.json())
-      .then(x => x.data.quotes.USD.price);
 
     const title = await fetch(`${API_URL}?bookId=${id}`)
       .then(res => res.text())
@@ -38,7 +35,7 @@ export default class EditProductItem extends React.Component {
     const updateProduct = title != undefined ? { ...product, title } : null;
     const imageURL = await getImage(id);
 
-    this.setState({ product: updateProduct, imageURL, ethUSD });
+    this.setState({ product: updateProduct, imageURL, loading: false });
   };
 
   setNewPrice = e => this.setState({ newPrice: e.target.value });
@@ -49,7 +46,7 @@ export default class EditProductItem extends React.Component {
     const { web3, accounts, id, contract } = this.props;
 
     const tx = await contract.methods
-      .editProductPrice(product.owner, id, newPrice*10**18)
+      .editProductPrice(product.owner, id, newPrice * 10 ** 18)
       .send({ from: accounts[0], gas: 3000000 })
       .on("receipt", function(receipt) {
         console.log(receipt.events.PriceChanged.returnValues.price);
@@ -60,7 +57,8 @@ export default class EditProductItem extends React.Component {
   };
 
   render() {
-    const { product, imageURL, newPrice } = this.state;
+    const { product, imageURL, newPrice, loading } = this.state;
+    if (loading) return <Loader active />;
     if (!product || !imageURL) return null;
     return (
       <div className="wrapper">
@@ -72,7 +70,7 @@ export default class EditProductItem extends React.Component {
         <div className="sold">Number sold: {product.numberSold}</div>
         <Button as="div" labelPosition="left">
           <Label as="a" basic pointing="right">
-            {product.price/(10**18)} ETH
+            {product.price / 10 ** 18} ETH
           </Label>
           <Button icon onClick={this.editPrice}>
             <Icon name="edit outline" />
@@ -101,7 +99,7 @@ export default class EditProductItem extends React.Component {
             height: 200px;
           }
           .title {
-            margin-top:10px;
+            margin-top: 10px;
             font-weight: 600;
             font-size: 18px;
           }

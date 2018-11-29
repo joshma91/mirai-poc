@@ -1,21 +1,27 @@
-import { Button } from "semantic-ui-react";
+import { Button, Loader } from "semantic-ui-react";
 import getImage from "../lib/getImage";
 
 const API_URL = "https://mirai-server.now.sh";
 
 export default class BuyProductItem extends React.Component {
-  state = { title: null, challenge: null, signature: null, imageURL: null };
+  state = {
+    title: null,
+    challenge: null,
+    signature: null,
+    imageURL: null,
+    loading: false
+  };
 
   componentDidMount = async () => {
     const { id } = this.props;
-
+    this.setState({ loading: true });
     const title = await fetch(`${API_URL}/books?bookId=${id}`)
       .then(res => res.text())
       .then(text => JSON.parse(text).bookTitle)
       .catch(err => console.log(err));
 
     const imageURL = await getImage(id);
-    this.setState({ imageURL, title });
+    this.setState({ imageURL, title, loading: false });
   };
 
   retrieveResource = async () => {
@@ -62,8 +68,9 @@ export default class BuyProductItem extends React.Component {
   };
 
   render() {
-    const { title, imageURL } = this.state;
-    if (!imageURL) return null
+    const { title, imageURL, loading } = this.state;
+    if (loading) return <Loader active />;
+    if (!imageURL) return null;
     return (
       <div className="wrapper">
         <div className="image-wrapper">
@@ -88,7 +95,7 @@ export default class BuyProductItem extends React.Component {
             height: 200px;
           }
           .title {
-            padding-top:10px;
+            padding-top: 10px;
             padding-bottom: 10px;
             font-weight: 600;
             font-size: 18px;
