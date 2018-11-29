@@ -10,8 +10,6 @@ import {
 } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import Dropzone from "react-dropzone";
-
-import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
 import { resolve } from "url";
@@ -273,7 +271,7 @@ class AddProduct extends React.Component {
             style={{ width: "300px" }}
           />
           <br />
-          <Grid columns={2} style={{ margin: "0px", width: "60%" }}>
+          <Grid columns={2} style={{ margin: "0px", width: "70%" }}>
             <Grid.Row>
               <Grid.Column>
                 <Header as="h3" content="Upload Book" />

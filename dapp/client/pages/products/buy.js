@@ -9,7 +9,6 @@ import {
   Loader
 } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import Layout from "../../components/Layout";
 import getContract from '../../lib/getContract'
 import MiraiOwnershipJSON from "../../lib/contracts/MiraiOwnership.json";
 import BuyProductItem from "../../components/BuyProductItem";

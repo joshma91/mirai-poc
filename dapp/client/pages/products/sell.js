@@ -8,9 +8,6 @@ import {
   Form,
   Loader
 } from "semantic-ui-react";
-
-import Layout from "../../components/Layout";
-import MenuBar from "../../components/MenuBar";
 import MenuBarLayout from "../../components/MenuBarLayout";
 import MiraiCoreJSON from "../../lib/contracts/MiraiCore.json";
 import EditProductItem from "../../components/EditProductItem";

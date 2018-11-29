@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { Header, Button, Loader } from "semantic-ui-react";
-
-import Layout from "../../components/Layout";
 import Web3Container from "../../lib/Web3Container";
 import MiraiOwnershipJSON from "../../lib/contracts/MiraiOwnership.json";
 import ViewProductItem from "../../components/ViewProductItem";
