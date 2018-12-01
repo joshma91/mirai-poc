@@ -153,7 +153,7 @@ contract MiraiCore is Ownable {
 
   /**
    * @notice incrementNumberSold increases the numberSold attribute by 1
-   * @param _productId - the product we're incrementing
+   * @param _productIdStr - the product we're incrementing
    */
   function incrementNumberSold(string _productIdStr) external {
     uint _productId = parseInt(_productIdStr);
