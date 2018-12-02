@@ -42,7 +42,7 @@ const HomepageHeading = ({ mobile }) => (
     />
     <Header
       as="h2"
-      content="Buy and sell books on the Blockchain."
+      content="Buy and sell books on the Ethereum Blockchain."
       inverted
       style={{
         fontSize: mobile ? "1.5em" : "1.7em",

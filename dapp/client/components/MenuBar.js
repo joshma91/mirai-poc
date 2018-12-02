@@ -11,6 +11,8 @@ import {
 import "../style.css";
 
 const MetaMaskModal = () => (
+  <div>
+  <div style={{marginTop:"-20px", paddingBottom:"8px", fontWeight:"bold", paddingLeft:"20px"}}>Running on Ropsten Testnet</div>
   <Modal
     basic
     size={"tiny"}
@@ -93,6 +95,7 @@ const MetaMaskModal = () => (
     </Modal.Content>
     <div />
   </Modal>
+  </div>
 );
 
 export default class MenuBar extends React.Component {

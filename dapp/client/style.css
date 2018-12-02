@@ -17,7 +17,9 @@ button.ui.button.margin30 {
 
 button.ui.button.metaBtn{
   color: #F0F2EB !important;
-   background-color: #6b7f87 
+   background-color: #6b7f87;
+   margin-bottom: -15px; 
+   height: 48px;
 }
 .ui.button:not(.icon)>.right.icon:not(.button):not(.dropdown){
   color: white !important
@@ -43,11 +45,12 @@ button.ui.button.metaBtn{
     height: 100%;
     width: 100%
 }
-.overlay {
+.ui.container.overlay {
     position:absolute;
     top:10%;
     left:60%;
     z-index:1;
+    margin-left:-100px !important;
 }
 
 .ui.inverted.header {
